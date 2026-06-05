@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | M2R Tecnologias</title>
+    <link rel="stylesheet" href="personal-website.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="Imagens/logo.png" type="image/png">
+</head>
+<body class="page-auth">
+    <!-- Menu principal -->
+    <nav class="navbar">
+        <a href="index_inicio.html" title="Ir para a página inicial">
+            <img src="Imagens/m2r.png" alt="Logo da M2R Tecnologias">
+        </a>
+
+        <div class="nav-links">
+            <a href="index_inicio.html" aria-label="Página inicial">Início</a>
+            <a href="index_servicos.html" aria-label="Conheça nossos serviços">Serviços</a>
+            <a href="index_projetos.html" aria-label="Veja nossos projetos">Projetos</a>
+            <a href="index_blog.html" aria-label="Leia nosso blog">Blog</a>
+            <a href="index_sobre.html" aria-label="Saiba mais sobre a M2R">Sobre a M2R</a>
+            <a href="index_contatos.html" aria-label="Entre em contato">Contato</a>
+            <a href="login.html" class="nav-btn-login" aria-label="Acessar área restrita">Login</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="login-section">
+            <div class="login-card fade-in-section">
+                <img src="Imagens/logo.png" alt="M2R Tecnologias Logo">
+                <h2 style="font-size: 1.1rem; color: var(--color-primary); margin-bottom: 5px;">M2R Tecnologias</h2>
+                <h3 style="font-size: 1.6rem; color: var(--color-text-primary); margin-top: 0; margin-bottom: 8px;">Bem-vindo de volta</h3>
+                <p>Insira suas credenciais para acessar a área restrita.</p>
+
+                <form id="login-form" class="login-form">
+                    <input type="email" id="login-email" placeholder="E-mail corporativo" required>
+                    <div class="password-container">
+                        <input type="password" id="login-password" placeholder="Senha" required>
+                        <button type="button" class="toggle-password" id="toggle-login-password" title="Mostrar/Ocultar Senha">👁️</button>
+                    </div>
+
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">Lembrar meu e-mail</label>
+                    </div>
+
+                    <button type="submit" class="cta-button">Entrar na Conta</button>
+                    <p id="login-status"></p>
+                </form>
+
+                <div class="login-links">
+                    Esqueceu sua senha? <a href="javascript:void(0);" onclick="alert('Recuperação de senha em breve.')">Recuperar acesso</a>
+                    <br><br>
+                    Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Espaço reservado para o Rodapé -->
+    <div id="footer-placeholder"></div>
+
+    <script src="personal-website.js"></script>
+</body>
+</html>
