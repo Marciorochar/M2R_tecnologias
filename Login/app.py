@@ -7,8 +7,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
  
 app = Flask(__name__)
-# Permite o acesso localmente de qualquer porta e origem de forma explícita
-CORS(app, resources={r"/*": {"origins": "*"}})
+# Permite o acesso localmente de qualquer porta durante o desenvolvimento
+CORS(app)
 
 # --- CONFIGURAÇÃO DE E-MAIL ---
 # IMPORTANTE: Não coloque sua senha diretamente no código.

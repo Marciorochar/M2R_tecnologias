@@ -1,0 +1,7 @@
+*.exe
+*.db
+*.sqlite
+*.sqlite3
+usuarios.xlsx
+.env
+__pycache__/

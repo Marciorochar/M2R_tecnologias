@@ -1,4 +1,21 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // --- VERIFICAÇÃO DE SEGURANÇA (ÁREA RESTRITA) ---
+    const userToken = localStorage.getItem('m2r_token');
+    const isAuthPage = document.body.classList.contains('page-auth');
+    
+    // Se não tiver token salvo e tentar abrir qualquer página que não seja o Login/Cadastro, é bloqueado
+    if (!userToken && !isAuthPage) {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('/login/site/')) {
+            window.location.href = '../../login.html';
+        } else if (path.includes('/login/')) {
+            window.location.href = '../login.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+        return; // Interrompe o carregamento do site imediatamente
+    }
+
     // 1. CARREGAR COMPONENTES (NAVBAR E FOOTER)
     await loadComponents();
 
@@ -8,15 +25,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadComponents() {
     try {
+        // Descobre se estamos numa subpasta para acertar o caminho do rodapé/navbar
+        const path = window.location.pathname.toLowerCase();
+        let prefix = '';
+        if (path.includes('/login/site/')) {
+            prefix = '../../';
+        } else if (path.includes('/login/')) {
+            prefix = '../';
+        }
+
         const navbarPlaceholder = document.getElementById('navbar-placeholder');
         if (navbarPlaceholder) {
-            const navbarRes = await fetch('navbar.html');
+            const navbarRes = await fetch(prefix + 'navbar.html');
             if (navbarRes.ok) navbarPlaceholder.innerHTML = await navbarRes.text();
         }
 
         const footerPlaceholder = document.getElementById('footer-placeholder');
         if (footerPlaceholder) {
-            const footerRes = await fetch('footer.html');
+            const footerRes = await fetch(prefix + 'footer.html');
             if (footerRes.ok) footerPlaceholder.innerHTML = await footerRes.text();
         }
     } catch (error) {
@@ -41,6 +67,26 @@ function initApp() {
         =====================================================
     */
 
+    // --- FUNÇÕES UTILITÁRIAS GLOBAIS ---
+    const setFormStatus = (element, message, type) => {
+        if (!element) return;
+        element.textContent = message;
+        if (type === 'success') element.style.color = '#a7f3d0';
+        else if (type === 'error') element.style.color = '#fca5a5';
+        else if (type === 'sending') element.style.color = '#f5f5f5';
+    };
+
+    const redirectBasedOnPath = (targetPage) => {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('/login/site/')) {
+            window.location.href = targetPage === 'login.html' ? '../../login.html' : targetPage;
+        } else if (path.includes('/login/')) {
+            window.location.href = targetPage === 'login.html' ? '../login.html' : `Site/${targetPage}`;
+        } else {
+            window.location.href = targetPage === 'login.html' ? 'login.html' : `Login/Site/${targetPage}`;
+        }
+    };
+
     // --- 9. SISTEMA DE LOGOUT (Botão Sair) ---
     const userToken = localStorage.getItem('m2r_token');
     if (userToken && !document.body.classList.contains('page-auth')) {
@@ -60,7 +106,7 @@ function initApp() {
                 e.preventDefault();
                 localStorage.removeItem('m2r_token'); // Destrói a chave de acesso
                 localStorage.removeItem('m2r_userName'); // Destrói o nome salvo
-                window.location.href = 'login.html'; // Volta pro login
+                redirectBasedOnPath('login.html');
             });
             
             // Tenta resgatar o nome do usuário salvo
@@ -249,8 +295,7 @@ function initApp() {
                 formButton.textContent = 'Enviando...';
             }
 
-            formStatus.textContent = 'Enviando sua mensagem...';
-            formStatus.style.color = '#f5f5f5';
+            setFormStatus(formStatus, 'Enviando sua mensagem...', 'sending');
 
             fetch(this.action, {
                 method: 'POST',
@@ -261,18 +306,14 @@ function initApp() {
             })
                 .then(response => {
                     if (response.ok) {
-                        formStatus.textContent = 'Mensagem enviada com sucesso. Em breve entraremos em contato.';
-                        formStatus.style.color = '#a7f3d0';
-
+                        setFormStatus(formStatus, 'Mensagem enviada com sucesso. Em breve entraremos em contato.', 'success');
                         contactForm.reset();
                     } else {
-                        formStatus.textContent = 'Não foi possível enviar a mensagem. Tente novamente.';
-                        formStatus.style.color = '#fca5a5';
+                        setFormStatus(formStatus, 'Não foi possível enviar a mensagem. Tente novamente.', 'error');
                     }
                 })
                 .catch(() => {
-                    formStatus.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
-                    formStatus.style.color = '#fca5a5';
+                    setFormStatus(formStatus, 'Erro de conexão. Verifique sua internet e tente novamente.', 'error');
                 })
                 .finally(() => {
                     if (formButton) {
@@ -440,10 +481,7 @@ function initApp() {
                 }
 
                 if (response.ok) {
-                    if (registerStatus) {
-                        registerStatus.textContent = data.message;
-                        registerStatus.style.color = 'green';
-                    }
+                    if (registerStatus) setFormStatus(registerStatus, data.message, 'success');
                     
                     // Cadastro bem-sucedido: Salva o token de sessão (auto-login)
                     if (data.token) {
@@ -453,20 +491,14 @@ function initApp() {
 
                     // Redireciona diretamente para a página de início
                     setTimeout(() => {
-                        window.location.href = 'index_inicio.html';
+                        redirectBasedOnPath('index_inicio.html');
                     }, 1500);
                 } else {
-                    if (registerStatus) {
-                        registerStatus.textContent = data.error || 'Erro ao realizar cadastro.';
-                        registerStatus.style.color = 'red';
-                    }
+                    if (registerStatus) setFormStatus(registerStatus, data.error || 'Erro ao realizar cadastro.', 'error');
                 }
             } catch (error) {
                 console.error("Erro no fetch:", error);
-                if (registerStatus) {
-                    registerStatus.textContent = error.message.includes('Python') ? error.message : `Falha de Conexão: ${error.message}. O Python está rodando?`;
-                    registerStatus.style.color = 'red';
-                }
+                if (registerStatus) setFormStatus(registerStatus, error.message.includes('Python') ? error.message : `Falha de Conexão: ${error.message}. O Python está rodando?`, 'error');
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -517,10 +549,7 @@ function initApp() {
                 }
 
                 if (response.ok) {
-                    if (loginStatus) {
-                        loginStatus.textContent = data.message;
-                        loginStatus.style.color = 'green';
-                    }
+                    if (loginStatus) setFormStatus(loginStatus, data.message, 'success');
 
                     // Salva a sessão e o nome do usuário
                     if (data.token) {
@@ -537,20 +566,14 @@ function initApp() {
 
                     // Sucesso! Libera o acesso para a página inicial
                     setTimeout(() => {
-                        window.location.href = 'index_inicio.html';
+                        redirectBasedOnPath('index_inicio.html');
                     }, 1500);
                 } else {
-                    if (loginStatus) {
-                        loginStatus.textContent = data.error || 'E-mail ou senha incorretos.';
-                        loginStatus.style.color = 'red';
-                    }
+                    if (loginStatus) setFormStatus(loginStatus, data.error || 'E-mail ou senha incorretos.', 'error');
                 }
             } catch (error) {
                 console.error("Erro no fetch:", error);
-                if (loginStatus) {
-                    loginStatus.textContent = error.message.includes('Python') ? error.message : `Falha de Conexão: ${error.message}`;
-                    loginStatus.style.color = 'red';
-                }
+                if (loginStatus) setFormStatus(loginStatus, error.message.includes('Python') ? error.message : `Falha de Conexão: ${error.message}`, 'error');
             } finally {
                 if (submitBtn) submitBtn.disabled = false;
             }
@@ -607,7 +630,7 @@ function initApp() {
 
         function resize() {
             width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            height = canvas.height = Math.max(window.innerHeight, loginSection ? loginSection.offsetHeight : document.documentElement.scrollHeight);
         }
         window.addEventListener('resize', resize);
         resize();

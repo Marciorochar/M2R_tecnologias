@@ -13,7 +13,6 @@
     --color-text-secondary: #555;
     --color-text-meta: #777;
     --color-text-inverse: #ffffff;
-    --color-text-active: #000;
     --color-border: #e3e3e3;
     --color-border-subtle: #ccc;
     --color-border-accent: #c89a63;
@@ -102,6 +101,51 @@ body {
     color: var(--color-primary);
 }
 
+/* =======================================================
+   SISTEMA DE DESIGN (CLASSES ATÔMICAS)
+   ======================================================= */
+.btn, .hero-button, .cta-button, .nav-btn-login, .login-form button, #contact form button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-primary, .nav-btn-login, .login-form button {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse) !important;
+}
+
+.btn-primary:hover, .nav-btn-login:hover, .login-form button:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-3px);
+}
+
+.input-field, #contact form input, #contact form textarea, .login-form input {
+    padding: 15px 16px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-primary);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    width: 100%;
+}
+
+.input-field:focus, #contact form input:focus, #contact form textarea:focus, .login-form input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background-color: var(--color-surface);
+    box-shadow: 0 0 0 4px rgba(90, 59, 32, 0.1);
+}
+
 /* Show the underline on hover and for the active link */
 .navbar a:hover::after,
 .navbar a.active::after {
@@ -118,16 +162,7 @@ body {
 
 /* Botão de Login na Navbar */
 .nav-btn-login {
-    background-color: var(--color-primary);
-    color: var(--color-text-inverse) !important;
     padding: 8px 24px !important;
-    border-radius: 6px;
-    font-weight: 700 !important;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.nav-btn-login:hover {
-    background-color: var(--color-primary-dark);
-    transform: translateY(-2px);
 }
 .nav-btn-login::after {
     display: none; /* Remove o sublinhado animado padrão do menu para este botão */
@@ -274,58 +309,20 @@ form {
     color: var(--color-background);
 }
 
-#contact form input,
-#contact form textarea {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border-subtle);
-    color: var(--color-text-primary);
-    transition: border-color var(--transition-medium);
-}
-
-#contact form input:focus,
-#contact form textarea:focus {
-    outline: none;
-    border-color: var(--color-border-accent);
-}
-
-#contact form input::placeholder,
-#contact form textarea::placeholder {
-    color: var(--color-text-meta);
-}
-
 form label {
     text-align: left;
     font-weight: bold;
     margin-bottom: -5px; /* Ajuste fino para o espaçamento */
 }
 
-form input, form textarea, form button {
-    padding: 15px;
-    font-size: 16px;
-    border: 1px solid var(--color-border-accent);
-    border-radius: 5px;
-}
-
 form textarea {
     min-height: 120px;
-}
-
-form button {
-    background-color: var(--color-primary);
-    color: var(--color-text-inverse);
-    cursor: pointer;
-    transition: background-color var(--transition-medium);
-}
-
-form button:hover {
-    background-color: var(--color-primary-hover);
 }
 
 /* Override para o botão de envio no formulário de contato */
 #contact form button {
     background-color: var(--color-background);
     color: var(--color-primary);
-    font-weight: bold;
 }
 
 #contact form button:hover {
@@ -635,14 +632,8 @@ form button:hover {
 }
 
 .cta-button {
-    display: inline-block;
-    padding: 14px 28px;
-    border-radius: 6px;
     background-color: var(--color-surface);
     color: var(--color-primary);
-    text-decoration: none;
-    font-weight: 800;
-    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .cta-button:hover {
@@ -756,14 +747,8 @@ body {
 }
 
 .hero-button {
-    display: inline-block;
-    padding: 14px 28px;
-    border-radius: 8px;
     background-color: var(--color-accent);
     color: #2b1a0d;
-    text-decoration: none;
-    font-weight: 800;
-    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .hero-button:hover {
@@ -978,8 +963,7 @@ body {
    ======================================================= */
 body.page-auth {
     margin: 0;
-    height: 100vh;
-    overflow: hidden; /* Remove completamente a barra de rolagem */
+    min-height: 100vh; /* Permite rolar a tela em dispositivos pequenos */
     background-color: var(--color-primary-dark); /* Fundo marrom escuro combinando com a paleta */
 }
 
@@ -990,12 +974,12 @@ body.page-auth #footer-placeholder {
 
 .login-section {
     position: relative;
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
+    padding: 40px 20px; /* Centraliza o card de volta com espaço de respiro */
     overflow: hidden;
     /* Fundo com Gradiente Animado */
     background: linear-gradient(-45deg, var(--color-primary-dark), var(--color-primary), #2a1a0f, #503119);
@@ -1003,7 +987,7 @@ body.page-auth #footer-placeholder {
     animation: gradientShift 15s ease infinite;
 }
 
-/ * Fundo Animado Tecnológico (Tela Toda) */
+/* Fundo Animado Tecnológico (Tela Toda) */
 .login-section::before {
     content: '';
     position: absolute;
@@ -1087,23 +1071,6 @@ body.page-auth #footer-placeholder {
     gap: 16px;
 }
 
-.login-form input {
-    padding: 15px 16px;
-    border: 1.5px solid var(--color-border);
-    border-radius: 10px;
-    font-size: 1rem;
-    background-color: var(--color-surface-alt);
-    color: var(--color-text-primary);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-.login-form input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    background-color: var(--color-surface);
-    box-shadow: 0 0 0 4px rgba(90, 59, 32, 0.1); /* Animação de foco suave (glow) */
-}
-
 /* Container para o campo de senha com ícone de olho */
 .password-container {
     position: relative;
@@ -1143,17 +1110,6 @@ body.page-auth #footer-placeholder {
     accent-color: var(--color-primary); /* Pinta a caixinha com a cor do site */
 }
 
-.login-form button {
-    margin-top: 8px;
-    padding: 16px;
-    border-radius: 10px;
-    font-size: 1.05rem;
-    letter-spacing: 0.5px;
-    box-shadow: 0 4px 12px rgba(90, 59, 32, 0.15);
-    width: 100%;
-    border: none;
-    cursor: pointer;
-}
 
 /* Feedback de status do login */
 #login-status {
