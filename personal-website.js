@@ -129,6 +129,13 @@ function initApp() {
             logoutBtn.style.color = '#cc0000'; // Vermelho para destacar
             logoutBtn.style.fontWeight = 'bold';
             logoutBtn.style.textDecoration = 'none';
+            logoutBtn.style.backgroundColor = '#fee2e2';
+            logoutBtn.style.padding = '8px 16px';
+            logoutBtn.style.borderRadius = '50px';
+            logoutBtn.style.transition = 'background-color 0.3s, transform 0.2s';
+            logoutBtn.onmouseover = () => { logoutBtn.style.backgroundColor = '#fca5a5'; logoutBtn.style.transform = 'scale(1.05)'; };
+            logoutBtn.onmouseout = () => { logoutBtn.style.backgroundColor = '#fee2e2'; logoutBtn.style.transform = 'scale(1)'; };
+
             logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 localStorage.removeItem('m2r_token'); // Destrói a chave de acesso
@@ -142,9 +149,8 @@ function initApp() {
             if (userName) {
                 const firstName = userName.split(' ')[0]; // Pega só o primeiro nome
                 const greeting = document.createElement('span');
-                greeting.textContent = `Olá, ${firstName}`;
-                greeting.style.fontWeight = 'bold';
-                greeting.style.color = 'var(--color-primary)';
+                greeting.innerHTML = `👤 Olá, <strong>${firstName}</strong>`;
+                greeting.style.color = 'var(--color-text-primary)';
                 userProfileContainer.appendChild(greeting);
                 
                 // Atualiza o título grande da página inicial se ele existir
@@ -174,6 +180,50 @@ function initApp() {
 
     // Seleciona a navbar para calcular o deslocamento na rolagem
     const navbar = document.querySelector('.navbar');
+
+    /*
+        =====================================================
+        0. NAVBAR INTERATIVA E MENU MOBILE (HAMBÚRGUER)
+        =====================================================
+    */
+    if (navbar) {
+        // Efeito de scroll (Shrink/Shadow)
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Criação dinâmica do botão Hambúrguer para mobile
+        const mobileBtn = document.createElement('button');
+        mobileBtn.className = 'mobile-menu-btn';
+        mobileBtn.innerHTML = '☰';
+        mobileBtn.setAttribute('aria-label', 'Abrir menu mobile');
+        
+        const navLinks = navbar.querySelector('.nav-links');
+        if (navLinks) {
+            navbar.insertBefore(mobileBtn, navLinks);
+        }
+
+        // Lógica de abrir/fechar o menu mobile
+        mobileBtn.addEventListener('click', () => {
+            navbar.classList.toggle('menu-open');
+            mobileBtn.innerHTML = navbar.classList.contains('menu-open') ? '✕' : '☰';
+        });
+
+        // Fechar o menu ao clicar em um link
+        const links = navbar.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navbar.classList.remove('menu-open');
+                    mobileBtn.innerHTML = '☰';
+                }
+            });
+        });
+    }
 
     /*
         =====================================================

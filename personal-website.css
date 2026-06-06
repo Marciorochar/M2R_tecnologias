@@ -158,8 +158,18 @@ body {
     align-items: center;
     gap: 15px;
     margin-left: auto; /* Empurra para a direita no Desktop */
+    padding: 6px 18px;
+    background-color: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 50px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    transition: border-color var(--transition-medium), box-shadow var(--transition-medium);
 }
 
+.user-profile-container:hover {
+    border-color: var(--color-border-accent);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
 /* Botão de Login na Navbar */
 .nav-btn-login {
     padding: 8px 24px !important;
@@ -666,6 +676,26 @@ body {
     backdrop-filter: blur(8px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     padding: 12px 28px;
+    transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    flex-wrap: wrap; /* Necessário para o menu mobile descer corretamente */
+}
+
+.navbar.scrolled {
+    padding: 8px 28px;
+    background-color: rgba(255, 255, 255, 0.99);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Botão Menu Mobile (Hambúrguer) */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    cursor: pointer;
+    margin-left: auto; /* Empurra para a direita no celular */
+    transition: transform 0.3s ease;
 }
 
 .navbar img {
@@ -1243,35 +1273,49 @@ body.page-auth {
         height: 120px;
     }
 
-    .navbar div {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .navbar .user-profile-container {
-        flex-direction: row; /* Força o nome e o botão ficarem lado a lado no celular */
-        margin-left: 0; /* Remove o empurrão da direita no celular */
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid var(--color-border);
-        width: 100%;
+    .navbar {
+        padding: 12px 20px;
+        justify-content: flex-start;
+        align-items: center;
     }
 
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 12px 20px;
+    .mobile-menu-btn {
+        display: block; /* Exibe o menu hambúrguer */
     }
+
     .nav-links {
+        display: none; /* Escondido por padrão no celular */
         width: 100%;
         flex-direction: column;
-        align-items: flex-start;
-        gap: 4px;
-        margin-top: 10px;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--color-border);
+        animation: slideDown 0.3s ease forwards;
     }
+
+    .navbar.menu-open .nav-links {
+        display: flex;
+    }
+
+    .navbar .user-profile-container {
+        display: none; /* Escondido por padrão no celular */
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+        flex-direction: row;
+        margin-left: 0;
+    }
+
+    .navbar.menu-open .user-profile-container {
+        display: flex;
+    }
+
     .nav-links a {
         width: 100%;
-        padding: 10px 0;
+        padding: 12px 0;
+        text-align: center;
     }
     .hero {
         min-height: auto;
@@ -1307,6 +1351,11 @@ body.page-auth {
     .projects-container {
         grid-template-columns: 1fr;
     }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 480px) {
