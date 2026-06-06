@@ -1,14 +1,23 @@
 import os
 import smtplib
 import sqlite3
+import jwt
+import datetime
+from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash
 from email.mime.text import MIMEText
 from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
  
 app = Flask(__name__)
-# Permite o acesso localmente de qualquer porta e origem de forma explícita
-CORS(app, resources={r"/*": {"origins": "*"}})
+# CONFIGURAÇÃO DE CORS (Cross-Origin Resource Sharing)
+# Isso é crucial para que o seu frontend (rodando em uma porta como 5500)
+# possa fazer requisições para o seu backend (rodando na porta 5001).
+# Durante o desenvolvimento, deixamos o CORS aberto para evitar bloqueios do Live Server.
+CORS(app)
+
+# CHAVE SECRETA PARA JWT - ESSENCIAL PARA CRIPTOGRAFIA
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'm2r_super_secret_key_123')
 
 # --- CONFIGURAÇÃO DE E-MAIL ---
 # IMPORTANTE: Não coloque sua senha diretamente no código.
@@ -28,7 +37,7 @@ def get_db_connection():
 def init_db():
     conn = get_db_connection()
     conn.execute('''
-        CREATE TABLE IF NOT EXISTS usuarios (
+        CREATE TABLE IF NOT EXISTS site (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             usuario TEXT UNIQUE NOT NULL,
             email TEXT UNIQUE NOT NULL,
@@ -48,15 +57,43 @@ init_db()
 def home():
     return jsonify({"status": "Servidor M2R está ONLINE e funcionando perfeitamente!", "banco_de_dados": DB_FILE}), 200
 
+# --- DECORADOR PARA PROTEGER ROTAS COM JWT ---
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            parts = auth_header.split()
+            if len(parts) == 2 and parts[0] == 'Bearer':
+                token = parts[1]
+        
+        if not token:
+            return jsonify({'error': 'Token de autenticação ausente!'}), 401
+        
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        except Exception as e:
+            return jsonify({'error': 'Token é inválido ou expirou!'}), 401
+        
+        return f(*args, **kwargs)
+    return decorated
+
+# --- ROTA DE VERIFICAÇÃO DE SESSÃO ---
+@app.route('/verify', methods=['GET'])
+@token_required
+def verify():
+    return jsonify({"message": "Token válido, acesso liberado."}), 200
+
 # --- SISTEMA DE LOGIN E CADASTRO ---
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    usuario = data.get('usuario')
-    email = data.get('email')
-    password = data.get('password')
-    nome = data.get('name')
-    idade = data.get('idade')
+    usuario = data.get('usuario', '').strip()
+    email = data.get('email', '').strip()
+    password = data.get('password', '')
+    nome = data.get('name', '').strip()
+    idade = str(data.get('idade', '')).strip()
 
     if not usuario or not email or not password or not nome:
         return jsonify({"error": "Preencha todos os campos obrigatórios."}), 400
@@ -69,12 +106,12 @@ def register():
         cursor = conn.cursor()
         
         # Valida se o nome de usuário já existe
-        cursor.execute("SELECT id FROM usuarios WHERE usuario = ?", (usuario,))
+        cursor.execute("SELECT id FROM site WHERE usuario = ?", (usuario,))
         if cursor.fetchone():
             return jsonify({"error": "Este usuário já está cadastrado."}), 400
             
         # Valida se o e-mail já existe
-        cursor.execute("SELECT id FROM usuarios WHERE email = ?", (email,))
+        cursor.execute("SELECT id FROM site WHERE email = ?", (email,))
         if cursor.fetchone():
             return jsonify({"error": "Este e-mail já está cadastrado."}), 400
 
@@ -83,11 +120,18 @@ def register():
 
         # Adiciona o novo usuário no banco SQL
         cursor.execute(
-            "INSERT INTO usuarios (usuario, email, senha, nome, idade) VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO site (usuario, email, senha, nome, idade) VALUES (?, ?, ?, ?, ?)",
             (usuario, email, senha_criptografada, nome, idade)
         )
         conn.commit()
-        return jsonify({"message": "Cadastro realizado com sucesso!", "token": "token_provisorio_123", "nome": nome}), 201
+        
+        # Gera token JWT real após o cadastro
+        token = jwt.encode({
+            'usuario': usuario,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+        }, app.config['SECRET_KEY'], algorithm="HS256")
+
+        return jsonify({"message": "Cadastro realizado com sucesso!", "token": token, "nome": nome}), 201
     except Exception as e:
         return jsonify({"error": f"Erro interno no Python: {str(e)}"}), 500
     finally:
@@ -98,8 +142,8 @@ def register():
 def login():
     try:
         data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
+        email = data.get('email', '').strip()
+        password = data.get('password', '')
 
         if not email or not password:
             return jsonify({"error": "Preencha todos os campos."}), 400
@@ -108,7 +152,7 @@ def login():
         cursor = conn.cursor()
 
         # Lê o usuário pelo email, ignorando letras maiúsculas/minúsculas e espaços
-        cursor.execute("SELECT * FROM usuarios WHERE LOWER(email) = LOWER(?)", (email.strip(),))
+        cursor.execute("SELECT * FROM site WHERE LOWER(email) = LOWER(?)", (email.strip(),))
         user = cursor.fetchone()
         
         if user:
@@ -117,23 +161,24 @@ def login():
             
             senha_digitada = str(password).strip()
 
-            # --- MODO RAIO-X (DEBUG NO TERMINAL) ---
-            print(f"\n[DEBUG LOGIN] Analisando e-mail: {email}")
-            print(f"[DEBUG LOGIN] Senha no Banco : '{senha_salva}'")
-            print(f"[DEBUG LOGIN] Senha Digitada : '{senha_digitada}'")
-            print(f"[DEBUG LOGIN] São iguais?    : {senha_salva == senha_digitada}\n")
-
+            # Validação Híbrida: Verifica o hash da senha OU o texto plano (para contas manuais do SQL)
+            senha_correta = False
             try:
-                # Tenta validar a senha criptografada (antiga) OU a senha em texto plano (nova/manual)
-                if check_password_hash(senha_salva, senha_digitada) or senha_salva == senha_digitada:
-                    return jsonify({"message": f"Bem-vindo(a), {nome_usuario}!", "token": "token_provisorio_123", "nome": nome_usuario}), 200
+                senha_correta = check_password_hash(senha_salva, senha_digitada)
             except Exception:
-                # Se a função de criptografia der erro ao ler um texto normal, testa diretamente o texto plano
-                if senha_salva == senha_digitada:
-                    return jsonify({"message": f"Bem-vindo(a), {nome_usuario}!", "token": "token_provisorio_123", "nome": nome_usuario}), 200
+                pass # Se não for um formato de criptografia válido (como um texto simples), segue adiante
+
+            if senha_correta or senha_salva == senha_digitada:
+                # Gera token JWT real
+                token = jwt.encode({
+                    'usuario': user['usuario'],
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+                }, app.config['SECRET_KEY'], algorithm="HS256")
+                
+                return jsonify({"message": f"Bem-vindo(a), {nome_usuario}!", "token": token, "nome": nome_usuario}), 200
         else:
             print(f"\n[DEBUG LOGIN] E-mail '{email}' não existe no banco de dados!")
-            cursor.execute("SELECT email FROM usuarios")
+            cursor.execute("SELECT email FROM site")
             emails_db = [row['email'] for row in cursor.fetchall()]
             print(f"[DEBUG LOGIN] E-mails que estão lá: {emails_db}\n")
 

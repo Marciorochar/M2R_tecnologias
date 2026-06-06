@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userToken = localStorage.getItem('m2r_token');
     const isAuthPage = document.body.classList.contains('page-auth');
     
-    // Se não tiver token salvo e tentar abrir qualquer página que não seja o Login/Cadastro, é bloqueado
-    if (!userToken && !isAuthPage) {
+    // Helper para redirecionar para a página de login correta dependendo da pasta
+    const redirectToLogin = () => {
         const path = window.location.pathname.toLowerCase();
         if (path.includes('/login/site/')) {
             window.location.href = '../../login.html';
@@ -13,7 +13,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             window.location.href = 'login.html';
         }
-        return; // Interrompe o carregamento do site imediatamente
+    };
+    
+    // 1. Verificação Client-Side Rápida
+    if (!userToken && !isAuthPage) {
+        redirectToLogin();
+        return;
+    }
+
+    // 2. Verificação Ativa com o Backend (Validar o JWT)
+    if (userToken && !isAuthPage) {
+        try {
+            const API_URL = 'http://127.0.0.1:5001';
+            const response = await fetch(`${API_URL}/verify`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${userToken}` }
+            });
+            if (!response.ok) {
+                localStorage.removeItem('m2r_token');
+                localStorage.removeItem('m2r_userName');
+                redirectToLogin();
+                return;
+            }
+        } catch (error) {
+            console.error('Erro de conexão ao verificar segurança do backend:', error);
+        }
     }
 
     // 1. CARREGAR COMPONENTES (NAVBAR E FOOTER)
@@ -287,7 +311,10 @@ function initApp() {
         contactForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const formData = new FormData(this);
+            const name = document.getElementById('name')?.value || '';
+            const email = document.getElementById('email')?.value || '';
+            const message = document.getElementById('message')?.value || '';
+
             const formButton = this.querySelector('button[type="submit"]') || this.querySelector('button');
 
             if (formButton) {
@@ -296,20 +323,22 @@ function initApp() {
             }
 
             setFormStatus(formStatus, 'Enviando sua mensagem...', 'sending');
+            
+            const API_URL = 'http://127.0.0.1:5001';
 
-            fetch(this.action, {
+            fetch(`${API_URL}/send-email`, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, message })
             })
-                .then(response => {
+                .then(async response => {
+                    let data;
+                    try { data = await response.json(); } catch(e) {}
                     if (response.ok) {
-                        setFormStatus(formStatus, 'Mensagem enviada com sucesso. Em breve entraremos em contato.', 'success');
+                        setFormStatus(formStatus, data?.message || 'Mensagem enviada com sucesso.', 'success');
                         contactForm.reset();
                     } else {
-                        setFormStatus(formStatus, 'Não foi possível enviar a mensagem. Tente novamente.', 'error');
+                        setFormStatus(formStatus, data?.error || 'Não foi possível enviar a mensagem.', 'error');
                     }
                 })
                 .catch(() => {
