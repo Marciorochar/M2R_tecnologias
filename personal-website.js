@@ -160,6 +160,12 @@ function initApp() {
 
             userProfileContainer.appendChild(logoutBtn);
             navbar.appendChild(userProfileContainer);
+
+            // Remove o botão de Login original, já que o usuário está autenticado
+            const loginBtnOriginal = document.querySelector('.nav-btn-login');
+            if (loginBtnOriginal) {
+                loginBtnOriginal.remove();
+            }
         }
     }
 

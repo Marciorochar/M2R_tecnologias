@@ -104,7 +104,7 @@ body {
 /* =======================================================
    SISTEMA DE DESIGN (CLASSES ATÔMICAS)
    ======================================================= */
-.btn, .hero-button, .cta-button, .nav-btn-login, .login-form button, #contact form button {
+.btn, .hero-button, .cta-button, .navbar a.nav-btn-login, .login-form button, #contact form button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -118,12 +118,12 @@ body {
     font-size: 1rem;
 }
 
-.btn-primary, .nav-btn-login, .login-form button {
+.btn-primary, .navbar a.nav-btn-login, .login-form button {
     background-color: var(--color-primary);
     color: var(--color-text-inverse) !important;
 }
 
-.btn-primary:hover, .nav-btn-login:hover, .login-form button:hover {
+.btn-primary:hover, .navbar a.nav-btn-login:hover, .login-form button:hover {
     background-color: var(--color-primary-dark);
     transform: translateY(-3px);
 }
