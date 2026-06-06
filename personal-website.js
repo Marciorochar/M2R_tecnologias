@@ -1,3 +1,8 @@
+// Configuração global da API: detecta se está rodando localmente ou na Vercel
+const API_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' 
+    ? 'http://127.0.0.1:5001' 
+    : 'https://seu-backend-m2r.onrender.com'; // Colocaremos a URL real aqui depois
+
 document.addEventListener('DOMContentLoaded', async () => {
     // --- VERIFICAÇÃO DE SEGURANÇA (ÁREA RESTRITA) ---
     const userToken = localStorage.getItem('m2r_token');
@@ -24,7 +29,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 2. Verificação Ativa com o Backend (Validar o JWT)
     if (userToken && !isAuthPage) {
         try {
-            const API_URL = 'http://127.0.0.1:5001';
             const response = await fetch(`${API_URL}/verify`, {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${userToken}` }
@@ -32,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) {
                 localStorage.removeItem('m2r_token');
                 localStorage.removeItem('m2r_userName');
+                document.cookie = 'm2r_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
                 redirectToLogin();
                 return;
             }
@@ -130,6 +135,7 @@ function initApp() {
                 e.preventDefault();
                 localStorage.removeItem('m2r_token'); // Destrói a chave de acesso
                 localStorage.removeItem('m2r_userName'); // Destrói o nome salvo
+                document.cookie = 'm2r_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'; // Remove o cookie
                 redirectBasedOnPath('login.html');
             });
             
@@ -323,8 +329,6 @@ function initApp() {
             }
 
             setFormStatus(formStatus, 'Enviando sua mensagem...', 'sending');
-            
-            const API_URL = 'http://127.0.0.1:5001';
 
             fetch(`${API_URL}/send-email`, {
                 method: 'POST',
@@ -494,7 +498,6 @@ function initApp() {
             }
 
             try {
-                const API_URL = 'http://127.0.0.1:5001';
                 const response = await fetch(`${API_URL}/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -516,6 +519,7 @@ function initApp() {
                     if (data.token) {
                         localStorage.setItem('m2r_token', data.token);
                         localStorage.setItem('m2r_userName', data.nome || name); // Salva o nome
+                        document.cookie = `m2r_token=${data.token}; path=/; max-age=86400; Secure; SameSite=Lax`; // Salva no cookie
                     }
 
                     // Redireciona diretamente para a página de início
@@ -562,7 +566,6 @@ function initApp() {
             if (submitBtn) submitBtn.disabled = true;
 
             try {
-                const API_URL = 'http://127.0.0.1:5001';
                 const response = await fetch(`${API_URL}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -584,6 +587,7 @@ function initApp() {
                     if (data.token) {
                         localStorage.setItem('m2r_token', data.token);
                         localStorage.setItem('m2r_userName', data.nome);
+                        document.cookie = `m2r_token=${data.token}; path=/; max-age=86400; Secure; SameSite=Lax`; // Salva no cookie
                     }
 
                     // Salva ou remove o e-mail dependendo da escolha

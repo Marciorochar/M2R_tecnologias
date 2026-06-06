@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+PyJWT
+Werkzeug
+python-dotenv
+gunicorn

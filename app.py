@@ -55,7 +55,10 @@ init_db()
 # --- ROTA DE TESTE DE CONEXÃO ---
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({"status": "Servidor M2R está ONLINE e funcionando perfeitamente!", "banco_de_dados": DB_FILE}), 200
+    return jsonify({
+        "status": "online",
+        "message": "Backend da M2R Tecnologias funcionando."
+    }), 200
 
 # --- DECORADOR PARA PROTEGER ROTAS COM JWT ---
 def token_required(f):
