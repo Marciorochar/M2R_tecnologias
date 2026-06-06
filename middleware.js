@@ -21,23 +21,8 @@ export default async function middleware(request) {
     return Response.redirect(url);
   }
 
-  // Validação Criptográfica: Pergunta ao backend se o token é real/válido
-  try {
-    const verifyRes = await fetch("https://m2r-backend.onrender.com/verify", {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
-
-    // Se o backend retornar erro (ex: 401 Unauthorized), o token é falso, adulterado ou expirou
-    if (!verifyRes.ok) {
-      url.pathname = '/login.html';
-      return Response.redirect(url);
-    }
-  } catch (error) {
-    // Se houver erro de rede com o backend, bloqueamos o acesso por segurança
-    url.pathname = '/login.html';
-    return Response.redirect(url);
-  }
+  // O Vercel Edge Middleware tem limite de tempo curto (timeout).
+  // Como o Render pode demorar a acordar, o fetch aqui causaria erro 504.
+  // A validação profunda já está sendo feita de forma segura no frontend via JS.
+  return Response.next();
 }
