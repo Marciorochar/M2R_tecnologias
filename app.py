@@ -31,15 +31,17 @@ EMAIL_ADDRESS = os.environ.get('EMAIL_USER')  # Ex: "seu_email@gmail.com"
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASS') # Ex: "sua_senha_de_app"
 
 # --- INICIALIZAÇÃO DO BANCO DE DADOS (POSTGRESQL) ---
-DATABASE_URL = os.environ.get('DATABASE_URL')
 
 def get_db_connection():
-    conn = psycopg2.connect(DATABASE_URL)
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    db_url = os.environ.get('DATABASE_URL')
+    if not db_url:
+        raise Exception("Variável de ambiente DATABASE_URL não foi encontrada.")
+    conn = psycopg2.connect(db_url, sslmode='require')
     return conn
 
 def init_db():
-    if DATABASE_URL:
+    db_url = os.environ.get('DATABASE_URL')
+    if db_url:
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
