@@ -925,7 +925,7 @@ function initApp() {
 
             // B. Desenhar o Corpo da Cobra
             let neckLength = Math.floor(numSegments / 18);
-            for (let i = numSegments - 1; i > 0; i--) {
+            for (let i = numSegments - 1; i >= 0; i--) {
                 let current = segments[i];
                 let size = 32;
                 if (i > neckLength) {

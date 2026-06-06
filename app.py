@@ -20,8 +20,9 @@ app = Flask(__name__)
 # CONFIGURAÇÃO DE CORS (Cross-Origin Resource Sharing)
 # Isso é crucial para que o seu frontend (rodando em uma porta como 5500)
 # possa fazer requisições para o seu backend (rodando na porta 5001).
-# Em produção, restringimos o acesso apenas ao domínio do Vercel e ao localhost.
-CORS(app, resources={r"/*": {"origins": ["https://seu-dominio-real-gerado.vercel.app", "http://localhost:5500", "http://127.0.0.1:5500"]}})
+# Para facilitar os testes, o curinga "*" permite requisições de qualquer origem.
+# Quando for lançar o site oficial, troque "*" pelo link real do seu Vercel.
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # CONFIGURAÇÃO DE RATE LIMITING (Proteção contra DoS e Spam)
 limiter = Limiter(
