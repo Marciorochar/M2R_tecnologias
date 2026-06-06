@@ -10,6 +10,8 @@
 
     <title>Projetos | M2R Tecnologias</title>
 
+    <title>Meus Projetos | M2R Tecnologias</title>
+    <!-- Importa o CSS da raiz do projeto -->
     <link rel="stylesheet" href="../../personal-website.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="../../Imagens/logo.png" type="image/png">
@@ -20,6 +22,8 @@
         <a href="index_inicio.html" title="Ir para a página inicial">
             <img src="../../Imagens/m2r.png" alt="Logo da M2R Tecnologias">
         </a>
+    <!-- O JavaScript vai injetar a Navbar aqui automaticamente -->
+    <div id="navbar-placeholder"></div>
 
         <div class="nav-links">
             <a href="index_inicio.html" aria-label="Página inicial">Início</a>
@@ -31,6 +35,13 @@
             <a href="../../login.html" class="nav-btn-login" aria-label="Acessar área restrita">Login</a>
         </div>
     </nav>
+    <main class="dashboard-page">
+        <section class="dashboard-header fade-in-section">
+            <div class="dashboard-header-content">
+                <h1>Meus Projetos</h1>
+                <p>Acompanhe o andamento das suas soluções, cronogramas e valide entregas.</p>
+            </div>
+        </section>
 
     <main>
         <!-- Seção principal da página de projetos -->
@@ -47,8 +58,21 @@
 
             <div class="projects-container">
                 <!-- Projeto 1 -->
+        <section class="dashboard-content fade-in-section">
+            <div class="projects-container" style="margin-top: 0; align-items: stretch;">
+                <!-- Projeto 1 (Exemplo Em Andamento) -->
                 <article class="project-card">
                     <img src="../../Imagens/project1.png" alt="Interface de site institucional desenvolvido pela M2R Tecnologias" class="project-image">
+                    <div style="padding: 30px 25px; display: flex; flex-direction: column; height: 100%;">
+                        <span class="project-category" style="color: var(--color-accent);">Em Andamento</span>
+                        <h3 style="margin-left: 0; margin-right: 0;">Automação de Linha de Montagem</h3>
+                        <p style="margin-left: 0; margin-right: 0; flex-grow: 1;">Implementação de CLP e sensores IoT para monitoramento de produção em tempo real.</p>
+                        
+                        <!-- Barra de Progresso -->
+                        <div style="margin: 20px 0 10px; background: var(--color-surface-interactive); height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: var(--color-primary); width: 65%; height: 100%; border-radius: 4px;"></div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--color-text-meta); margin: 0 0 20px;">Progresso: 65%</p>
 
                     <div class="project-card-content">
                         <span class="project-category">Desenvolvimento Web</span>
@@ -63,12 +87,24 @@
                         <a href="#" class="project-link" aria-label="Ver detalhes do projeto de site institucional">
                             Ver detalhes
                         </a>
+                        <a href="javascript:void(0)" class="btn btn-primary" style="width: 100%;" onclick="alert('Detalhes do projeto em breve.')">Acompanhar Projeto</a>
                     </div>
                 </article>
 
                 <!-- Projeto 2 -->
+                <!-- Projeto 2 (Exemplo Concluído) -->
                 <article class="project-card">
                     <img src="../../Imagens/project2.png" alt="Dashboard de indicadores desenvolvido pela M2R Tecnologias" class="project-image">
+                    <div style="padding: 30px 25px; display: flex; flex-direction: column; height: 100%;">
+                        <span class="project-category" style="color: #27ae60;">Concluído</span>
+                        <h3 style="margin-left: 0; margin-right: 0;">Dashboard Gerencial de OEE</h3>
+                        <p style="margin-left: 0; margin-right: 0; flex-grow: 1;">Painel de controle desenvolvido em Power BI com integração direta ao banco PostgreSQL.</p>
+                        
+                        <!-- Barra de Progresso -->
+                        <div style="margin: 20px 0 10px; background: var(--color-surface-interactive); height: 8px; border-radius: 4px; overflow: hidden;">
+                            <div style="background: #27ae60; width: 100%; height: 100%; border-radius: 4px;"></div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--color-text-meta); margin: 0 0 20px;">Progresso: 100%</p>
 
                     <div class="project-card-content">
                         <span class="project-category">Dados e Indicadores</span>
@@ -83,6 +119,7 @@
                         <a href="#" class="project-link" aria-label="Ver detalhes do projeto de dashboard gerencial">
                             Ver detalhes
                         </a>
+                        <a href="javascript:void(0)" class="btn btn-primary" style="width: 100%; background-color: var(--color-surface); color: var(--color-primary) !important; border: 1px solid var(--color-primary);" onclick="alert('Acesso ao sistema em breve.')">Acessar Sistema</a>
                     </div>
                 </article>
 
@@ -204,8 +241,10 @@
     </main>
 
     <!-- Espaço reservado para o Rodapé -->
+    <!-- O JavaScript vai injetar o Footer aqui automaticamente -->
     <div id="footer-placeholder"></div>
 
+    <!-- Importa o JS da raiz do projeto -->
     <script src="../../personal-website.js"></script>
 </body>
 </html>

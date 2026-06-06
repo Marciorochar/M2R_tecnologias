@@ -70,6 +70,17 @@ def home():
         "message": "Backend da M2R Tecnologias funcionando."
     }), 200
 
+@app.route("/healthz", methods=['GET'])
+def healthz():
+    return jsonify({"status": "ok"}), 200
+
+@app.route("/api/status", methods=['GET'])
+def status():
+    return jsonify({
+        "api": "M2R Tecnologias",
+        "status": "ativo"
+    }), 200
+
 # --- DECORADOR PARA PROTEGER ROTAS COM JWT ---
 def token_required(f):
     @wraps(f)

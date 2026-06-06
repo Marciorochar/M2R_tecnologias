@@ -1,6 +1,7 @@
 import os
 import smtplib
 import sqlite3
+import psycopg2
 from werkzeug.security import check_password_hash, generate_password_hash
 from email.mime.text import MIMEText
 from flask import Flask, request, jsonify
