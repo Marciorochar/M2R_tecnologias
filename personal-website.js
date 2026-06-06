@@ -1,7 +1,7 @@
 // Configuração global da API: detecta se está rodando localmente ou na Vercel
 const API_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' 
     ? 'http://127.0.0.1:5001' 
-    : 'https://seu-backend-m2r.onrender.com'; // Colocaremos a URL real aqui depois
+    : 'https://m2r-backend.onrender.com';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // --- VERIFICAÇÃO DE SEGURANÇA (ÁREA RESTRITA) ---
