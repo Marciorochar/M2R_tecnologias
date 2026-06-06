@@ -1,5 +1,6 @@
-// Configuração global da API apontando diretamente para produção (Render)
-const API_URL = "https://m2r-backend.onrender.com";
+// Configuração global da API (Detecta automaticamente Local vs Produção)
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_URL = isLocalhost ? "http://127.0.0.1:5001" : "https://m2r-backend.onrender.com";
 
 function getSharedPaths(targetPage = '') {
     const path = window.location.pathname.toLowerCase();
@@ -939,54 +940,4 @@ function initApp() {
                     ctx.fillStyle = `rgb(${r - texture}, ${g - texture}, ${b - texture})`;
                 }
                 ctx.fill();
-            }
-
-            // C. Desenhar a Cabeça da Cobra
-            ctx.save();
-            ctx.translate(head.x, head.y);
-            ctx.rotate(head.angle);
-
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-            ctx.shadowBlur = 12;
-            ctx.shadowOffsetY = 6;
-
-            ctx.fillStyle = '#c89a63';
-            ctx.beginPath();
-            ctx.moveTo(24, 0);
-            ctx.bezierCurveTo(20, 12, 5, 18, -6, 16);
-            ctx.quadraticCurveTo(-12, 0, -6, -16);
-            ctx.bezierCurveTo(5, -18, 20, -12, 24, 0);
-            ctx.fill();
-
-            ctx.fillStyle = '#111';
-            ctx.beginPath();
-            ctx.arc(8, -7, 2.5, 0, Math.PI * 2);
-            ctx.arc(8, 7, 2.5, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(8.5, -7.5, 0.8, 0, Math.PI * 2);
-            ctx.arc(8.5, 7.5, 0.8, 0, Math.PI * 2);
-            ctx.fill();
-
-            let tongue = Math.sin(time * 3) * 8;
-            if (tongue > 0) {
-                ctx.strokeStyle = '#cc0000';
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.moveTo(24, 0);
-                ctx.lineTo(24 + tongue, 0);
-                ctx.lineTo(24 + tongue + 3, -3);
-                ctx.moveTo(24 + tongue, 0);
-                ctx.lineTo(24 + tongue + 3, 3);
-                ctx.stroke();
-            }
-            ctx.restore();
-
-            requestAnimationFrame(animate);
-        }
-        
-        animate();
-    }
-}
+       
