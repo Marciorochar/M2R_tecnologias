@@ -1,6 +1,77 @@
 // Configuração global da API apontando diretamente para produção (Render)
 const API_URL = "https://m2r-backend.onrender.com";
 
+function getSharedPaths(targetPage = '') {
+    const path = window.location.pathname.toLowerCase();
+    const isSiteFolder = path.includes('/login/site/');
+    const isLoginFolder = path.includes('/login/') && !isSiteFolder;
+
+    if (isSiteFolder) {
+        return {
+            navbar: 'navbar.html',
+            footer: '../Outros/footer.html',
+            logoHref: 'index_inicio.html',
+            logoImg: '../../Imagens/m2r.png',
+            login: '../../login.html',
+            sitePage: targetPage
+        };
+    }
+
+    if (isLoginFolder) {
+        return {
+            navbar: 'Site/navbar.html',
+            footer: 'Outros/footer.html',
+            logoHref: 'Site/index_inicio.html',
+            logoImg: '../Imagens/m2r.png',
+            login: '../login.html',
+            sitePage: targetPage ? `Site/${targetPage}` : ''
+        };
+    }
+
+    return {
+        navbar: 'Login/Site/navbar.html',
+        footer: 'Login/Outros/footer.html',
+        logoHref: 'Login/Site/index_inicio.html',
+        logoImg: 'Imagens/m2r.png',
+        login: 'login.html',
+        sitePage: targetPage ? `Login/Site/${targetPage}` : ''
+    };
+}
+
+function normalizeSharedNavigation(scope = document) {
+    const paths = getSharedPaths();
+    const pageLinks = new Map([
+        ['index_inicio.html', getSharedPaths('index_inicio.html').sitePage],
+        ['index_servicos.html', getSharedPaths('index_servicos.html').sitePage],
+        ['index_projetos.html', getSharedPaths('index_projetos.html').sitePage],
+        ['index_blog.html', getSharedPaths('index_blog.html').sitePage],
+        ['index_sobre.html', getSharedPaths('index_sobre.html').sitePage],
+        ['index_contatos.html', getSharedPaths('index_contatos.html').sitePage]
+    ]);
+
+    scope.querySelectorAll('.navbar > a:first-child').forEach(link => {
+        link.href = paths.logoHref;
+        const logo = link.querySelector('img');
+        if (logo) logo.src = paths.logoImg;
+    });
+
+    scope.querySelectorAll('.nav-links a').forEach(link => {
+        const rawHref = link.getAttribute('href');
+        if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('javascript:')) return;
+
+        if (link.classList.contains('nav-btn-login')) {
+            link.href = paths.login;
+            link.hidden = Boolean(localStorage.getItem('m2r_token'));
+            return;
+        }
+
+        const fileName = rawHref.split('/').pop();
+        if (pageLinks.has(fileName)) {
+            link.href = pageLinks.get(fileName);
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // --- VERIFICAÇÃO DE SEGURANÇA (ÁREA RESTRITA) ---
     const userToken = localStorage.getItem('m2r_token');
@@ -8,14 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Helper para redirecionar para a página de login correta dependendo da pasta
     const redirectToLogin = () => {
-        const path = window.location.pathname.toLowerCase();
-        if (path.includes('/login/site/')) {
-            window.location.href = '../../login.html';
-        } else if (path.includes('/login/')) {
-            window.location.href = '../login.html';
-        } else {
-            window.location.href = 'login.html';
-        }
+        window.location.href = getSharedPaths().login;
     };
     
     // 1. Verificação Client-Side Rápida
@@ -53,25 +117,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadComponents() {
     try {
         // Descobre se estamos numa subpasta para acertar o caminho do rodapé/navbar
-        const path = window.location.pathname.toLowerCase();
-        let prefix = '';
-        if (path.includes('/login/site/')) {
-            prefix = '../../';
-        } else if (path.includes('/login/')) {
-            prefix = '../';
-        }
+        const paths = getSharedPaths();
 
         const navbarPlaceholder = document.getElementById('navbar-placeholder');
         if (navbarPlaceholder) {
-            const navbarRes = await fetch(prefix + 'navbar.html');
-            if (navbarRes.ok) navbarPlaceholder.innerHTML = await navbarRes.text();
+            const navbarRes = await fetch(paths.navbar);
+            if (navbarRes.ok) {
+                navbarPlaceholder.innerHTML = await navbarRes.text();
+            }
         }
 
         const footerPlaceholder = document.getElementById('footer-placeholder');
         if (footerPlaceholder) {
-            const footerRes = await fetch(prefix + 'footer.html');
+            const footerRes = await fetch(paths.footer);
             if (footerRes.ok) footerPlaceholder.innerHTML = await footerRes.text();
         }
+
+        normalizeSharedNavigation();
     } catch (error) {
         console.error('Erro ao carregar componentes:', error);
     }
@@ -104,19 +166,18 @@ function initApp() {
     };
 
     const redirectBasedOnPath = (targetPage) => {
-        const path = window.location.pathname.toLowerCase();
-        if (path.includes('/login/site/')) {
-            window.location.href = targetPage === 'login.html' ? '../../login.html' : targetPage;
-        } else if (path.includes('/login/')) {
-            window.location.href = targetPage === 'login.html' ? '../login.html' : `Site/${targetPage}`;
-        } else {
-            window.location.href = targetPage === 'login.html' ? 'login.html' : `Login/Site/${targetPage}`;
-        }
+        window.location.href = targetPage === 'login.html'
+            ? getSharedPaths().login
+            : getSharedPaths(targetPage).sitePage;
     };
 
     // --- 9. SISTEMA DE LOGOUT (Botão Sair) ---
     const userToken = localStorage.getItem('m2r_token');
     if (userToken && !document.body.classList.contains('page-auth')) {
+        document.querySelectorAll('.nav-btn-login').forEach(btn => {
+            btn.hidden = true;
+        });
+
         const navbar = document.querySelector('.navbar');
         if (navbar) {
             // Cria um grupo separado apenas para o perfil e botão de sair
@@ -149,7 +210,12 @@ function initApp() {
             if (userName) {
                 const firstName = userName.split(' ')[0]; // Pega só o primeiro nome
                 const greeting = document.createElement('span');
-                greeting.innerHTML = `👤 Olá, <strong>${firstName}</strong>`;
+                
+                greeting.textContent = '👤 Olá, ';
+                const strongName = document.createElement('strong');
+                strongName.textContent = firstName; // Seguro contra XSS!
+                greeting.appendChild(strongName);
+                
                 greeting.style.color = 'var(--color-text-primary)';
                 userProfileContainer.appendChild(greeting);
                 
@@ -160,12 +226,6 @@ function initApp() {
 
             userProfileContainer.appendChild(logoutBtn);
             navbar.appendChild(userProfileContainer);
-
-            // Remove o botão de Login original, já que o usuário está autenticado
-            const loginBtnOriginal = document.querySelector('.nav-btn-login');
-            if (loginBtnOriginal) {
-                loginBtnOriginal.remove();
-            }
         }
     }
 
