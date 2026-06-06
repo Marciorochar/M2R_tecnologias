@@ -1,13 +1,18 @@
 import os
 import smtplib
-import sqlite3
 import jwt
 import datetime
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash
 from email.mime.text import MIMEText
 from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
+from dotenv import load_dotenv
+
+# Carrega variáveis locais (ignoradas no Render)
+load_dotenv()
  
 app = Flask(__name__)
 # CONFIGURAÇÃO DE CORS (Cross-Origin Resource Sharing)
@@ -25,29 +30,34 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'm2r_super_secret_key_12
 EMAIL_ADDRESS = os.environ.get('EMAIL_USER')  # Ex: "seu_email@gmail.com"
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASS') # Ex: "sua_senha_de_app"
 
-# --- INICIALIZAÇÃO DO BANCO DE DADOS (SQLITE) ---
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_FILE = os.path.join(BASE_DIR, 'database.db')
+# --- INICIALIZAÇÃO DO BANCO DE DADOS (POSTGRESQL) ---
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 def get_db_connection():
-    conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
 
 def init_db():
-    conn = get_db_connection()
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS site (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            usuario TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            senha TEXT NOT NULL,
-            nome TEXT NOT NULL,
-            idade TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
+    if DATABASE_URL:
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS site (
+                    id SERIAL PRIMARY KEY,
+                    usuario TEXT UNIQUE NOT NULL,
+                    email TEXT UNIQUE NOT NULL,
+                    senha TEXT NOT NULL,
+                    nome TEXT NOT NULL,
+                    idade TEXT
+                )
+            ''')
+            conn.commit()
+            cursor.close()
+            conn.close()
+            print("[Sucesso] Banco de dados Postgres conectado!")
+        except Exception as e:
+            print(f"[Aviso] Erro ao conectar no Postgres durante inicialização: {e}")
 
 # Executa a criação do banco de dados ao iniciar o servidor
 init_db()
@@ -109,12 +119,12 @@ def register():
         cursor = conn.cursor()
         
         # Valida se o nome de usuário já existe
-        cursor.execute("SELECT id FROM site WHERE usuario = ?", (usuario,))
+        cursor.execute("SELECT id FROM site WHERE usuario = %s", (usuario,))
         if cursor.fetchone():
             return jsonify({"error": "Este usuário já está cadastrado."}), 400
             
         # Valida se o e-mail já existe
-        cursor.execute("SELECT id FROM site WHERE email = ?", (email,))
+        cursor.execute("SELECT id FROM site WHERE email = %s", (email,))
         if cursor.fetchone():
             return jsonify({"error": "Este e-mail já está cadastrado."}), 400
 
@@ -123,7 +133,7 @@ def register():
 
         # Adiciona o novo usuário no banco SQL
         cursor.execute(
-            "INSERT INTO site (usuario, email, senha, nome, idade) VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO site (usuario, email, senha, nome, idade) VALUES (%s, %s, %s, %s, %s)",
             (usuario, email, senha_criptografada, nome, idade)
         )
         conn.commit()
@@ -152,10 +162,10 @@ def login():
             return jsonify({"error": "Preencha todos os campos."}), 400
 
         conn = get_db_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         # Lê o usuário pelo email, ignorando letras maiúsculas/minúsculas e espaços
-        cursor.execute("SELECT * FROM site WHERE LOWER(email) = LOWER(?)", (email.strip(),))
+        cursor.execute("SELECT * FROM site WHERE LOWER(email) = LOWER(%s)", (email.strip(),))
         user = cursor.fetchone()
         
         if user:
