@@ -118,25 +118,14 @@ def login():
             
             senha_digitada = str(password).strip()
 
-            # --- MODO RAIO-X (DEBUG NO TERMINAL) ---
-            print(f"\n[DEBUG LOGIN] Analisando e-mail: {email}")
-            print(f"[DEBUG LOGIN] Senha no Banco : '{senha_salva}'")
-            print(f"[DEBUG LOGIN] Senha Digitada : '{senha_digitada}'")
-            print(f"[DEBUG LOGIN] São iguais?    : {senha_salva == senha_digitada}\n")
-
             try:
-                # Tenta validar a senha criptografada (antiga) OU a senha em texto plano (nova/manual)
-                if check_password_hash(senha_salva, senha_digitada) or senha_salva == senha_digitada:
+                # Tenta validar a senha criptografada
+                if check_password_hash(senha_salva, senha_digitada):
                     return jsonify({"message": f"Bem-vindo(a), {nome_usuario}!", "token": "token_provisorio_123", "nome": nome_usuario}), 200
             except Exception:
-                # Se a função de criptografia der erro ao ler um texto normal, testa diretamente o texto plano
-                if senha_salva == senha_digitada:
-                    return jsonify({"message": f"Bem-vindo(a), {nome_usuario}!", "token": "token_provisorio_123", "nome": nome_usuario}), 200
+                pass
         else:
-            print(f"\n[DEBUG LOGIN] E-mail '{email}' não existe no banco de dados!")
-            cursor.execute("SELECT email FROM usuarios")
-            emails_db = [row['email'] for row in cursor.fetchall()]
-            print(f"[DEBUG LOGIN] E-mails que estão lá: {emails_db}\n")
+            print(f"[DEBUG LOGIN] Tentativa de login falhou. E-mail '{email}' não encontrado.")
 
         return jsonify({"error": "E-mail ou senha incorretos."}), 401
     except Exception as e:

@@ -18,11 +18,14 @@ app = Flask(__name__)
 # CONFIGURAÇÃO DE CORS (Cross-Origin Resource Sharing)
 # Isso é crucial para que o seu frontend (rodando em uma porta como 5500)
 # possa fazer requisições para o seu backend (rodando na porta 5001).
-# Durante o desenvolvimento, deixamos o CORS aberto para evitar bloqueios do Live Server.
-CORS(app)
+# Em produção, restringimos o acesso apenas ao domínio do Vercel e ao localhost.
+CORS(app, resources={r"/*": {"origins": ["https://seu-site-m2r.vercel.app", "http://localhost:5500", "http://127.0.0.1:5500"]}})
 
 # CHAVE SECRETA PARA JWT - ESSENCIAL PARA CRIPTOGRAFIA
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'm2r_super_secret_key_123')
+secret = os.environ.get('SECRET_KEY')
+if not secret:
+    raise ValueError("CRÍTICO: A variável de ambiente SECRET_KEY não foi definida!")
+app.config['SECRET_KEY'] = secret
 
 # --- CONFIGURAÇÃO DE E-MAIL ---
 # IMPORTANTE: Não coloque sua senha diretamente no código.
@@ -188,14 +191,14 @@ def login():
             
             senha_digitada = str(password).strip()
 
-            # Validação Híbrida: Verifica o hash da senha OU o texto plano (para contas manuais do SQL)
+            # Validação: Verifica apenas o hash da senha
             senha_correta = False
             try:
                 senha_correta = check_password_hash(senha_salva, senha_digitada)
             except Exception:
-                pass # Se não for um formato de criptografia válido (como um texto simples), segue adiante
+                pass
 
-            if senha_correta or senha_salva == senha_digitada:
+            if senha_correta:
                 # Gera token JWT real
                 token = jwt.encode({
                     'usuario': user['usuario'],
@@ -204,10 +207,7 @@ def login():
                 
                 return jsonify({"message": f"Bem-vindo(a), {nome_usuario}!", "token": token, "nome": nome_usuario}), 200
         else:
-            print(f"\n[DEBUG LOGIN] E-mail '{email}' não existe no banco de dados!")
-            cursor.execute("SELECT email FROM site")
-            emails_db = [row['email'] for row in cursor.fetchall()]
-            print(f"[DEBUG LOGIN] E-mails que estão lá: {emails_db}\n")
+            print(f"[DEBUG LOGIN] Tentativa de login falhou. E-mail '{email}' não encontrado.")
 
         return jsonify({"error": "E-mail ou senha incorretos."}), 401
     except Exception as e:
