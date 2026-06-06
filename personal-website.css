@@ -987,11 +987,6 @@ body.page-auth {
     background-color: var(--color-primary-dark); /* Fundo marrom escuro combinando com a paleta */
 }
 
-/* Oculta o rodapé na tela de login/cadastro para visual de 'app' */
-body.page-auth #footer-placeholder {
-    display: none;
-}
-
 .login-section {
     position: relative;
     min-height: 100vh;
