@@ -26,105 +26,95 @@
     </nav>
 
     <main>
-        <section id="home" class="hero">
-            <h1>Bem-vindo ao M2R TECNOLOGIAS</h1>
-            <p> Engenharia | Engenharia Industrial | Desenvolvedor de Produto</p>
+        <!-- Hero Tecnológico com Fundo de Grade Digital -->
+        <section class="portfolio-page-section" style="position: relative; overflow: hidden; background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); padding-top: 150px; padding-bottom: 90px; text-align: center; border-bottom: 4px solid var(--color-accent);">
+            <!-- Overlay Grid Animada (Estilo Cyber) -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(200, 154, 99, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(200, 154, 99, 0.15) 1px, transparent 1px); background-size: 50px 50px; z-index: 0;"></div>
+            
+            <div style="position: relative; z-index: 1;">
+                <span class="section-tag" style="background-color: rgba(255,255,255,0.1); color: var(--color-accent); border: 1px solid var(--color-accent);">Engenharia & Tecnologia</span>
+                <h1 style="color: #fff; font-size: 3.2rem; margin: 20px 0 15px;">M2R Tecnologias</h1>
+                <p style="color: rgba(255,255,255,0.9); max-width: 750px; margin: 0 auto; font-size: 1.25rem; line-height: 1.7;">
+                    Transformando dados em decisões e rotinas em processos automatizados. A ponte perfeita entre a Engenharia de Produção e o Desenvolvimento de Software.
+                </p>
+            </div>
         </section>
 
-        <section id="projects" class="fade-in-section">
-            <h2>Projetos</h2>
-            <div class="projects-container">
-                <div class="project-card">
-                    <img src="../../Imagens/project1.png" alt="Projeto 1" class="project-image">
-                    <h3>Título do Projeto 1</h3>
-                    <p>Descrição breve do projeto 1.</p>
-                    <a href="projects.html" class="project-link">Ver Projeto</a>
-                </div>
-                <div class="project-card">
-                    <img src="../../Imagens/project2.png" alt="Projeto 2" class="project-image">
-                    <h3>Título do Projeto 2</h3>
-                    <p>Descrição breve do projeto 2.</p>
-                    <a href="projects.html" class="project-link">Ver Projeto</a>
-                </div>
-                <div class="project-card">
-                    <img src="../../Imagens/project3.png" alt="Projeto 3" class="project-image">
-                    <h3>Título do Projeto 3</h3>
-                    <p>Descrição breve do projeto 3.</p>
-                    <a href="projects.html" class="project-link">Ver Projeto</a>
-                </div>
-                <!-- Card especial para ver todos os projetos -->
-                <div class="project-card project-card--see-all">
-                    <h3>Ver Todos os Projetos</h3>
-                    <p>Explore meu portfólio completo de trabalhos e estudos de caso.</p>
-                    <a href="projects.html" class="project-link">Explorar Portfólio &rarr;</a>
+        <!-- Perfil Principal -->
+        <section class="fade-in-section" style="padding-top: 80px; padding-bottom: 40px;">
+            <div class="about-section-card" style="max-width: 1000px; margin: 0 auto; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 15px 35px rgba(0,0,0,0.05); position: relative;">
+                <!-- Detalhe tecnológico visual no topo do card -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--color-primary), var(--color-accent)); border-radius: 10px 10px 0 0;"></div>
+                
+                <img src="../../Imagens/Eu.jpeg" alt="Foto de Marcio Rocha" class="about-photo" style="border: 4px solid var(--color-surface-alt); box-shadow: var(--shadow-md);">
+                
+                <div class="about-content">
+                    <h2 style="color: var(--color-primary); font-size: 2.2rem; margin-bottom: 10px;">
+                        Marcio Rocha <span style="font-size: 1.5rem; vertical-align: middle;">👨‍💻</span>
+                    </h2>
+                    <p style="font-size: 1.15rem; border-left: 3px solid var(--color-accent); padding-left: 15px; color: var(--color-text-primary); font-weight: 600; background: var(--color-surface-alt); padding: 10px 15px; border-radius: 0 8px 8px 0;">
+                        Estudante de Engenharia de Produção (UFF) & Desenvolvedor de Soluções Industriais.
+                    </p>
+                    <p>
+                        Olá! Atualmente atuo como estagiário na empresa Estrutural, em Macaé-RJ, onde me desenvolvo no setor de Medição e participo de pleitos importantes para a empresa. 
+                    </p>
+                    <p>
+                        Minha verdadeira paixão está na <strong>Simulação Computacional</strong>, estruturação de Bancos de Dados e Automação Web. Minha jornada acadêmica é focada em explorar a combinação exata entre métodos de engenharia tradicionais e as tecnologias que moldam a Indústria 4.0.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <section id="blog" class="blog-section fade-in-section">
-            <h2>Blog</h2>
-            <p>Artigos e insights sobre tecnologia, engenharia e inovação.</p>
-            <div class="blog-container">
-                <div class="blog-post-card">
-                    <img src="https://via.placeholder.com/500x250.png?text=Engenharia+de+Produção" alt="Imagem do post sobre 5 Ferramentas Essenciais" class="blog-post-image">
-                    <h3>5 Ferramentas Essenciais para Engenheiros de Produção</h3>
-                    <p class="post-meta">Publicado em 24 de Maio, 2024</p>
-                    <p>Uma visão geral das ferramentas de software que todo engenheiro de produção moderno deveria conhecer para otimizar processos e aumentar a eficiência.</p>
-                    <a href="javascript:void(0);" class="project-link" title="Em breve">Ler Mais</a>
-                </div>
-                <div class="blog-post-card">
-                    <img src="https://via.placeholder.com/500x250.png?text=Simulação+Computacional" alt="Placeholder image displaying the text Simulação Computacional suggesting a blog post about computational simulation" class="blog-post-image">
-                    <h3>Introdução à Simulação de Processos com FlexSim</h3>
-                    <p class="post-meta">Publicado em 15 de Maio, 2024</p>
-                    <p>Descubra como a simulação computacional pode prever gargalos, testar cenários e melhorar a tomada de decisão em ambientes industriais.</p>
-                    <a href="javascript:void(0);" class="project-link" title="Em breve">Ler Mais</a>
+        <!-- Stack de Tecnologias (Tech Grid) -->
+        <section class="fade-in-section" style="background-color: var(--color-surface-alt); padding: 80px 20px; border-top: 1px solid var(--color-border);">
+            <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+                <span class="section-tag">Tech Stack</span>
+                <h2 style="font-size: 2.4rem; margin-bottom: 15px;">Ferramentas e Tecnologias</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: 50px; font-size: 1.1rem;">As principais tecnologias utilizadas para construir processos inteligentes e sistemas de apoio à decisão.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px;">
+                    <!-- Card Tech 1 -->
+                    <div class="dash-card" style="padding: 25px 15px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🐍</div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--color-text-primary);">Python</h4>
+                        <p style="font-size: 0.9rem; color: var(--color-text-meta); margin-top: 8px;">Backend & Automação</p>
+                    </div>
+                    <!-- Card Tech 2 -->
+                    <div class="dash-card" style="padding: 25px 15px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">📊</div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--color-text-primary);">Power BI</h4>
+                        <p style="font-size: 0.9rem; color: var(--color-text-meta); margin-top: 8px;">Dashboards & BI</p>
+                    </div>
+                    <!-- Card Tech 3 -->
+                    <div class="dash-card" style="padding: 25px 15px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🐘</div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--color-text-primary);">PostgreSQL</h4>
+                        <p style="font-size: 0.9rem; color: var(--color-text-meta); margin-top: 8px;">Banco de Dados</p>
+                    </div>
+                    <!-- Card Tech 4 -->
+                    <div class="dash-card" style="padding: 25px 15px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🌐</div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--color-text-primary);">Frontend Web</h4>
+                        <p style="font-size: 0.9rem; color: var(--color-text-meta); margin-top: 8px;">HTML, CSS, JS Avançado</p>
+                    </div>
+                    <!-- Card Tech 5 -->
+                    <div class="dash-card" style="padding: 25px 15px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">⚙️</div>
+                        <h4 style="margin: 0; font-size: 1.1rem; color: var(--color-text-primary);">FlexSim</h4>
+                        <p style="font-size: 0.9rem; color: var(--color-text-meta); margin-top: 8px;">Simulação Industrial</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="about-section-card fade-in-section">
-            <img src="../../Imagens/Eu.jpeg" alt="Foto de Marcio Rocha" class="about-photo">
-            <div class="about-content">
-                <h2>Sobre Mim</h2>
-                <p>Olá! Meu nome é Marcio, sou estudante de Engenharia de Produção na Universidade de Federal Fluminense e atualmente estou como estagiário na empresa Estrutural, em Macaé-RJ. Dentro do meu estágio, venho me desenvolvendo no setor de Medição, participando de PLEITOS importante para a empresa. Tenho um interesse voltado por Simulação computacional e estou sempre em busca de novos desafios. Minha jornada acadêmica é marcada por explorar constantemente a combinação entre tecnologia, e como moldam nosso mundo.</p>
-                <p>Estou sempre aberto a novas oportunidades de conhecimentos e colaborações. Sinta-se à vontade para entrar em contato!</p>
-            </div>
-        </section>
-
-        <section id="contact" class="fade-in-section">
-            <div class="contact-wrapper">
-                <div class="contact-info">
-                    <h2>Entre em Contato</h2>
-                    <p>Estou sempre aberto a novas oportunidades e colaborações. Sinta-se à vontade para me enviar uma mensagem ou me encontrar nos canais abaixo.</p>
-                    <ul class="contact-list contact-links-container">
-                        <li>
-                            <a href="#" id="phone-contact-btn" title="Ver número de celular">
-                                <span class="icon">📱</span>
-                                <span class="text">Celular</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" id="email-contact-btn" title="Ver opções de email">
-                                <span class="icon">📬</span>
-                                <span class="text">Email</span>
-                            </a>
-                        </li>
-                        <li><a href="https://github.com/Marciorochar" target="_blank" rel="noopener noreferrer" title="Visitar GitHub"><span class="icon">💻</span><span class="text">GitHub</span></a></li>
-                        <li><a href="https://www.linkedin.com/in/marciinhorr" target="_blank" rel="noopener noreferrer" title="Visitar LinkedIn"><span class="icon">🔗</span><span class="text">LinkedIn</span></a></li>
-                        <li><a href="https://www.instagram.com/marciinhorr" target="_blank" rel="noopener noreferrer" title="Visitar Instagram"><span class="icon">📸</span><span class="text">Instagram</span></a></li>
-                    </ul>
-                </div>
-                <form id="contact-form" action="https://formspree.io/f/xanbokeb" method="POST">
-                    <label for="name">Seu Nome</label>
-                    <input id="name" name="name" type="text" placeholder="Digite seu nome completo" required>
-                    <label for="email">Seu Email</label>
-                    <input id="email" name="email" type="email" placeholder="exemplo@email.com" required>
-                    <label for="message">Sua Mensagem</label>
-                    <textarea id="message" name="message" placeholder="Deixe sua mensagem aqui..." required></textarea>
-                    <button type="submit">Enviar</button>
-                    <p id="form-status"></p>
-                </form>
-            </div>
+        <!-- Chamada Final (CTA) -->
+        <section class="home-cta fade-in-section" style="margin: 0 auto 60px; max-width: 980px;">
+            <span class="section-tag" style="background-color: rgba(255,255,255,0.15); color: #fff; border: none;">Colaboração</span>
+            <h2 style="color: #fff;">Pronto para otimizar processos?</h2>
+            <p style="color: rgba(255,255,255,0.9);">
+                Estou sempre em busca de novos desafios, aprendizados e networking. Vamos construir o futuro juntos.
+            </p>
+            <a href="index_contatos.html" class="cta-button">Entrar em Contato</a>
         </section>
     </main>
 
