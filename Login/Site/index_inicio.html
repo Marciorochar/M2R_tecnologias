@@ -32,168 +32,149 @@
     </nav>
 
     <main>
-        <!-- Hero / abertura principal -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-            <span class="hero-tag">M2R Tecnologias</span>
-            <h1 id="welcome-title">Bem-vindo à M2R Tecnologias</h1>
-            <p>
-                Aqui você vai encontrar de tudo!
-                Soluções em Engenharia, Tecnologia Industrial e Desenvolvimento de Produto, Gestão de Projetos, Análise de risco e Análise de dados  
-            </p>
+        <!-- Hero / Abertura Principal (Estilo Tech) -->
+        <section id="home" style="position: relative; overflow: hidden; background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); padding: 180px 20px 120px; text-align: center; border-bottom: 4px solid var(--color-accent);">
+            <!-- Overlay Grid Animada -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(200, 154, 99, 0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(200, 154, 99, 0.15) 1px, transparent 1px); background-size: 50px 50px; animation: techGridMoveFull 15s linear infinite; z-index: 0;"></div>
+            
+            <div class="hero-content" style="position: relative; z-index: 1;">
+                <span class="hero-tag" style="background-color: rgba(255,255,255,0.1); color: var(--color-accent); border: 1px solid var(--color-accent);">Indústria 4.0 & Inovação</span>
+                <h1 id="welcome-title" style="color: #fff; font-size: clamp(2.8rem, 5vw, 4.2rem); margin: 20px 0 20px; line-height: 1.2;">Bem-vindo à M2R Tecnologias</h1>
+                <p style="color: rgba(255,255,255,0.9); max-width: 800px; margin: 0 auto; font-size: 1.25rem; line-height: 1.7;">
+                    Transformando dados em decisões estratégicas e rotinas em processos automatizados. Soluções avançadas em Engenharia, Desenvolvimento Web, Gestão de Projetos e BI.
+                </p>
 
-            <div class="hero-actions">
-            <a href="index_contatos.html" class="hero-button">Solicitar contato</a>
-            <a href="index_projetos.html" class="hero-button secondary">Ver projetos</a>
-            </div>
+                <div class="hero-actions" style="margin-top: 40px;">
+                    <a href="index_contatos.html" class="hero-button" style="background-color: var(--color-accent); color: #fff; border: none; box-shadow: 0 4px 15px rgba(200, 154, 99, 0.4);">Solicitar contato</a>
+                    <a href="index_projetos.html" class="hero-button secondary" style="border-color: var(--color-accent); color: var(--color-accent);">Explorar soluções</a>
+                </div>
             </div>
         </section>
 
         <!-- Resumo dos serviços -->
-        <section class="services-section fade-in-section">
-            <span class="section-tag">Nossas soluções</span>
+        <section class="services-section fade-in-section" style="padding: 80px 20px; background-color: var(--color-background); border: none;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto;">
+                <span class="section-tag">Infraestrutura e Sistemas</span>
+                <h2 style="font-size: 2.4rem; margin-top: 10px;">O que a M2R Tecnologias desenvolve</h2>
+                <p class="section-description" style="margin-bottom: 50px;">
+                    Atuamos com soluções digitais robustas voltadas à criação de sistemas web, automação de processos industriais, arquitetura de bancos de dados e desenvolvimento de dashboards gerenciais.
+                </p>
+            </div>
 
-            <h2>O que a M2R Tecnologias desenvolve</h2>
-
-            <p class="section-description">
-                A M2R Tecnologias atua com soluções digitais voltadas à criação de sites,
-                automação de processos, organização de dados e desenvolvimento de ferramentas
-                para apoio à gestão.
-            </p>
-
-            <div class="services-container">
-                <article class="service-card">
-                    <span class="service-icon">🌐</span>
-
-                    <h3>Sites profissionais</h3>
-
-                    <p>
-                        Desenvolvimento de sites institucionais modernos, responsivos e alinhados
-                        à identidade da empresa.
-                    </p>
+            <div class="dash-grid" style="max-width: 1100px; margin: 0 auto;">
+                <article class="dash-card" style="text-align: left; border-top: 4px solid var(--color-primary);">
+                    <div class="dash-icon" style="background: rgba(90, 59, 32, 0.1); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 12px; color: var(--color-primary);">🌐</div>
+                    <h3 style="font-size: 1.3rem; margin: 15px 0 10px;">Sistemas Web Profissionais</h3>
+                    <p style="margin: 0;">Desenvolvimento de plataformas institucionais responsivas, integradas a bancos de dados na nuvem (PostgreSQL) e sistemas de autenticação seguros.</p>
                 </article>
 
-                <article class="service-card">
-                    <span class="service-icon">⚙️</span>
-
-                    <h3>Automação de processos</h3>
-
-                    <p>
-                        Criação de soluções para reduzir tarefas repetitivas, organizar fluxos
-                        e melhorar a produtividade operacional.
-                    </p>
+                <article class="dash-card" style="text-align: left; border-top: 4px solid var(--color-accent);">
+                    <div class="dash-icon" style="background: rgba(200, 154, 99, 0.1); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 12px; color: var(--color-accent);">⚙️</div>
+                    <h3 style="font-size: 1.3rem; margin: 15px 0 10px;">Automação de Processos</h3>
+                    <p style="margin: 0;">Criação de rotinas inteligentes em Python para reduzir tarefas repetitivas, organizar fluxos de dados manuais e aumentar a produtividade operacional.</p>
                 </article>
 
-                <article class="service-card">
-                    <span class="service-icon">📊</span>
-
-                    <h3>Dashboards e indicadores</h3>
-
-                    <p>
-                        Estruturação de painéis visuais para acompanhamento de resultados,
-                        indicadores e informações gerenciais.
-                    </p>
+                <article class="dash-card" style="text-align: left; border-top: 4px solid #27ae60;">
+                    <div class="dash-icon" style="background: rgba(39, 174, 96, 0.1); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 12px; color: #27ae60;">📊</div>
+                    <h3 style="font-size: 1.3rem; margin: 15px 0 10px;">Dashboards e BI</h3>
+                    <p style="margin: 0;">Estruturação de painéis interativos no Power BI para acompanhamento de KPIs, OEE, gargalos produtivos e suporte à tomada de decisão executiva.</p>
                 </article>
             </div>
 
-            <div class="section-action">
-                <a href="index_servicos.html" class="cta-button">Conhecer serviços</a>
+            <div class="section-action" style="text-align: center; margin-top: 50px;">
+                <a href="index_servicos.html" class="cta-button" style="background-color: var(--color-primary); color: #fff; border: none; padding: 14px 28px; border-radius: 8px;">Explorar Todos os Serviços</a>
             </div>
         </section>
 
         <!-- Projetos em destaque -->
-        <section class="fade-in-section">
-            <span class="section-tag">Projetos</span>
-
-            <h2>Soluções em desenvolvimento</h2>
-
-            <p class="section-description">
-                Conheça alguns modelos de projetos que representam a atuação da M2R Tecnologias
-                em tecnologia aplicada, desenvolvimento web e organização digital.
-            </p>
-
-            <div class="projects-container">
-                <article class="project-card">
-                    <img src="../../Imagens/project1.png" alt="Projeto de site institucional desenvolvido pela M2R Tecnologias" class="project-image">
-
-                    <h3>Site institucional profissional</h3>
-
-                    <p>
-                        Página responsiva para apresentação de empresa, serviços, diferenciais,
-                        projetos e canais de contato.
-                    </p>
-
-                    <a href="index_projetos.html" class="project-link">Ver projeto</a>
-                </article>
-
-                <article class="project-card">
-                    <img src="../../Imagens/project2.png" alt="Projeto de dashboard gerencial desenvolvido pela M2R Tecnologias" class="project-image">
-
-                    <h3>Dashboard gerencial</h3>
-
-                    <p>
-                        Painel visual para acompanhamento de indicadores, controle de informações
-                        e suporte à gestão.
-                    </p>
-
-                    <a href="index_projetos.html" class="project-link">Ver projeto</a>
-                </article>
-
-                <article class="project-card">
-                    <img src="../../Imagens/project3.png" alt="Projeto de automação de processos desenvolvido pela M2R Tecnologias" class="project-image">
-
-                    <h3>Automação de processos</h3>
-
-                    <p>
-                        Solução para padronizar rotinas, reduzir retrabalho e melhorar a organização
-                        operacional.
-                    </p>
-
-                    <a href="index_projetos.html" class="project-link">Ver projeto</a>
-                </article>
+        <section class="fade-in-section" style="padding: 80px 20px; background-color: var(--color-surface-alt); border-top: 1px solid var(--color-border);">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto;">
+                <span class="section-tag">Portfólio Aplicado</span>
+                <h2 style="font-size: 2.4rem; margin-top: 10px;">Soluções em Desenvolvimento</h2>
+                <p class="section-description" style="margin-bottom: 40px;">
+                    Conheça modelos de projetos que representam a atuação da M2R na integração de dados, engenharia de processos e arquitetura de software.
+                </p>
             </div>
 
-            <div class="section-action">
-                <a href="index_projetos.html" class="cta-button">Ver todos os projetos</a>
+            <div class="projects-container" style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;">
+                
+                <article class="project-card" style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="position: relative;">
+                        <img src="../../Imagens/project1.png" alt="Site institucional" class="project-image" style="height: 220px; width: 100%; object-fit: cover;">
+                        <span style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.75); color: #fff; padding: 5px 12px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; backdrop-filter: blur(4px);">Web Dev</span>
+                    </div>
+                    <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <h3 style="margin: 0 0 10px; font-size: 1.35rem;">Plataforma Institucional REST</h3>
+                        <p style="margin: 0 0 20px; color: var(--color-text-secondary); flex-grow: 1; line-height: 1.6;">Página web responsiva com sistema de autenticação via token JWT, criptografia de senhas, API backend em Python e painel restrito.</p>
+                        <a href="index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                    </div>
+                </article>
+
+                <article class="project-card" style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="position: relative;">
+                        <img src="../../Imagens/project2.png" alt="Dashboard gerencial" class="project-image" style="height: 220px; width: 100%; object-fit: cover;">
+                        <span style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.75); color: #fff; padding: 5px 12px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; backdrop-filter: blur(4px);">Data Science</span>
+                    </div>
+                    <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <h3 style="margin: 0 0 10px; font-size: 1.35rem;">Dashboard Gerencial Integrado</h3>
+                        <p style="margin: 0 0 20px; color: var(--color-text-secondary); flex-grow: 1; line-height: 1.6;">Painel visual de Business Intelligence interativo para controle de produção, gestão operacional e análise de dados em larga escala.</p>
+                        <a href="index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                    </div>
+                </article>
+
+                <article class="project-card" style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="position: relative;">
+                        <img src="../../Imagens/project3.png" alt="Automação" class="project-image" style="height: 220px; width: 100%; object-fit: cover;">
+                        <span style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.75); color: #fff; padding: 5px 12px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; backdrop-filter: blur(4px);">Engenharia</span>
+                    </div>
+                    <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <h3 style="margin: 0 0 10px; font-size: 1.35rem;">Simulação & Automação</h3>
+                        <p style="margin: 0 0 20px; color: var(--color-text-secondary); flex-grow: 1; line-height: 1.6;">Estruturação de pipelines para automação de processos, extração de dados (ETL) locais e análises baseadas na modelagem FlexSim.</p>
+                        <a href="index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="section-action" style="text-align: center; margin-top: 50px;">
+                <a href="index_projetos.html" class="cta-button" style="background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-primary); padding: 14px 28px; border-radius: 8px;">Acessar Central de Projetos</a>
             </div>
         </section>
 
         <!-- Sobre resumido -->
-        <section class="about-section-card fade-in-section">
-            <img src="../../Imagens/m2r.png" alt="Identidade visual da M2R Tecnologias" class="about-photo">
+        <section class="fade-in-section" style="padding: 80px 20px; background-color: var(--color-background);">
+            <div class="about-section-card" style="max-width: 1100px; margin: 0 auto; background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 15px 35px rgba(0,0,0,0.05); position: relative; display: flex; flex-wrap: wrap; gap: 40px; padding: 45px;">
+                <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--color-primary), var(--color-accent)); border-radius: 10px 0 0 10px;"></div>
+                
+                <div style="flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center;">
+                    <img src="../../Imagens/m2r.png" alt="Logo M2R Tecnologias" style="max-width: 250px; width: 100%; height: auto; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.1));">
+                </div>
 
-            <div class="about-content">
-                <span class="section-tag">Sobre</span>
-
-                <h2>Sobre a M2R Tecnologias</h2>
-
-                <p>
-                    A M2R Tecnologias atua no desenvolvimento de soluções digitais voltadas
-                    à criação de sites, automações, dashboards, sistemas e organização de processos.
-                </p>
-
-                <p>
-                    O objetivo é conectar tecnologia, engenharia, análise de dados e melhoria
-                    de processos para entregar soluções modernas, funcionais e aplicáveis à realidade
-                    de cada cliente.
-                </p>
-
-                <a href="index_sobre.html" class="project-link">Conhecer a M2R</a>
+                <div class="about-content" style="flex: 2; min-width: 300px; text-align: left;">
+                    <span class="section-tag">DNA da Empresa</span>
+                    <h2 style="font-size: 2.2rem; color: var(--color-primary); margin-bottom: 15px;">Engenharia aliada ao Código</h2>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 15px;">
+                        A M2R Tecnologias nasce da necessidade de unir a visão analítica e estratégica da <strong>Engenharia de Produção</strong> com o poder de escala do <strong>Desenvolvimento de Software</strong>.
+                    </p>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 25px;">
+                        Nosso objetivo primário é conectar análise de dados, integração de sistemas via API e melhoria contínua para entregar soluções de alta performance que trazem resultados reais aos nossos parceiros.
+                    </p>
+                    <a href="index_sobre.html" class="project-link" style="font-weight: bold; font-size: 1.1rem; padding: 10px 0;">Acessar currículo & História completa &rarr;</a>
+                </div>
             </div>
         </section>
 
         <!-- Chamada final -->
-        <section class="home-cta fade-in-section">
-            <span class="section-tag">Contato</span>
-
-            <h2>Precisa de uma solução digital para sua empresa?</h2>
-
-            <p>
-                Entre em contato com a M2R Tecnologias para conversar sobre sites, sistemas,
-                automações, dashboards e soluções digitais sob demanda.
-            </p>
-
-            <a href="index_contatos.html" class="cta-button">Falar com a M2R</a>
+        <section class="home-cta fade-in-section" style="margin: 0 auto 80px; max-width: 1100px; position: relative; overflow: hidden; background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); border-radius: 16px; padding: 70px 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px; z-index: 0;"></div>
+            <div style="position: relative; z-index: 1;">
+                <span class="section-tag" style="background-color: rgba(255,255,255,0.15); color: #fff; border: none;">Integração de Sistemas</span>
+                <h2 style="color: #fff; font-size: 2.4rem; margin-top: 15px;">Pronto para transformar sua operação?</h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.15rem; max-width: 700px; margin: 0 auto 30px; line-height: 1.6;">
+                    Converse com nossos especialistas sobre criação de sites robustos, arquitetura de banco de dados, painéis de BI e automações sob demanda para alavancar seu negócio.
+                </p>
+                <a href="index_contatos.html" class="cta-button" style="font-size: 1.1rem; padding: 16px 36px; font-weight: 800;">Iniciar Projeto</a>
+            </div>
         </section>
     </main>
 

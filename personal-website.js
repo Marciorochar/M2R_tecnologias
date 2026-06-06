@@ -649,7 +649,7 @@ function initApp() {
                     // Redireciona diretamente para a página de início
                     setTimeout(() => {
                         redirectBasedOnPath('index_inicio.html');
-                    }, 1500);
+                }, 400); // Reduzido de 1.5s para 400ms (Acesso muito mais rápido)
                 } else {
                     if (registerStatus) setFormStatus(registerStatus, data.error || 'Erro ao realizar cadastro.', 'error');
                 }
@@ -724,7 +724,7 @@ function initApp() {
                     // Sucesso! Libera o acesso para a página inicial
                     setTimeout(() => {
                         redirectBasedOnPath('index_inicio.html');
-                    }, 1500);
+                }, 400); // Reduzido de 1.5s para 400ms (Acesso muito mais rápido)
                 } else {
                     if (loginStatus) setFormStatus(loginStatus, data.error || 'E-mail ou senha incorretos.', 'error');
                 }
