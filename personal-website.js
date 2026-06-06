@@ -949,4 +949,13 @@ function initApp() {
                     ctx.fillStyle = `rgb(${r - texture}, ${g - texture}, ${b - texture})`;
                 }
                 ctx.fill();
+        } // Fecha o for loop do corpo da cobra
+
+        requestAnimationFrame(animate);
+    } // Fecha a função animate()
+
+    animate();
+} // Fecha o IF de page-auth
+
+} // Fecha a função principal initApp()
        
