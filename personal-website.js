@@ -130,7 +130,7 @@ function initApp() {
             logoutBtn.style.fontWeight = 'bold';
             logoutBtn.style.textDecoration = 'none';
             logoutBtn.style.backgroundColor = '#fee2e2';
-            logoutBtn.style.padding = '8px 16px';
+            logoutBtn.style.padding = '6px 14px';
             logoutBtn.style.borderRadius = '50px';
             logoutBtn.style.transition = 'background-color 0.3s, transform 0.2s';
             logoutBtn.onmouseover = () => { logoutBtn.style.backgroundColor = '#fca5a5'; logoutBtn.style.transform = 'scale(1.05)'; };
