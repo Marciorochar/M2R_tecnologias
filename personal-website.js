@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 2. Verificação Ativa com o Backend (Validar o JWT)
-    if (userToken && !isAuthPage) {
+    if (userToken) {
         try {
             const response = await fetch(`${API_URL}/verify`, {
                 method: 'GET',
@@ -100,7 +100,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 localStorage.removeItem('m2r_token');
                 localStorage.removeItem('m2r_userName');
                 document.cookie = 'm2r_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-                redirectToLogin();
+                if (!isAuthPage) {
+                    redirectToLogin();
+                    return;
+                }
+            } else if (isAuthPage) {
+                // Token VÁLIDO: Se estiver na tela de Login/Cadastro, manda direto pro site
+                window.location.href = getSharedPaths('index_inicio.html').sitePage;
                 return;
             }
         } catch (error) {
@@ -234,7 +240,8 @@ function initApp() {
     const currentPath = window.location.pathname.split('/').pop() || 'index_inicio.html';
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === currentPath) {
+        const linkPath = (link.getAttribute('href') || '').split('/').pop();
+        if (linkPath === currentPath) {
             link.classList.add('active');
         }
     });
@@ -268,6 +275,7 @@ function initApp() {
         mobileBtn.className = 'mobile-menu-btn';
         mobileBtn.innerHTML = '☰';
         mobileBtn.setAttribute('aria-label', 'Abrir menu mobile');
+        mobileBtn.setAttribute('aria-expanded', 'false');
         
         const navLinks = navbar.querySelector('.nav-links');
         if (navLinks) {
@@ -276,8 +284,9 @@ function initApp() {
 
         // Lógica de abrir/fechar o menu mobile
         mobileBtn.addEventListener('click', () => {
-            navbar.classList.toggle('menu-open');
-            mobileBtn.innerHTML = navbar.classList.contains('menu-open') ? '✕' : '☰';
+            const isOpen = navbar.classList.toggle('menu-open');
+            mobileBtn.innerHTML = isOpen ? '✕' : '☰';
+            mobileBtn.setAttribute('aria-expanded', isOpen.toString());
         });
 
         // Fechar o menu ao clicar em um link

@@ -50,29 +50,47 @@ body {
     display: flex;
     justify-content: flex-start; /* Alinha o conteúdo à esquerda */
     align-items: center;
-    padding: 10px 20px;
+    padding: 8px 24px;
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: var(--color-surface);
+    background-color: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
     color: var(--color-text-primary);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     z-index: 1000;
     gap: 15px; /* Espaçamento moderno entre logo e links */
+    transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    flex-wrap: wrap; /* Necessário para o menu mobile descer corretamente */
+}
+
+.navbar.scrolled {
+    padding: 4px 24px;
+    background-color: rgba(255, 255, 255, 0.99);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .navbar img {
-    height: 40px; /* Define uma altura fixa para o logo */
+    height: 36px; /* Define uma altura fixa para o logo */
+    width: auto;
+    transition: height 0.3s ease;
 }
 
-.navbar div {
+.navbar.scrolled img {
+    height: 28px;
+}
+
+.nav-links {
     display: flex;
-    gap: 15px;
+    align-items: center;
+    gap: 12px;
 }
 
 .navbar a {
     position: relative; /* For positioning the ::after element */
-    color: var(--color-text-primary);
+    color: #3a3a3a;
+    font-weight: 500;
+    letter-spacing: 0.2px;
     text-decoration: none;
     padding: 8px 15px;
     font-size: 16px;    
@@ -562,12 +580,6 @@ form textarea {
     margin: 0 auto 40px auto;
 }
 
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 /* Ajustes profissionais para a página de projetos */
 
 .portfolio-page-section h1 {
@@ -651,14 +663,6 @@ form textarea {
     background-color: var(--color-surface-interactive);
 }
 
-/* Ajuste do menu com a nova classe nav-links */
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 /* =======================================================
    IDENTIDADE VISUAL M2R TECNOLOGIAS
    Mantém o estilo atual e melhora acabamento visual
@@ -668,22 +672,6 @@ form textarea {
 body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
-}
-
-/* Navbar */
-.navbar {
-    background-color: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    padding: 8px 24px;
-    transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-    flex-wrap: wrap; /* Necessário para o menu mobile descer corretamente */
-}
-
-.navbar.scrolled {
-    padding: 4px 24px;
-    background-color: rgba(255, 255, 255, 0.99);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 /* Botão Menu Mobile (Hambúrguer) */
@@ -696,33 +684,6 @@ body {
     cursor: pointer;
     margin-left: auto; /* Empurra para a direita no celular */
     transition: transform 0.3s ease;
-}
-
-.navbar img {
-    height: 36px;
-    width: auto;
-    transition: height 0.3s ease;
-}
-
-.navbar.scrolled img {
-    height: 28px;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.navbar a {
-    font-weight: 500;
-    letter-spacing: 0.2px;
-    color: #3a3a3a;
-}
-
-.navbar a.active,
-.navbar a:hover {
-    color: var(--color-primary);
 }
 
 /* Hero principal */

@@ -21,7 +21,7 @@ app = Flask(__name__)
 # Isso é crucial para que o seu frontend (rodando em uma porta como 5500)
 # possa fazer requisições para o seu backend (rodando na porta 5001).
 # Em produção, restringimos o acesso apenas ao domínio do Vercel e ao localhost.
-CORS(app, resources={r"/*": {"origins": ["https://seu-site-m2r.vercel.app", "http://localhost:5500", "http://127.0.0.1:5500"]}})
+CORS(app, resources={r"/*": {"origins": ["https://seu-dominio-real-gerado.vercel.app", "http://localhost:5500", "http://127.0.0.1:5500"]}})
 
 # CONFIGURAÇÃO DE RATE LIMITING (Proteção contra DoS e Spam)
 limiter = Limiter(
