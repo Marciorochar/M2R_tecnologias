@@ -9,6 +9,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from email.mime.text import MIMEText
 from flask import Flask, request, jsonify
 from flask_cors import CORS # type: ignore
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 
 # Carrega variáveis locais (ignoradas no Render)
@@ -20,6 +22,18 @@ app = Flask(__name__)
 # possa fazer requisições para o seu backend (rodando na porta 5001).
 # Em produção, restringimos o acesso apenas ao domínio do Vercel e ao localhost.
 CORS(app, resources={r"/*": {"origins": ["https://seu-site-m2r.vercel.app", "http://localhost:5500", "http://127.0.0.1:5500"]}})
+
+# CONFIGURAÇÃO DE RATE LIMITING (Proteção contra DoS e Spam)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    storage_uri="memory://"
+)
+
+# Retorna um JSON amigável para o frontend quando o limite for atingido
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return jsonify({"error": "Muitas tentativas! Aguarde um pouco antes de enviar outra mensagem."}), 429
 
 # CHAVE SECRETA PARA JWT - ESSENCIAL PARA CRIPTOGRAFIA
 secret = os.environ.get('SECRET_KEY')
@@ -163,7 +177,8 @@ def register():
 
         return jsonify({"message": "Cadastro realizado com sucesso!", "token": token, "nome": nome}), 201
     except Exception as e:
-        return jsonify({"error": f"Erro interno no Python: {str(e)}"}), 500
+        app.logger.error(f"Erro real no registro: {str(e)}")
+        return jsonify({"error": "Ocorreu um erro interno no servidor."}), 500
     finally:
         if 'conn' in locals():
             conn.close()
@@ -211,13 +226,14 @@ def login():
 
         return jsonify({"error": "E-mail ou senha incorretos."}), 401
     except Exception as e:
-        # Se qualquer outra coisa der errado, avisa o site e não deixa o servidor cair
-        return jsonify({"error": f"Erro interno no servidor Python: {str(e)}"}), 500
+        app.logger.error(f"Erro real no login: {str(e)}")
+        return jsonify({"error": "Ocorreu um erro interno no servidor."}), 500
     finally:
         if 'conn' in locals():
             conn.close()
 
 @app.route('/send-email', methods=['POST'])
+@limiter.limit("2 per hour")
 def send_email():
     data = request.get_json()
 
