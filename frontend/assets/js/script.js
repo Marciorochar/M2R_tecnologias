@@ -22,9 +22,9 @@ function initApp() {
     const setFormStatus = (element, message, type) => {
         if (!element) return;
         element.textContent = message;
-        if (type === 'success') element.style.color = '#a7f3d0';
-        else if (type === 'error') element.style.color = '#fca5a5';
-        else if (type === 'sending') element.style.color = '#f5f5f5';
+        if (type === 'success') element.style.color = '#166534';
+        else if (type === 'error') element.style.color = '#b91c1c';
+        else if (type === 'sending') element.style.color = 'var(--color-text-secondary)';
     };
 
     // Define o link ativo no menu dinamicamente com base na URL
@@ -102,7 +102,7 @@ function initApp() {
         const matchingLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
 
         // Só atualiza o menu se existir um link interno correspondente
-        // Isso evita remover o "active" da página index_projetos.html
+        // Isso evita remover o "active" da página projetos.html
         if (!matchingLink) return;
 
         navbarLinks.forEach(link => {
@@ -149,7 +149,7 @@ function initApp() {
                 }
             }
 
-            // Links como index.html#contact e index_projetos.html funcionam normalmente
+            // Links para outras páginas e âncoras internas funcionam normalmente
         });
     });
 
@@ -221,7 +221,7 @@ function initApp() {
 
     /*
         =====================================================
-        5. FORMULÁRIO DE CONTATO - FORMSPREE
+        5. FORMULARIO DE CONTATO
         =====================================================
     */
 
@@ -234,6 +234,7 @@ function initApp() {
 
             const name = document.getElementById('name')?.value || '';
             const email = document.getElementById('email')?.value || '';
+            const phone = document.getElementById('phone')?.value || '';
             const message = document.getElementById('message')?.value || '';
 
             const formButton = this.querySelector('button[type="submit"]') || this.querySelector('button');
@@ -248,7 +249,7 @@ function initApp() {
             fetch(`${API_URL}/api/contato`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, message })
+                body: JSON.stringify({ name, email, phone, message })
             })
                 .then(async response => {
                     let data;

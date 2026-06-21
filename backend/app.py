@@ -64,6 +64,7 @@ def send_contact():
     data = request.get_json(silent=True) or {}
     name = str(data.get("name", "")).strip()
     email = str(data.get("email", "")).strip()
+    phone = str(data.get("phone", "")).strip()
     message = str(data.get("message", "")).strip()
 
     if not name or not email or not message:
@@ -78,6 +79,7 @@ def send_contact():
 
 Nome: {name}
 E-mail: {email}
+Telefone: {phone or "Não informado"}
 
 Mensagem:
 {message}

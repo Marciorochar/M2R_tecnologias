@@ -12,11 +12,11 @@ frontend/
     js/script.js
     img/
   pages/
-    index_servicos.html
-    index_projetos.html
-    index_blog.html
-    index_sobre.html
-    index_contatos.html
+    servicos.html
+    projetos.html
+    blog.html
+    sobre.html
+    contato.html
 backend/
   app.py
   requirements.txt
@@ -63,6 +63,6 @@ O `vercel.json` na raiz encaminha as requisicoes para `frontend/`. Como alternat
 ```powershell
 git status
 git add .
-git commit -m "Organiza estrutura do projeto e remove login"
+git commit -m "Transforma site em estrutura multipaginas"
 git push origin main
 ```
