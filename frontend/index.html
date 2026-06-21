@@ -10,24 +10,24 @@
 
     <title>Início | M2R Tecnologias</title>
 
-    <link rel="stylesheet" href="../../personal-website.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="../../Imagens/logo.png" type="image/png">
+    <link rel="icon" href="assets/img/logo.png" type="image/png">
 </head>
 <body>
     <!-- Menu principal -->
     <nav class="navbar">
-        <a href="index_inicio.html" title="Ir para a página inicial">
-            <img src="../../Imagens/m2r.png" alt="Logo da M2R Tecnologias">
+        <a href="index.html" title="Ir para a página inicial">
+            <img src="assets/img/m2r.png" alt="Logo da M2R Tecnologias">
         </a>
 
         <div class="nav-links">
-            <a href="index_inicio.html" aria-label="Página inicial">Início</a>
-            <a href="index_servicos.html" aria-label="Conheça nossos serviços">Serviços</a>
-            <a href="index_projetos.html" aria-label="Veja nossos projetos">Projetos</a>
-            <a href="index_blog.html" aria-label="Leia nosso blog">Blog</a>
-            <a href="index_sobre.html" aria-label="Saiba mais sobre a M2R">Sobre a M2R</a>
-            <a href="index_contatos.html" aria-label="Entre em contato">Contato</a>
+            <a href="index.html" aria-label="Página inicial">Início</a>
+            <a href="pages/index_servicos.html" aria-label="Conheça nossos serviços">Serviços</a>
+            <a href="#projetos" aria-label="Veja nossos projetos">Projetos</a>
+            <a href="pages/index_blog.html" aria-label="Leia nosso blog">Blog</a>
+            <a href="pages/index_sobre.html" aria-label="Saiba mais sobre a M2R">Sobre a M2R</a>
+            <a href="pages/index_contatos.html" aria-label="Entre em contato">Contato</a>
         </div>
     </nav>
 
@@ -48,8 +48,8 @@
                 </p>
 
                 <div class="hero-actions" style="margin-top: 40px;">
-                    <a href="index_contatos.html" class="hero-button" style="background-color: var(--color-accent); color: #fff; border: none; box-shadow: 0 4px 15px rgba(200, 154, 99, 0.4);">Solicitar contato</a>
-                    <a href="index_projetos.html" class="hero-button secondary" style="border-color: var(--color-accent); color: var(--color-accent);">Explorar soluções</a>
+                    <a href="pages/index_contatos.html" class="hero-button" style="background-color: var(--color-accent); color: #fff; border: none; box-shadow: 0 4px 15px rgba(200, 154, 99, 0.4);">Solicitar contato</a>
+                    <a href="pages/index_projetos.html" class="hero-button secondary" style="border-color: var(--color-accent); color: var(--color-accent);">Explorar soluções</a>
                 </div>
             </div>
         </section>
@@ -76,7 +76,7 @@
                 <article class="dash-card" style="text-align: left; border-top: 4px solid var(--color-primary);">
                     <div class="dash-icon" style="background: rgba(90, 59, 32, 0.1); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 12px; color: var(--color-primary);">🌐</div>
                     <h3 style="font-size: 1.3rem; margin: 15px 0 10px;">Sistemas Web Profissionais</h3>
-                    <p style="margin: 0;">Desenvolvimento de plataformas institucionais responsivas, integradas a bancos de dados na nuvem (PostgreSQL) e sistemas de autenticação seguros.</p>
+                    <p style="margin: 0;">Desenvolvimento de plataformas institucionais responsivas, integradas a dados em nuvem e fluxos operacionais seguros.</p>
                 </article>
 
                 <article class="dash-card" style="text-align: left; border-top: 4px solid var(--color-accent);">
@@ -93,12 +93,12 @@
             </div>
 
             <div class="section-action" style="text-align: center; margin-top: 50px;">
-                <a href="index_servicos.html" class="cta-button" style="background-color: var(--color-primary); color: #fff; border: none; padding: 14px 28px; border-radius: 8px;">Explorar Todos os Serviços</a>
+                <a href="pages/index_servicos.html" class="cta-button" style="background-color: var(--color-primary); color: #fff; border: none; padding: 14px 28px; border-radius: 8px;">Explorar Todos os Serviços</a>
             </div>
         </section>
 
         <!-- Projetos em destaque -->
-        <section class="fade-in-section" style="padding: 80px 20px; background-color: var(--color-background); border-top: 1px solid var(--color-border);">
+        <section id="projetos" class="fade-in-section" style="padding: 80px 20px; background-color: var(--color-background); border-top: 1px solid var(--color-border);">
             <div style="text-align: center; max-width: 900px; margin: 0 auto;">
                 <span class="section-tag">Portfólio Aplicado</span>
                 <h2 style="font-size: 2.4rem; margin-top: 10px;">Soluções em Desenvolvimento</h2>
@@ -116,13 +116,13 @@
                     </div>
                     <div style="padding: 25px; display: flex; flex-direction: column; flex-grow: 1;">
                         <h3 style="margin: 0 0 10px; font-size: 1.35rem;">Plataforma Institucional REST</h3>
-                        <p style="margin: 0 0 20px; color: var(--color-text-secondary); flex-grow: 1; line-height: 1.6;">Página web responsiva com sistema de autenticação via token JWT, criptografia de senhas, API backend em Python e painel restrito.</p>
+                        <p style="margin: 0 0 20px; color: var(--color-text-secondary); flex-grow: 1; line-height: 1.6;">Página web responsiva com API backend em Python, integração de dados e recursos de gestão.</p>
                         <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
                             <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">Python</span>
                             <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">PostgreSQL</span>
-                            <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">JWT</span>
+                            <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">REST API</span>
                         </div>
-                        <a href="index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                        <a href="pages/index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
                     </div>
                 </article>
 
@@ -139,7 +139,7 @@
                             <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">DAX</span>
                             <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">SQL</span>
                         </div>
-                        <a href="index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                        <a href="pages/index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
                     </div>
                 </article>
 
@@ -156,14 +156,36 @@
                             <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">ETL</span>
                             <span style="background: var(--color-surface-interactive); color: var(--color-text-primary); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">Engenharia</span>
                         </div>
-                        <a href="index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                        <a href="pages/index_projetos.html" class="project-link" style="margin: 0; font-weight: bold; font-size: 1.05rem;">Analisar Arquitetura &rarr;</a>
+                    </div>
+                </article>
+
+                <article class="project-card project-card--m2r-server fade-in-section">
+                    <div class="m2r-server-visual" aria-hidden="true">
+                        <span>M2R SERVER</span>
+                        <span>OT / DEV</span>
+                    </div>
+                    <div class="m2r-server-content">
+                        <span class="project-status">Em desenvolvimento</span>
+                        <p class="project-subtitle">Projeto de Open Tibia Server</p>
+                        <h3>M2R Server</h3>
+                        <p>Projeto em desenvolvimento de Open Tibia Server personalizado, com foco em organização, estabilidade, experiência do jogador e evolução contínua da estrutura do servidor.</p>
+                        <p class="project-context">Integra estudos e aplicações práticas em desenvolvimento web, banco de dados, automação, lógica de sistemas, gerenciamento de arquivos e estruturação de ambientes digitais.</p>
+                        <ul class="project-tags" aria-label="Tecnologias relacionadas ao M2R Server">
+                            <li>Open Tibia Server</li>
+                            <li>Servidor dedicado</li>
+                            <li>Banco de dados</li>
+                            <li>Desenvolvimento web</li>
+                            <li>Automação</li>
+                            <li>Painel administrativo</li>
+                        </ul>
                     </div>
                 </article>
 
             </div>
 
             <div class="section-action" style="text-align: center; margin-top: 50px;">
-                <a href="index_projetos.html" class="cta-button" style="background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-primary); padding: 14px 28px; border-radius: 8px;">Acessar Central de Projetos</a>
+                <a href="pages/index_projetos.html" class="cta-button" style="background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-primary); padding: 14px 28px; border-radius: 8px;">Acessar Central de Projetos</a>
             </div>
         </section>
 
@@ -173,7 +195,7 @@
                 <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(180deg, var(--color-primary), var(--color-accent)); border-radius: 10px 0 0 10px;"></div>
                 
                 <div style="flex: 1; min-width: 250px; display: flex; align-items: center; justify-content: center;">
-                    <img src="../../Imagens/m2r.png" alt="Logo M2R Tecnologias" style="max-width: 250px; width: 100%; height: auto; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.1));">
+                    <img src="assets/img/m2r.png" alt="Logo M2R Tecnologias" style="max-width: 250px; width: 100%; height: auto; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.1));">
                 </div>
 
                 <div class="about-content" style="flex: 2; min-width: 300px; text-align: left;">
@@ -193,7 +215,7 @@
                     <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 25px;">
                         Nosso objetivo primário é conectar análise de dados, integração de sistemas via API e melhoria contínua para entregar soluções de alta performance que trazem resultados reais aos nossos parceiros.
                     </p>
-                    <a href="index_sobre.html" class="project-link" style="font-weight: bold; font-size: 1.1rem; padding: 10px 0;">Acessar currículo & História completa &rarr;</a>
+                    <a href="pages/index_sobre.html" class="project-link" style="font-weight: bold; font-size: 1.1rem; padding: 10px 0;">Acessar currículo & História completa &rarr;</a>
                 </div>
             </div>
         </section>
@@ -207,7 +229,7 @@
                 <p style="color: rgba(255,255,255,0.9); font-size: 1.15rem; max-width: 700px; margin: 0 auto 30px; line-height: 1.6;">
                     Converse com nossos especialistas sobre criação de sites robustos, arquitetura de banco de dados, painéis de BI e automações sob demanda para alavancar seu negócio.
                 </p>
-                <a href="index_contatos.html" class="cta-button" style="font-size: 1.1rem; padding: 16px 36px; font-weight: 800;">Iniciar Projeto</a>
+                <a href="pages/index_contatos.html" class="cta-button" style="font-size: 1.1rem; padding: 16px 36px; font-weight: 800;">Iniciar Projeto</a>
             </div>
         </section>
     </main>
@@ -215,18 +237,18 @@
     <!-- Rodapé -->
     <footer class="site-footer">
         <div class="footer-links">
-            <a href="index_inicio.html">Início</a>
-            <a href="index_servicos.html">Serviços</a>
-            <a href="index_projetos.html">Projetos</a>
-            <a href="index_blog.html">Blog</a>
-            <a href="index_sobre.html">Sobre a M2R</a>
-            <a href="index_contatos.html">Contato</a>
+            <a href="index.html">Início</a>
+            <a href="pages/index_servicos.html">Serviços</a>
+            <a href="#projetos">Projetos</a>
+            <a href="pages/index_blog.html">Blog</a>
+            <a href="pages/index_sobre.html">Sobre a M2R</a>
+            <a href="pages/index_contatos.html">Contato</a>
         </div>
         <p>&copy; 2026 M2R Tecnologias. Todos os direitos reservados.</p>
         <p>Desenvolvido por Marcio Rocha</p>
     </footer>
 
     <!-- JavaScript principal -->
-    <script src="../../personal-website.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

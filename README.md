@@ -1,30 +1,68 @@
-# M2R Tecnologia 🚀
+# M2R Tecnologias
 
-> Status do Projeto: 🏗️ Em desenvolvimento
+Site institucional da M2R Tecnologias para apresentar solucoes em engenharia, automacao, desenvolvimento web, dados e BI. O projeto nao possui fluxo de login, cadastro ou area restrita.
 
-Briefing institucional ou descrição curta do objetivo do site (ex: "Site institucional desenvolvido para apresentar as soluções em engenharia, performance industrial e inovação tecnológica da M2R Tecnologia.").
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-O projeto foi construído utilizando as seguintes tecnologias e ferramentas:
-
-*   **HTML5:** Estruturação semântica do conteúdo.
-*   **CSS3:** Estilização, layout responsivo e identidade visual.
-*   **JavaScript (ES6+):** Dinamismo e interações da interface *(remover se não usar)*.
-*   **VS Code:** Ambiente de desenvolvimento (IDE).
-*   **Gemini Code Assist:** Inteligência artificial aplicada na otimização e refatoração do código.
-*   **Vercel:** Hospedagem e deploy contínuo.
-
----
-
-## 📁 Estrutura do Projeto
-
-A organização dos arquivos no diretório segue o padrão abaixo:
+## Estrutura
 
 ```text
-├── 📄 index.html        # Página principal do site
-├── 📄 style.css         # Estilização global e componentes
-├── 📁 imagens/          # Logotipos, ícones e assets visuais
-└── 📁 js/               # Scripts de comportamento (opcional)
+frontend/
+  index.html
+  assets/
+    css/style.css
+    js/script.js
+    img/
+  pages/
+    index_servicos.html
+    index_projetos.html
+    index_blog.html
+    index_sobre.html
+    index_contatos.html
+backend/
+  app.py
+  requirements.txt
+  .env.example
+vercel.json
+```
+
+## Frontend
+
+Abra `frontend/index.html` com o Live Server do VS Code. Os estilos, scripts e imagens usam caminhos relativos dentro de `frontend/`.
+
+## Backend local
+
+```powershell
+cd backend
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Rotas disponiveis:
+
+- `GET /`
+- `GET /healthz`
+- `GET /api/status`
+- `POST /api/contato`
+
+Crie `backend/.env` a partir de `backend/.env.example` e informe `EMAIL_USER`, `EMAIL_PASS` e `FRONTEND_URL`.
+
+## Deploy
+
+### Vercel
+
+O `vercel.json` na raiz encaminha as requisicoes para `frontend/`. Como alternativa, configure `frontend` como **Root Directory** no projeto da Vercel e remova as rewrites de raiz.
+
+### Render
+
+- **Root Directory:** `backend`
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `gunicorn app:app --bind 0.0.0.0:$PORT`
+- **Health Check Path:** `/healthz`
+
+## Git
+
+```powershell
+git status
+git add .
+git commit -m "Organiza estrutura do projeto e remove login"
+git push origin main
+```

@@ -122,7 +122,7 @@ body {
 /* =======================================================
    SISTEMA DE DESIGN (CLASSES ATÔMICAS)
    ======================================================= */
-.btn, .hero-button, .cta-button, .navbar a.nav-btn-login, .login-form button, #contact form button {
+.btn, .hero-button, .cta-button, #contact form button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -136,17 +136,17 @@ body {
     font-size: 1rem;
 }
 
-.btn-primary, .navbar a.nav-btn-login, .login-form button {
+.btn-primary, #contact form button {
     background-color: var(--color-primary);
     color: var(--color-text-inverse) !important;
 }
 
-.btn-primary:hover, .navbar a.nav-btn-login:hover, .login-form button:hover {
+.btn-primary:hover, #contact form button:hover {
     background-color: var(--color-primary-dark);
     transform: translateY(-3px);
 }
 
-.input-field, #contact form input, #contact form textarea, .login-form input {
+.input-field, #contact form input, #contact form textarea {
     padding: 15px 16px;
     border: 1.5px solid var(--color-border);
     border-radius: 8px;
@@ -157,7 +157,7 @@ body {
     width: 100%;
 }
 
-.input-field:focus, #contact form input:focus, #contact form textarea:focus, .login-form input:focus {
+.input-field:focus, #contact form input:focus, #contact form textarea:focus {
     outline: none;
     border-color: var(--color-primary);
     background-color: var(--color-surface);
@@ -168,32 +168,6 @@ body {
 .navbar a:hover::after,
 .navbar a.active::after {
     transform: scaleX(1);
-}
-
-/* Container do Perfil de Usuário no Menu */
-.user-profile-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto; /* Empurra para a direita no Desktop */
-    padding: 4px 14px;
-    background-color: var(--color-surface-alt);
-    border: 1px solid var(--color-border);
-    border-radius: 50px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-    transition: border-color var(--transition-medium), box-shadow var(--transition-medium);
-}
-
-.user-profile-container:hover {
-    border-color: var(--color-border-accent);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-/* Botão de Login na Navbar */
-.nav-btn-login {
-    padding: 8px 24px !important;
-}
-.nav-btn-login::after {
-    display: none; /* Remove o sublinhado animado padrão do menu para este botão */
 }
 
 /* Estilização da seção de contato com imagem de fundo */
@@ -907,6 +881,102 @@ body {
     text-decoration: underline;
 }
 
+#projetos {
+    scroll-margin-top: 88px;
+}
+
+.project-card--m2r-server {
+    display: flex;
+    flex-direction: column;
+}
+
+.m2r-server-visual {
+    min-height: 142px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    background-color: #24211d;
+    border-bottom: 3px solid var(--color-accent);
+    color: var(--color-text-inverse);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+}
+
+.m2r-server-visual span:last-child {
+    padding: 6px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: var(--color-accent);
+    font-size: 0.72rem;
+}
+
+.m2r-server-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.project-card--m2r-server h3,
+.project-card--m2r-server p {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.project-card--m2r-server h3 {
+    margin-top: 15px;
+}
+
+.project-card--m2r-server p {
+    margin-bottom: 14px;
+}
+
+.project-subtitle {
+    margin: 0 !important;
+    color: var(--color-primary) !important;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.project-context {
+    color: var(--color-text-meta) !important;
+    font-size: 0.92rem;
+}
+
+.project-status {
+    align-self: flex-start;
+    padding: 6px 10px;
+    border: 1px solid var(--color-border-accent);
+    border-radius: 4px;
+    background-color: #fff7ed;
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: auto 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.project-tags li {
+    padding: 6px 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-secondary);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
 /* Card "ver todos" */
 .project-card--see-all {
     display: flex;
@@ -974,226 +1044,15 @@ body {
     margin: 5px 0;
 }
 
-/* =======================================================
-   Página de Login e Cadastro (Auth Pages)
-   ======================================================= */
-body.page-auth {
-    margin: 0;
-    min-height: 100vh; /* Permite rolar a tela em dispositivos pequenos */
-    background-color: var(--color-primary-dark); /* Fundo marrom escuro combinando com a paleta */
-}
-
-.login-section {
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px; /* Centraliza o card de volta com espaço de respiro */
-    overflow: hidden;
-    /* Fundo com Gradiente Animado */
-    background: linear-gradient(-45deg, var(--color-primary-dark), var(--color-primary), #2a1a0f, #503119);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-}
-
-/* Fundo Animado Tecnológico (Tela Toda) */
-.login-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-        linear-gradient(rgba(200, 154, 99, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200, 154, 99, 0.06) 1px, transparent 1px);
-    background-size: 60px 60px;
-    animation: techGridMoveFull 15s linear infinite;
-    z-index: 0;
-}
-
-/* Brilho de energia no fundo */
-.login-section::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120vw;
-    height: 120vw;
-    background: radial-gradient(circle, rgba(200, 154, 99, 0.12) 0%, transparent 60%);
-    z-index: 1;
-    pointer-events: none;
-    animation: floatGlow 15s ease-in-out infinite;
-}
-
-.login-card {
-    position: relative;
-    z-index: 2; /* Fica acima das animações */
-    background-color: var(--color-surface);
-    padding: 45px 40px;
-    border-radius: 16px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(200, 154, 99, 0.3);
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    /* Efeito flutuante */
-    animation: floatCard 6s ease-in-out infinite alternate;
-}
-
-/* Animações Keyframes da tela de Login e Cadastro */
 @keyframes techGridMoveFull {
     0% { background-position: 0 0; }
-    100% { background-position: 60px 60px; } /* Move diagonalmente para loop perfeito */
+    100% { background-position: 60px 60px; }
 }
 
 @keyframes pulseGlow {
     0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); }
     100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
 }
-
-@keyframes floatCard {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-12px); }
-}
-
-.login-card > img {
-    height: 60px;
-    margin-bottom: 15px;
-}
-
-.login-card h2 {
-    font-size: 1.8rem;
-    color: var(--color-text-primary);
-    margin: 0 0 8px;
-    font-weight: 800;
-}
-
-.login-card > p {
-    color: var(--color-text-secondary);
-    margin: 0 0 25px;
-    font-size: 0.95rem;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-/* Container para o campo de senha com ícone de olho */
-.password-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-.password-container input {
-    width: 100%;
-}
-.toggle-password {
-    position: absolute !important;
-    right: 15px;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: auto !important;
-}
-
-/* Checkbox Lembrar-me */
-.remember-me {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-align: left;
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-}
-
-.remember-me input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    accent-color: var(--color-primary); /* Pinta a caixinha com a cor do site */
-}
-
-
-/* Feedback de status do login */
-#login-status {
-    margin-top: 10px;
-    font-size: 0.95em;
-    font-weight: bold;
-}
-
-/* Divisor "ou" no Login */
-.login-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 26px 0;
-    color: var(--color-text-secondary);
-    font-size: 0.9em;
-}
-.login-divider::before,
-.login-divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--color-border-subtle);
-}
-.login-divider span {
-    padding: 0 12px;
-}
-
-/* Botões de SSO (Google e Microsoft) */
-.sso-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 12px;
-    border: 1px solid var(--color-border-subtle);
-    border-radius: 10px;
-    background-color: var(--color-surface);
-    color: var(--color-text-primary);
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-.sso-btn:hover {
-    background-color: var(--color-surface-alt);
-    border-color: var(--color-border);
-}
-.sso-btn img {
-    width: 22px;
-    height: 22px;
-}
-
-/* Links Auxiliares de Login */
-.login-links {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-}
-
-.login-links a {
-    color: var(--color-primary);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.login-links a:hover {
-    color: var(--color-primary-dark);
-    text-decoration: underline;
-}
-
 /* =======================================================
    Responsividade Consolidada
    ======================================================= */
@@ -1265,19 +1124,6 @@ body.page-auth {
         display: flex;
     }
 
-    .navbar .user-profile-container {
-        display: none; /* Escondido por padrão no celular */
-        width: 100%;
-        justify-content: center;
-        margin-top: 10px;
-        flex-direction: row;
-        margin-left: 0;
-    }
-
-    .navbar.menu-open .user-profile-container {
-        display: flex;
-    }
-
     .nav-links a {
         width: 100%;
         padding: 12px 0;
@@ -1344,15 +1190,15 @@ body.page-auth {
 }
 
 /* =======================================================
-   ÁREA RESTRITA (DASHBOARD)
+   PÁGINA DE PROJETOS
    ======================================================= */
-.dashboard-page {
+.projects-page {
     padding-top: 80px; /* Compensa a navbar fixa */
     min-height: calc(100vh - 80px);
     background-color: var(--color-surface-alt);
 }
 
-.dashboard-header {
+.projects-header {
     background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
     color: var(--color-text-inverse);
     padding: 60px 20px;
@@ -1360,17 +1206,17 @@ body.page-auth {
     border-bottom: 4px solid var(--color-accent);
 }
 
-.dashboard-header-content h1 {
+.projects-header-content h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
-.dashboard-header-content p {
+.projects-header-content p {
     font-size: 1.1rem;
     opacity: 0.9;
 }
 
-.dashboard-content {
+.projects-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
