@@ -1,8 +1,50 @@
 # M2R Tecnologias
 
-Site institucional da M2R Tecnologias para apresentar servicos, projetos, conteudos, informacoes sobre a empresa e canais de contato.
+Site institucional da M2R Tecnologias, criado para apresentar servicos, projetos, conteudos, informacoes sobre a empresa e canais de contato.
 
-O projeto nao possui login, cadastro, area restrita, usuario ou senha de e-mail.
+O projeto esta organizado para publicacao simples no GitHub e deploy do frontend pela Vercel. O backend Flask e opcional e pode ser usado para status, health check e validacao simples de dados de contato.
+
+## Visao geral
+
+- Site multipaginas em HTML, CSS e JavaScript.
+- Frontend estatico dentro da pasta `frontend/`.
+- Backend Flask separado dentro da pasta `backend/`.
+- Rotas limpas configuradas no `vercel.json`.
+- Pagina `404.html` personalizada.
+- `robots.txt` e `sitemap.xml` preparados para publicacao.
+- Formulario de contato sem login, sem usuario de e-mail, sem senha e sem SMTP.
+
+## Paginas do site
+
+| Pagina | Arquivo | Rota no deploy |
+| --- | --- | --- |
+| Inicio | `frontend/index.html` | `/` |
+| Servicos | `frontend/pages/servicos.html` | `/servicos` |
+| Projetos | `frontend/pages/projetos.html` | `/projetos` |
+| Blog | `frontend/pages/blog.html` | `/blog` |
+| Sobre | `frontend/pages/sobre.html` | `/sobre` |
+| Contato | `frontend/pages/contato.html` | `/contato` |
+| Erro 404 | `frontend/404.html` | `/404` |
+
+## Tecnologias
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript puro
+- Layout responsivo
+- Menu mobile
+- Animacoes leves com `IntersectionObserver`
+
+### Backend
+
+- Python
+- Flask
+- Flask-Cors
+- Flask-Limiter
+- Gunicorn
+- python-dotenv
 
 ## Estrutura do projeto
 
@@ -14,8 +56,10 @@ M2R/
     robots.txt
     sitemap.xml
     assets/
-      css/style.css
-      js/script.js
+      css/
+        style.css
+      js/
+        script.js
       img/
         logo.png
         m2r.png
@@ -35,30 +79,45 @@ M2R/
   vercel.json
 ```
 
-## Frontend
+## Como rodar o frontend localmente
 
-O frontend e estatico, feito com HTML, CSS e JavaScript.
+Entre na pasta `frontend` e inicie um servidor estatico:
 
-Para testar localmente, abra `frontend/index.html` com o Live Server do VS Code ou rode um servidor local dentro da pasta `frontend`.
-Nesse modo local, acesse tambem os arquivos `.html` listados abaixo. As URLs limpas ficam ativas no deploy pela configuracao do `vercel.json`.
+```powershell
+cd frontend
+python -m http.server 5500 --bind 127.0.0.1
+```
 
-Paginas disponiveis:
+Depois acesse:
 
-- Inicio: `frontend/index.html`
-- Servicos: `frontend/pages/servicos.html`
-- Projetos: `frontend/pages/projetos.html`
-- Blog: `frontend/pages/blog.html`
-- Sobre: `frontend/pages/sobre.html`
-- Contato: `frontend/pages/contato.html`
+```text
+http://127.0.0.1:5500/
+```
 
-Na Vercel, o arquivo `vercel.json` tambem libera URLs limpas:
+Tambem e possivel abrir `frontend/index.html` com o Live Server do VS Code. As rotas limpas, como `/servicos` e `/contato`, sao resolvidas no deploy pela configuracao do `vercel.json`.
 
-- `/`
-- `/servicos`
-- `/projetos`
-- `/blog`
-- `/sobre`
-- `/contato`
+## Como rodar o backend localmente
+
+```powershell
+cd backend
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Rotas disponiveis:
+
+| Metodo | Rota | Uso |
+| --- | --- | --- |
+| GET | `/` | Mensagem de status |
+| GET | `/healthz` | Health check |
+| GET | `/api/status` | Status da API |
+| POST | `/api/contato` | Validacao simples dos dados de contato |
+
+Variavel opcional:
+
+```text
+FRONTEND_URL=https://m2r-tecnologias.vercel.app
+```
 
 ## Contato
 
@@ -71,31 +130,6 @@ Nao e necessario configurar:
 - SMTP;
 - Gmail;
 - banco de dados.
-
-## Backend
-
-O backend Flask esta mantido para status, health check e validacao simples de dados de contato.
-
-Rotas disponiveis:
-
-- `GET /`
-- `GET /healthz`
-- `GET /api/status`
-- `POST /api/contato`
-
-Para rodar localmente:
-
-```powershell
-cd backend
-python -m pip install -r requirements.txt
-python app.py
-```
-
-Variavel opcional:
-
-```text
-FRONTEND_URL=https://m2r-tecnologias.vercel.app
-```
 
 ## Deploy na Vercel
 
@@ -115,9 +149,23 @@ Output Directory:
 deixar vazio
 ```
 
-O `vercel.json` encaminha os arquivos da pasta `frontend/` corretamente.
+O arquivo `vercel.json` faz o roteamento da raiz do projeto para os arquivos dentro de `frontend/`.
 
-## Deploy no Render
+Rotas configuradas:
+
+- `/`
+- `/servicos`
+- `/projetos`
+- `/blog`
+- `/sobre`
+- `/contato`
+- `/404`
+- `/robots.txt`
+- `/sitemap.xml`
+
+Tambem ha redirecionamentos para URLs antigas, como `/index.html` e `/pages/contato.html`.
+
+## Deploy do backend no Render
 
 O backend pode ser publicado pelo `render.yaml` na raiz do projeto ou configurado manualmente:
 
@@ -137,21 +185,35 @@ Health Check Path:
 
 Nao configure usuario ou senha de e-mail no Render.
 
-## Checklist antes de postar
+## Validacao antes de publicar
+
+Use estes comandos antes de fazer commit:
 
 ```powershell
-git status
 python -m py_compile backend/app.py
 node --check frontend/assets/js/script.js
+git status
+```
+
+Depois, envie para o GitHub:
+
+```powershell
 git add .
-git commit -m "Prepara projeto M2R para deploy"
+git commit -m "Atualiza projeto M2R"
 git push origin main
 ```
 
-Depois do push, confira:
+## Checklist de publicacao
 
-- site aberto na Vercel;
-- paginas com URLs limpas;
-- menu mobile;
-- formulario abrindo o aplicativo de e-mail;
-- backend do Render respondendo em `/healthz`, se decidir manter o backend publicado.
+- Conferir se a pagina inicial abre corretamente.
+- Conferir se as rotas limpas funcionam.
+- Testar menu mobile.
+- Testar o formulario abrindo o aplicativo de e-mail.
+- Conferir `/404` e uma rota inexistente.
+- Conferir `/robots.txt`.
+- Conferir `/sitemap.xml`.
+- Se o backend for publicado, testar `/healthz`.
+
+## Status atual
+
+Projeto preparado para publicacao do frontend na Vercel e versionamento pelo GitHub.
