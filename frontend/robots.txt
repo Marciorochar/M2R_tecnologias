@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://m2r.vercel.app/sitemap.xml
+Sitemap: https://m2rtecnologias.vercel.app/sitemap.xml

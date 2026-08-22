@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 app = Flask(__name__)
-FRONTEND_URL = os.getenv("FRONTEND_URL", "https://m2r.vercel.app")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://m2rtecnologias.vercel.app")
 LOCAL_FRONTEND_URLS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
