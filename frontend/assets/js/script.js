@@ -1,7 +1,3 @@
-// Configuração global da API (Detecta automaticamente Local vs Produção)
-const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_URL = isLocalhost ? "http://127.0.0.1:5000" : "https://m2r-backend.onrender.com";
-
 document.addEventListener('DOMContentLoaded', initApp);
 
 function initApp() {
@@ -13,8 +9,6 @@ function initApp() {
         2. Atualização automática do item ativo no menu
         3. Animação fade-in ao rolar a página
         4. Envio do formulário de contato
-        5. Modais de telefone e e-mail
-        6. Botão copiar contato
         =====================================================
     */
 
@@ -28,10 +22,14 @@ function initApp() {
     };
 
     // Define o link ativo no menu dinamicamente com base na URL
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const normalizePage = (path) => {
+        const page = (path || '').split('/').pop() || 'index';
+        return page.replace('.html', '') || 'index';
+    };
+    const currentPath = normalizePage(window.location.pathname);
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
-        const linkPath = (link.getAttribute('href') || '').split('/').pop();
+        const linkPath = normalizePage(link.getAttribute('href'));
         if (linkPath === currentPath) {
             link.classList.add('active');
         }
@@ -227,164 +225,39 @@ function initApp() {
 
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-status');
+    const contactRecipient = 'marciinhofla@gmail.com';
 
     if (contactForm && formStatus) {
         contactForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const name = document.getElementById('name')?.value || '';
-            const email = document.getElementById('email')?.value || '';
-            const phone = document.getElementById('phone')?.value || '';
-            const message = document.getElementById('message')?.value || '';
-
-            const formButton = this.querySelector('button[type="submit"]') || this.querySelector('button');
-
-            if (formButton) {
-                formButton.disabled = true;
-                formButton.textContent = 'Enviando...';
+            if (!contactForm.checkValidity()) {
+                contactForm.reportValidity();
+                setFormStatus(formStatus, 'Preencha os campos obrigatórios corretamente.', 'error');
+                return;
             }
 
-            setFormStatus(formStatus, 'Enviando sua mensagem...', 'sending');
+            const name = (document.getElementById('name')?.value || '').trim();
+            const email = (document.getElementById('email')?.value || '').trim();
+            const phone = (document.getElementById('phone')?.value || '').trim();
+            const message = (document.getElementById('message')?.value || '').trim();
 
-            fetch(`${API_URL}/api/contato`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, phone, message })
-            })
-                .then(async response => {
-                    let data;
-                    try { data = await response.json(); } catch(e) {}
-                    if (response.ok) {
-                        setFormStatus(formStatus, data?.message || 'Mensagem enviada com sucesso.', 'success');
-                        contactForm.reset();
-                    } else {
-                        setFormStatus(formStatus, data?.error || 'Não foi possível enviar a mensagem.', 'error');
-                    }
-                })
-                .catch(() => {
-                    setFormStatus(formStatus, 'Erro de conexão. Verifique sua internet e tente novamente.', 'error');
-                })
-                .finally(() => {
-                    if (formButton) {
-                        formButton.disabled = false;
-                        formButton.textContent = 'Enviar mensagem';
-                    }
-                });
+            if (!name || !email || !message) {
+                setFormStatus(formStatus, 'Preencha nome, e-mail e mensagem.', 'error');
+                return;
+            }
+
+            const subject = encodeURIComponent(`Contato pelo site M2R - ${name}`);
+            const body = encodeURIComponent(
+                `Nome: ${name}\n` +
+                `E-mail: ${email}\n` +
+                `Telefone: ${phone || 'Não informado'}\n\n` +
+                `Mensagem:\n${message}`
+            );
+
+            window.location.href = `mailto:${contactRecipient}?subject=${subject}&body=${body}`;
+            setFormStatus(formStatus, 'Seu aplicativo de e-mail foi aberto para concluir o envio.', 'success');
         });
     }
-
-    /*
-        =====================================================
-        6. FUNÇÃO AUXILIAR PARA COPIAR TEXTO
-        =====================================================
-    */
-
-    const copyTextToClipboard = async (text) => {
-        const cleanText = text.trim();
-
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(cleanText);
-            return;
-        }
-
-        // Alternativa para navegadores ou ambientes sem HTTPS
-        const textarea = document.createElement('textarea');
-        textarea.value = cleanText;
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-    };
-
-    /*
-        =====================================================
-        7. MODAIS DE CONTATO
-        =====================================================
-    */
-
-    const setupModal = (triggerBtnId, modalId) => {
-        const triggerBtn = document.getElementById(triggerBtnId);
-        const modal = document.getElementById(modalId);
-
-        if (!triggerBtn || !modal) return;
-
-        const closeModalBtn = modal.querySelector('.modal-close-btn');
-        const copyBtns = modal.querySelectorAll('.copy-btn');
-
-        const openModal = () => {
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        };
-
-        const closeModal = () => {
-            modal.classList.add('hidden');
-            document.body.style.overflow = '';
-        };
-
-        triggerBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            openModal();
-        });
-
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', closeModal);
-        }
-
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        copyBtns.forEach(button => {
-            button.addEventListener('click', async () => {
-                const textElement = button.previousElementSibling;
-
-                if (!textElement) return;
-
-                try {
-                    await copyTextToClipboard(textElement.textContent);
-
-                    button.textContent = 'Copiado!';
-
-                    setTimeout(() => {
-                        button.textContent = 'Copiar';
-                    }, 2000);
-                } catch (error) {
-                    button.textContent = 'Erro';
-
-                    setTimeout(() => {
-                        button.textContent = 'Copiar';
-                    }, 2000);
-                }
-            });
-        });
-    };
-
-    setupModal('phone-contact-btn', 'phone-modal');
-    setupModal('email-contact-btn', 'email-modal');
-
-    /*
-        =====================================================
-        8. FECHAR MODAIS COM A TECLA ESC
-        =====================================================
-    */
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            const openModals = document.querySelectorAll('.modal-overlay:not(.hidden)');
-
-            openModals.forEach(modal => {
-                modal.classList.add('hidden');
-            });
-
-            document.body.style.overflow = '';
-        }
-    });
 
 }

@@ -1,6 +1,5 @@
 import os
-import smtplib
-from email.mime.text import MIMEText
+import re
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -28,8 +27,21 @@ limiter = Limiter(
     storage_uri="memory://",
 )
 
-EMAIL_ADDRESS = os.environ.get("EMAIL_USER")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASS")
+EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+MAX_FIELD_LENGTHS = {
+    "name": 120,
+    "email": 254,
+    "phone": 30,
+    "message": 2000,
+}
+
+
+def clean_field(value, max_length):
+    return str(value or "").strip()[:max_length]
+
+
+def has_header_break(value):
+    return "\r" in value or "\n" in value
 
 
 @app.errorhandler(429)
@@ -60,46 +72,25 @@ def status():
 
 @app.post("/api/contato")
 @limiter.limit("2 per hour")
-def send_contact():
+def validate_contact():
     data = request.get_json(silent=True) or {}
-    name = str(data.get("name", "")).strip()
-    email = str(data.get("email", "")).strip()
-    phone = str(data.get("phone", "")).strip()
-    message = str(data.get("message", "")).strip()
+    name = clean_field(data.get("name"), MAX_FIELD_LENGTHS["name"])
+    email = clean_field(data.get("email"), MAX_FIELD_LENGTHS["email"])
+    phone = clean_field(data.get("phone"), MAX_FIELD_LENGTHS["phone"])
+    message = clean_field(data.get("message"), MAX_FIELD_LENGTHS["message"])
 
     if not name or not email or not message:
         return jsonify({"error": "Preencha nome, e-mail e mensagem."}), 400
 
-    if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
-        app.logger.error("Configuracao de e-mail ausente.")
-        return jsonify({"error": "O formulario de contato esta indisponivel no momento."}), 503
+    if has_header_break(name) or has_header_break(email) or has_header_break(phone):
+        return jsonify({"error": "Revise os dados informados e tente novamente."}), 400
 
-    subject = f"Nova mensagem do site M2R - {name}"
-    body = f"""Voce recebeu uma nova mensagem pelo site institucional da M2R Tecnologias.
+    if not EMAIL_RE.match(email):
+        return jsonify({"error": "Informe um e-mail valido."}), 400
 
-Nome: {name}
-E-mail: {email}
-Telefone: {phone or "Não informado"}
-
-Mensagem:
-{message}
-"""
-
-    email_message = MIMEText(body)
-    email_message["Subject"] = subject
-    email_message["From"] = EMAIL_ADDRESS
-    email_message["To"] = EMAIL_ADDRESS
-    email_message["Reply-To"] = email
-
-    try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.send_message(email_message)
-    except Exception:
-        app.logger.exception("Falha ao enviar mensagem de contato.")
-        return jsonify({"error": "Nao foi possivel enviar sua mensagem. Tente novamente mais tarde."}), 500
-
-    return jsonify({"message": "Mensagem enviada com sucesso. Retornaremos em breve."}), 200
+    return jsonify({
+        "message": "Contato validado. O envio e feito pelo cliente de e-mail do visitante.",
+    }), 200
 
 
 if __name__ == "__main__":

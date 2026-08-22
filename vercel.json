@@ -5,6 +5,26 @@
       "destination": "/frontend/index.html"
     },
     {
+      "source": "/servicos",
+      "destination": "/frontend/pages/servicos.html"
+    },
+    {
+      "source": "/projetos",
+      "destination": "/frontend/pages/projetos.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/frontend/pages/blog.html"
+    },
+    {
+      "source": "/sobre",
+      "destination": "/frontend/pages/sobre.html"
+    },
+    {
+      "source": "/contato",
+      "destination": "/frontend/pages/contato.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/frontend/$1"
     }

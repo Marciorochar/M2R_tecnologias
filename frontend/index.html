@@ -3,113 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="M2R Tecnologias: soluções em desenvolvimento web, automação, dados e sistemas digitais.">
-    <title>Início | M2R Tecnologias</title>
+    <meta name="description" content="M2R Tecnologias: desenvolvimento web, soluções digitais, automação de processos e projetos tecnológicos personalizados.">
+    <title>M2R Tecnologias | Soluções Digitais e Desenvolvimento Web</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="assets/img/logo.png" type="image/png">
 </head>
-<body>
+<body class="home-page">
     <nav class="navbar" aria-label="Navegação principal">
-        <a href="index.html" title="Ir para a página inicial">
+        <a href="/" title="Ir para a página inicial">
             <img src="assets/img/m2r.png" alt="Logo da M2R Tecnologias">
         </a>
         <div class="nav-links">
-            <a href="index.html">Início</a>
-            <a href="pages/servicos.html">Serviços</a>
-            <a href="pages/projetos.html">Projetos</a>
-            <a href="pages/blog.html">Blog</a>
-            <a href="pages/sobre.html">Sobre a M2R</a>
-            <a href="pages/contato.html">Contato</a>
+            <a href="/">Início</a>
+            <a href="/servicos">Serviços</a>
+            <a href="/projetos">Projetos</a>
+            <a href="/blog">Blog</a>
+            <a href="/sobre">Sobre a M2R</a>
+            <a href="/contato">Contato</a>
         </div>
     </nav>
 
     <main>
         <section class="page-hero home-hero">
             <div class="container hero-layout">
-                <div>
-                    <span class="section-tag section-tag--dark">Engenharia, dados e software</span>
+                <div class="home-hero-copy">
+                    <span class="section-tag section-tag--dark">Tecnologia aplicada</span>
                     <h1>M2R Tecnologias</h1>
-                    <p>Transformamos desafios operacionais em soluções digitais organizadas, confiáveis e preparadas para evoluir.</p>
+                    <p class="hero-description">Soluções digitais, desenvolvimento web e projetos tecnológicos sob medida.</p>
+                    <p class="hero-support">Criamos estruturas digitais modernas para apresentar marcas, organizar processos e desenvolver projetos com tecnologia, automação e inovação.</p>
                     <div class="hero-actions">
-                        <a class="btn btn-primary" href="pages/servicos.html">Conheça nossos serviços</a>
-                        <a class="btn btn-secondary" href="pages/contato.html">Fale conosco</a>
+                        <a class="btn btn-primary" href="/servicos">Conheça os serviços</a>
+                        <a class="btn btn-secondary" href="/contato">Fale conosco</a>
                     </div>
+                    <ul class="hero-highlights" aria-label="Diferenciais da M2R Tecnologias">
+                        <li>Sites institucionais</li>
+                        <li>Automação</li>
+                        <li>Dados e dashboards</li>
+                    </ul>
                 </div>
-                <img src="assets/img/m2r.png" alt="M2R Tecnologias" class="home-hero-logo">
+                <div class="home-hero-visual" aria-hidden="true">
+                    <img src="assets/img/m2r.png" alt="" class="home-hero-logo">
+                </div>
             </div>
         </section>
 
-        <section class="section-block">
-            <div class="container intro-layout fade-in-section">
+        <section class="section-block home-about">
+            <div class="container home-about-layout fade-in-section">
                 <div>
-                    <span class="section-tag">Tecnologia aplicada</span>
-                    <h2>Soluções para operações que precisam evoluir</h2>
+                    <span class="section-tag">Sobre a M2R</span>
+                    <h2>Tecnologia com clareza para cada etapa do projeto</h2>
                 </div>
-                <p>A M2R Tecnologias combina desenvolvimento web, automação, integração de dados e visão de processos para criar ferramentas úteis no dia a dia das empresas.</p>
+                <div class="home-about-copy">
+                    <p>A M2R Tecnologias atua no desenvolvimento de soluções digitais com foco em organização, presença online, automação e estruturação de projetos tecnológicos.</p>
+                    <p>O objetivo é entregar sites, sistemas e ambientes digitais com aparência profissional, boa usabilidade e funcionamento confiável.</p>
+                    <a class="btn btn-outline" href="/sobre">Saiba mais sobre a M2R</a>
+                </div>
             </div>
         </section>
 
-        <section class="section-block section-block--muted">
+        <section class="section-block section-block--muted home-services">
             <div class="container">
                 <div class="section-heading fade-in-section">
                     <span class="section-tag">Serviços</span>
-                    <h2>O que desenvolvemos</h2>
-                    <p>Estruturas digitais para apresentar marcas, organizar informações e apoiar decisões.</p>
+                    <h2>O que a M2R pode estruturar</h2>
+                    <p>Soluções essenciais para construir presença digital e melhorar a operação.</p>
                 </div>
-                <div class="card-grid card-grid--three">
-                    <article class="service-card fade-in-section">
-                        <span class="service-icon">Web</span>
-                        <h3>Desenvolvimento web</h3>
-                        <p>Sites institucionais, landing pages e sistemas web responsivos com identidade clara.</p>
+                <div class="card-grid card-grid--four">
+                    <article class="service-card home-service-card fade-in-section">
+                        <span class="service-icon" aria-hidden="true">01</span>
+                        <h3>Desenvolvimento Web</h3>
+                        <p>Criação de sites modernos, responsivos e organizados para fortalecer a presença digital da marca.</p>
+                        <a class="text-link home-service-link" href="/servicos">Ver serviços</a>
                     </article>
-                    <article class="service-card fade-in-section">
-                        <span class="service-icon">Auto</span>
-                        <h3>Automação de processos</h3>
-                        <p>Rotinas que reduzem tarefas repetitivas e tornam fluxos operacionais mais consistentes.</p>
+                    <article class="service-card home-service-card fade-in-section">
+                        <span class="service-icon" aria-hidden="true">02</span>
+                        <h3>Soluções Digitais</h3>
+                        <p>Estruturação de ferramentas e páginas para apresentar serviços, projetos e informações institucionais.</p>
+                        <a class="text-link home-service-link" href="/servicos">Ver serviços</a>
                     </article>
-                    <article class="service-card fade-in-section">
-                        <span class="service-icon">Data</span>
-                        <h3>Dados e indicadores</h3>
-                        <p>Dashboards, integrações e análises para transformar dados em decisões práticas.</p>
+                    <article class="service-card home-service-card fade-in-section">
+                        <span class="service-icon" aria-hidden="true">03</span>
+                        <h3>Automação de Processos</h3>
+                        <p>Apoio na organização de fluxos, formulários, integrações e tarefas digitais.</p>
+                        <a class="text-link home-service-link" href="/servicos">Ver serviços</a>
+                    </article>
+                    <article class="service-card home-service-card fade-in-section">
+                        <span class="service-icon" aria-hidden="true">04</span>
+                        <h3>Dashboards e Dados</h3>
+                        <p>Organização visual de informações para facilitar análise, acompanhamento e tomada de decisão.</p>
+                        <a class="text-link home-service-link" href="/servicos">Ver serviços</a>
                     </article>
                 </div>
-                <a class="text-link" href="pages/servicos.html">Ver todos os serviços</a>
             </div>
         </section>
 
-        <section class="section-block" id="projetos">
+        <section class="section-block home-project">
             <div class="container">
-                <div class="section-heading fade-in-section">
-                    <span class="section-tag">Projetos</span>
-                    <h2>Iniciativas em desenvolvimento</h2>
-                    <p>Projetos que conectam sistemas digitais, dados, automação e organização de ambientes tecnológicos.</p>
-                </div>
-                <div class="card-grid card-grid--two">
-                    <article class="project-card project-card--summary fade-in-section">
+                <div class="project-highlight fade-in-section">
+                    <div class="project-highlight-visual" aria-hidden="true">
+                        <img src="assets/img/m2r.png" alt="">
+                        <div class="project-visual-caption">
+                            <span>Servidor personalizado</span>
+                            <strong>Open Tibia Server</strong>
+                        </div>
+                    </div>
+                    <div class="project-highlight-content">
                         <span class="project-status">Em desenvolvimento</span>
-                        <p class="project-subtitle">Open Tibia Server</p>
-                        <h3>M2R Server</h3>
-                        <p>Servidor personalizado com foco em estabilidade, experiência do jogador e evolução contínua da infraestrutura.</p>
-                        <a class="text-link" href="pages/projetos.html">Ver detalhes do projeto</a>
-                    </article>
-                    <article class="project-card project-card--summary fade-in-section">
-                        <span class="project-status">Soluções digitais</span>
-                        <p class="project-subtitle">Web, dados e automação</p>
-                        <h3>Ambientes conectados</h3>
-                        <p>Aplicações que integram sistemas, dados e processos para tornar a operação mais visível e eficiente.</p>
-                        <a class="text-link" href="pages/projetos.html">Ver portfólio</a>
-                    </article>
+                        <p class="project-subtitle">Projeto em destaque</p>
+                        <h2>M2R Server</h2>
+                        <p>Projeto em desenvolvimento de Open Tibia Server personalizado, com foco em organização, estabilidade, experiência do jogador e evolução contínua da estrutura do servidor.</p>
+                        <ul class="project-tags" aria-label="Tecnologias relacionadas ao M2R Server">
+                            <li>Open Tibia Server</li>
+                            <li>Banco de Dados</li>
+                            <li>Desenvolvimento Web</li>
+                            <li>Automação</li>
+                        </ul>
+                        <a class="btn btn-primary" href="/projetos">Ver projeto</a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="section-block home-contact-cta fade-in-section">
             <div class="container">
-                <span class="section-tag section-tag--dark">Contato</span>
-                <h2>Vamos estruturar a próxima solução?</h2>
-                <p>Converse com a M2R Tecnologias sobre desenvolvimento web, automação, dados ou sistemas personalizados.</p>
-                <a class="btn btn-primary" href="pages/contato.html">Fale conosco</a>
+                <span class="section-tag">Contato</span>
+                <h2>Vamos transformar sua ideia em uma solução digital?</h2>
+                <p>Entre em contato com a M2R Tecnologias para conversar sobre sites, sistemas, automações ou projetos digitais personalizados.</p>
+                <a class="btn btn-primary" href="/contato">Entrar em contato</a>
             </div>
         </section>
     </main>
@@ -121,10 +142,10 @@
                 <p>Engenharia, tecnologia e soluções digitais para operações em evolução.</p>
             </div>
             <div class="footer-links">
-                <a href="pages/servicos.html">Serviços</a>
-                <a href="pages/projetos.html">Projetos</a>
-                <a href="pages/blog.html">Blog</a>
-                <a href="pages/contato.html">Contato</a>
+                <a href="/servicos">Serviços</a>
+                <a href="/projetos">Projetos</a>
+                <a href="/blog">Blog</a>
+                <a href="/contato">Contato</a>
             </div>
         </div>
         <p class="footer-copyright">&copy; 2026 M2R Tecnologias. Todos os direitos reservados.</p>

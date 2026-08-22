@@ -1,6 +1,8 @@
 # Environment variables and secrets
 .env
 backend/.env
+.env.local
+.env.*.local
 
 # Python
 __pycache__/
@@ -18,7 +20,14 @@ instance/
 
 # JavaScript
 node_modules/
+dist/
+build/
+.vercel/
+
+# Logs
+*.log
 
 # Operating system and local backups
 .DS_Store
+Thumbs.db
 _backup/

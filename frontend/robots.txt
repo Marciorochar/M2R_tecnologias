@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://m2r-tecnologias.vercel.app/sitemap.xml

@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: m2r-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: FRONTEND_URL
+        value: https://m2r-tecnologias.vercel.app
