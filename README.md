@@ -13,6 +13,8 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Pagina `404.html` personalizada.
 - `robots.txt` e `sitemap.xml` preparados para publicacao.
 - Formulario de contato sem login, sem usuario de e-mail, sem senha e sem SMTP.
+- Fonte de sistema para evitar dependencia externa de carregamento.
+- Imagens da marca otimizadas e com dimensoes declaradas no HTML.
 
 ## Paginas do site
 

@@ -18,7 +18,7 @@
     --color-text-inverse: #ffffff;
     --color-border: #e3e3e3;
     --color-border-accent: #c89a63;
-    --font-family-main: "Inter", Arial, sans-serif;
+    --font-family-main: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.12);
     --transition-medium: 0.25s;
