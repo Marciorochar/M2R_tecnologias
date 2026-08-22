@@ -63,6 +63,7 @@ M2R/
       img/
         logo.png
         m2r.png
+        og-image.png
     pages/
       servicos.html
       projetos.html
