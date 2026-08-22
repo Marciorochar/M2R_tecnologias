@@ -8,4 +8,4 @@ services:
     healthCheckPath: /healthz
     envVars:
       - key: FRONTEND_URL
-        value: https://m2r-tecnologias.vercel.app
+        value: https://m2r.vercel.app

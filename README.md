@@ -116,7 +116,7 @@ Rotas disponiveis:
 Variavel opcional:
 
 ```text
-FRONTEND_URL=https://m2r-tecnologias.vercel.app
+FRONTEND_URL=https://m2r.vercel.app
 ```
 
 ## Contato
