@@ -23,8 +23,15 @@ function initApp() {
 
     // Define o link ativo no menu dinamicamente com base na URL
     const normalizePage = (path) => {
-        const page = (path || '').split('/').pop() || 'index';
-        return page.replace('.html', '') || 'index';
+        const cleanPath = (path || '').split('#')[0].split('?')[0].replace(/\/+$/, '');
+        const parts = cleanPath.split('/').filter(Boolean);
+        const page = (parts.pop() || 'index').replace('.html', '') || 'index';
+
+        if (parts.includes('projetos') || page === 'm2r-server') {
+            return 'projetos';
+        }
+
+        return page;
     };
     const currentPath = normalizePage(window.location.pathname);
     document.querySelectorAll('.nav-links a').forEach(link => {

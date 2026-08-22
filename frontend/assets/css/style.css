@@ -485,6 +485,247 @@ a {
     font-weight: 700;
 }
 
+.project-detail-hero {
+    padding-bottom: 92px;
+}
+
+.project-detail-hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+    align-items: center;
+    gap: 56px;
+}
+
+.project-detail-hero .hero-actions {
+    margin-top: 32px;
+}
+
+.project-detail-terminal {
+    padding: 28px;
+    border: 1px solid rgba(239, 195, 143, 0.34);
+    border-radius: 8px;
+    background-color: #0b1728;
+    color: #d7e3ef;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.terminal-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.terminal-bar span {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.36);
+}
+
+.terminal-bar span:first-child {
+    background-color: var(--color-accent);
+}
+
+.project-detail-terminal p {
+    margin: 0 0 12px;
+    color: #d7e3ef;
+    font-size: 0.95rem;
+}
+
+.project-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.project-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.project-status-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(280px, 1.05fr);
+    align-items: start;
+    gap: 48px;
+}
+
+.project-status-layout h2,
+.project-next-steps h2 {
+    margin: 0 0 16px;
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+}
+
+.project-status-layout p,
+.project-next-steps li {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+}
+
+.project-tags--spaced {
+    margin-top: 24px;
+}
+
+.project-progress-panel {
+    display: grid;
+    gap: 14px;
+    padding: 28px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.project-progress-panel div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-weight: 800;
+}
+
+.project-progress-panel span {
+    color: var(--color-text-secondary);
+}
+
+.project-progress-panel strong {
+    color: var(--color-primary);
+}
+
+.project-progress-panel progress {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 999px;
+    background-color: var(--color-surface-interactive);
+}
+
+.project-progress-panel progress::-webkit-progress-bar {
+    background-color: var(--color-surface-interactive);
+}
+
+.project-progress-panel progress::-webkit-progress-value {
+    background-color: var(--color-accent);
+}
+
+.project-progress-panel progress::-moz-progress-bar {
+    background-color: var(--color-accent);
+}
+
+.project-mockup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.project-mockup {
+    display: grid;
+    min-height: 340px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    grid-template-columns: 92px 1fr;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.mockup-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    padding: 24px;
+    background-color: #10233a;
+}
+
+.mockup-sidebar span {
+    height: 12px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.24);
+}
+
+.mockup-sidebar span:first-child {
+    background-color: var(--color-accent);
+}
+
+.mockup-main {
+    display: grid;
+    gap: 20px;
+    padding: 24px;
+    background-color: #f7f4ef;
+}
+
+.mockup-header {
+    height: 48px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: var(--shadow-sm);
+}
+
+.mockup-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.mockup-cards span {
+    min-height: 82px;
+    border: 1px solid #ead7c0;
+    border-radius: 8px;
+    background-color: #fffaf4;
+}
+
+.mockup-chart {
+    min-height: 116px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(200, 154, 99, 0.18), rgba(16, 35, 58, 0.14));
+}
+
+.project-mockup--server {
+    display: block;
+    padding: 24px;
+    background-color: #0b1728;
+}
+
+.mockup-console {
+    min-height: 100%;
+    padding: 24px;
+    border: 1px solid rgba(239, 195, 143, 0.28);
+    border-radius: 8px;
+    background-color: #0f2238;
+    color: #d7e3ef;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.mockup-console span {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--color-accent);
+    font-weight: 800;
+}
+
+.mockup-console p {
+    margin: 0 0 14px;
+    color: #d7e3ef;
+}
+
+.project-next-steps {
+    max-width: 860px;
+}
+
+.project-next-steps ol {
+    display: grid;
+    gap: 14px;
+    margin: 22px 0 30px;
+    padding-left: 22px;
+}
+
+.project-next-steps li::marker {
+    color: var(--color-primary);
+    font-weight: 800;
+}
+
 .contact-layout {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
     gap: 52px;
@@ -1036,7 +1277,12 @@ form textarea {
     .contact-layout,
     .hero-layout,
     .home-about-layout,
-    .project-highlight {
+    .project-highlight,
+    .project-detail-hero-layout,
+    .project-detail-grid,
+    .project-tech-grid,
+    .project-status-layout,
+    .project-mockup-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1188,8 +1434,33 @@ form textarea {
 
     .home-hero .hero-actions .btn,
     .section-heading .btn,
+    .project-detail-hero .hero-actions .btn,
     .home-contact-cta .btn {
         width: 100%;
+    }
+
+    .project-detail-terminal,
+    .project-progress-panel,
+    .project-mockup--server,
+    .mockup-console {
+        padding: 22px;
+    }
+
+    .project-mockup {
+        grid-template-columns: 1fr;
+    }
+
+    .mockup-sidebar {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 18px;
+    }
+
+    .mockup-main {
+        padding: 18px;
+    }
+
+    .mockup-cards {
+        grid-template-columns: 1fr;
     }
 
     .hero-highlights {

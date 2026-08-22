@@ -21,6 +21,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 | Inicio | `frontend/index.html` | `/` |
 | Servicos | `frontend/pages/servicos.html` | `/servicos` |
 | Projetos | `frontend/pages/projetos.html` | `/projetos` |
+| M2R Server | `frontend/pages/projetos/m2r-server.html` | `/projetos/m2r-server` |
 | Blog | `frontend/pages/blog.html` | `/blog` |
 | Sobre | `frontend/pages/sobre.html` | `/sobre` |
 | Contato | `frontend/pages/contato.html` | `/contato` |
@@ -67,6 +68,8 @@ M2R/
     pages/
       servicos.html
       projetos.html
+      projetos/
+        m2r-server.html
       blog.html
       sobre.html
       contato.html
@@ -158,6 +161,7 @@ Rotas configuradas:
 - `/`
 - `/servicos`
 - `/projetos`
+- `/projetos/m2r-server`
 - `/blog`
 - `/sobre`
 - `/contato`

@@ -21,6 +21,11 @@
       "permanent": true
     },
     {
+      "source": "/projetos/m2r-server/",
+      "destination": "/projetos/m2r-server",
+      "permanent": true
+    },
+    {
       "source": "/blog/",
       "destination": "/blog",
       "permanent": true
@@ -43,6 +48,11 @@
     {
       "source": "/pages/projetos.html",
       "destination": "/projetos",
+      "permanent": true
+    },
+    {
+      "source": "/pages/projetos/m2r-server.html",
+      "destination": "/projetos/m2r-server",
       "permanent": true
     },
     {
@@ -73,6 +83,10 @@
     {
       "source": "/projetos",
       "destination": "/frontend/pages/projetos.html"
+    },
+    {
+      "source": "/projetos/m2r-server",
+      "destination": "/frontend/pages/projetos/m2r-server.html"
     },
     {
       "source": "/blog",
