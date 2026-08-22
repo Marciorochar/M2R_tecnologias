@@ -10,14 +10,15 @@
     --color-blue-mid: #17304d;
     --color-background: #f5f5f5;
     --color-surface: #ffffff;
-    --color-surface-alt: #f9f9f9;
+    --color-surface-alt: #f7f7f7;
     --color-surface-interactive: #e0e0e0;
-    --color-text-primary: #222222;
-    --color-text-secondary: #555555;
-    --color-text-meta: #777777;
+    --color-text-primary: #1f1f1f;
+    --color-text-secondary: #3f3f3f;
+    --color-text-meta: #5f5f5f;
     --color-text-inverse: #ffffff;
-    --color-border: #e3e3e3;
+    --color-border: #d4d4d4;
     --color-border-accent: #c89a63;
+    --color-focus: #0b5c8e;
     --font-family-main: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -52,6 +53,52 @@ img {
 
 a {
     color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px rgba(11, 92, 142, 0.16);
+}
+
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.skip-link {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 2000;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: var(--color-focus);
+    color: var(--color-text-inverse);
+    box-shadow: var(--shadow-md);
+    font-weight: 800;
+    text-decoration: none;
+    transform: translateY(-180%);
+    transition: transform var(--transition-medium);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+    outline-color: var(--color-text-inverse);
+    outline-offset: 3px;
+    transform: translateY(0);
+}
+
+#conteudo-principal {
+    scroll-margin-top: 96px;
 }
 
 .container {
@@ -120,12 +167,14 @@ a {
 }
 
 .navbar a:hover,
-.navbar a.active {
+.navbar a.active,
+.navbar a[aria-current="page"] {
     color: var(--color-primary);
 }
 
 .navbar a:hover::after,
-.navbar a.active::after {
+.navbar a.active::after,
+.navbar a[aria-current="page"]::after {
     transform: scaleX(1);
 }
 
@@ -340,7 +389,7 @@ a {
 .blog-card,
 .project-card {
     min-height: 100%;
-    border: 1px solid var(--color-border);
+    border: 1px solid #cfcfcf;
     border-radius: 8px;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-sm);
@@ -462,7 +511,7 @@ a {
 
 .article-aside-card {
     padding: 24px;
-    border: 1px solid var(--color-border);
+    border: 1px solid #cfcfcf;
     border-radius: 8px;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-sm);
@@ -595,10 +644,10 @@ a {
 
 .project-tags li {
     padding: 6px 9px;
-    border: 1px solid var(--color-border);
+    border: 1px solid #c9c9c9;
     border-radius: 4px;
-    background-color: var(--color-surface-alt);
-    color: var(--color-text-secondary);
+    background-color: #ffffff;
+    color: #333333;
     font-size: 0.76rem;
     font-weight: 700;
 }

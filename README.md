@@ -15,6 +15,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Formulario de contato sem login, sem usuario de e-mail, sem senha e sem SMTP.
 - Fonte de sistema para evitar dependencia externa de carregamento.
 - Imagens da marca otimizadas e com dimensoes declaradas no HTML.
+- Melhorias de acessibilidade com foco visivel, link para pular ao conteudo e menu ativo com `aria-current`.
 
 ## Paginas do site
 

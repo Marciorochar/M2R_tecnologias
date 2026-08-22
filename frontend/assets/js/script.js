@@ -38,11 +38,22 @@ function initApp() {
         return page;
     };
     const currentPath = normalizePage(window.location.pathname);
+    const setActiveNavLink = (activeLink) => {
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        });
+
+        if (activeLink) {
+            activeLink.classList.add('active');
+            activeLink.setAttribute('aria-current', 'page');
+        }
+    };
+
     document.querySelectorAll('.nav-links a').forEach(link => {
-        link.classList.remove('active');
         const linkPath = normalizePage(link.getAttribute('href'));
         if (linkPath === currentPath) {
-            link.classList.add('active');
+            setActiveNavLink(link);
         }
     });
 
@@ -114,11 +125,7 @@ function initApp() {
         // Isso evita remover o "active" da página projetos.html
         if (!matchingLink) return;
 
-        navbarLinks.forEach(link => {
-            link.classList.remove('active');
-        });
-
-        matchingLink.classList.add('active');
+        setActiveNavLink(matchingLink);
     };
 
     /*
@@ -150,11 +157,7 @@ function initApp() {
                         behavior: 'smooth'
                     });
 
-                    navbarLinks.forEach(navLink => {
-                        navLink.classList.remove('active');
-                    });
-
-                    this.classList.add('active');
+                    setActiveNavLink(this);
                 }
             }
 
