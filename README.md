@@ -1,5 +1,11 @@
 # M2R Tecnologias
 
+[![Deploy](https://img.shields.io/badge/deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://m2rtecnologias.vercel.app/)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000)](https://developer.mozilla.org/docs/Web/JavaScript)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
+
 Site institucional da M2R Tecnologias, criado para apresentar servicos, projetos, conteudos, informacoes sobre a empresa e canais de contato.
 
 O projeto esta organizado para publicacao simples no GitHub e deploy do frontend pela Vercel. O backend Flask e opcional e pode ser usado para status, health check e validacao simples de dados de contato.
@@ -16,6 +22,27 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Fonte de sistema para evitar dependencia externa de carregamento.
 - Imagens da marca otimizadas e com dimensoes declaradas no HTML.
 - Melhorias de acessibilidade com foco visivel, link para pular ao conteudo e menu ativo com `aria-current`.
+
+## Links
+
+- Site publicado: [https://m2rtecnologias.vercel.app/](https://m2rtecnologias.vercel.app/)
+- Repositorio GitHub: [https://github.com/Marciorochar/M2R_tecnologias](https://github.com/Marciorochar/M2R_tecnologias)
+- Sitemap: [https://m2rtecnologias.vercel.app/sitemap.xml](https://m2rtecnologias.vercel.app/sitemap.xml)
+- Robots: [https://m2rtecnologias.vercel.app/robots.txt](https://m2rtecnologias.vercel.app/robots.txt)
+
+## Prints do site
+
+### Pagina inicial
+
+![Pagina inicial da M2R Tecnologias](docs/screenshots/home.png)
+
+### Projetos
+
+![Pagina de projetos da M2R Tecnologias](docs/screenshots/projetos.png)
+
+### Blog
+
+![Pagina de blog da M2R Tecnologias](docs/screenshots/blog.png)
 
 ## Paginas do site
 
@@ -87,7 +114,14 @@ M2R/
     app.py
     requirements.txt
     .env.example
+  docs/
+    screenshots/
+      home.png
+      projetos.png
+      blog.png
   .gitignore
+  CHANGELOG.md
+  LICENSE
   README.md
   render.yaml
   vercel.json
