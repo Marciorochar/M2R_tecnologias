@@ -123,6 +123,7 @@ FRONTEND_URL=https://m2rtecnologias.vercel.app
 ## Contato
 
 O formulario da pagina de contato usa `mailto:` para abrir o aplicativo de e-mail do visitante com a mensagem preenchida.
+O site tambem possui link direto para WhatsApp com mensagem pre-preenchida e CTA fixo discreto no mobile.
 
 Nao e necessario configurar:
 

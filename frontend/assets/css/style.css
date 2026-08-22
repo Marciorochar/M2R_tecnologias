@@ -512,6 +512,27 @@ a {
     text-decoration: none;
 }
 
+.contact-direct .whatsapp-contact-link {
+    display: inline-flex;
+    width: max-content;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 12px 16px;
+    border: 1px solid rgba(31, 122, 77, 0.28);
+    border-radius: 8px;
+    background-color: #1f7a4d;
+    color: var(--color-text-inverse);
+    box-shadow: 0 8px 18px rgba(31, 122, 77, 0.18);
+    transition: background-color var(--transition-medium), box-shadow var(--transition-medium), transform var(--transition-medium);
+}
+
+.contact-direct .whatsapp-contact-link:hover {
+    background-color: #17633d;
+    box-shadow: 0 12px 24px rgba(31, 122, 77, 0.22);
+    transform: translateY(-2px);
+}
+
 form {
     display: flex;
     flex-direction: column;
@@ -971,6 +992,10 @@ form textarea {
     font-size: 0.9rem;
 }
 
+.mobile-whatsapp-cta {
+    display: none;
+}
+
 .fade-in-section {
     opacity: 0;
     transform: translateY(20px);
@@ -1055,6 +1080,10 @@ form textarea {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding-bottom: 74px;
+    }
+
     .navbar {
         flex-wrap: wrap;
         padding: 10px 20px;
@@ -1093,6 +1122,35 @@ form textarea {
 
     .section-block {
         padding: 64px 0;
+    }
+
+    .mobile-whatsapp-cta {
+        position: fixed;
+        right: 14px;
+        bottom: 14px;
+        z-index: 1100;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 16px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        background-color: #1f7a4d;
+        color: var(--color-text-inverse);
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.26);
+        font-size: 0.92rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .mobile-whatsapp-cta::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background-color: #bff0d2;
+        content: "";
     }
 }
 
@@ -1186,6 +1244,10 @@ form textarea {
     .project-highlight-content,
     .contact-form {
         padding: 30px 24px;
+    }
+
+    .contact-direct .whatsapp-contact-link {
+        width: 100%;
     }
 
     .footer-links {
