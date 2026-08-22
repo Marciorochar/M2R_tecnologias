@@ -856,6 +856,63 @@ form textarea {
     margin: 0 auto 28px;
 }
 
+.error-page {
+    display: grid;
+    min-height: calc(100vh - 214px);
+    align-items: center;
+}
+
+.error-page-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
+    align-items: center;
+    gap: 56px;
+}
+
+.error-page-copy {
+    max-width: 720px;
+}
+
+.error-page-copy h1 {
+    margin-bottom: 18px;
+}
+
+.error-page-copy .hero-actions {
+    margin-top: 32px;
+}
+
+.error-page-panel {
+    display: grid;
+    min-height: 320px;
+    place-items: center;
+    padding: 42px;
+    border: 1px solid rgba(239, 195, 143, 0.38);
+    border-radius: 8px;
+    background:
+        linear-gradient(145deg, rgba(255, 250, 244, 0.98) 0%, rgba(239, 216, 187, 0.98) 100%),
+        var(--color-accent-light);
+    color: var(--color-primary-dark);
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+}
+
+.error-page-panel img {
+    width: min(68%, 230px);
+    filter: drop-shadow(0 14px 20px rgba(90, 59, 32, 0.18));
+}
+
+.error-page-panel strong {
+    margin-top: 30px;
+    font-size: clamp(4rem, 10vw, 6.5rem);
+    line-height: 0.9;
+}
+
+.error-page-panel span {
+    color: var(--color-text-secondary);
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
 .site-footer {
     padding: 48px 0 22px;
     background-color: #1f1f1f;
@@ -955,6 +1012,10 @@ form textarea {
     .hero-layout,
     .home-about-layout,
     .project-highlight {
+        grid-template-columns: 1fr;
+    }
+
+    .error-page-layout {
         grid-template-columns: 1fr;
     }
 
@@ -1076,6 +1137,15 @@ form textarea {
     .hero-highlights {
         display: grid;
         grid-template-columns: 1fr;
+    }
+
+    .error-page {
+        min-height: 0;
+    }
+
+    .error-page-panel {
+        min-height: 260px;
+        padding: 30px;
     }
 
     .card-grid--four {

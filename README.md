@@ -10,6 +10,7 @@ O projeto nao possui login, cadastro, area restrita, usuario ou senha de e-mail.
 M2R/
   frontend/
     index.html
+    404.html
     robots.txt
     sitemap.xml
     assets/
