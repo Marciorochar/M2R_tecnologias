@@ -1,4 +1,66 @@
 {
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/servicos/",
+      "destination": "/servicos",
+      "permanent": true
+    },
+    {
+      "source": "/projetos/",
+      "destination": "/projetos",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/sobre/",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/contato/",
+      "destination": "/contato",
+      "permanent": true
+    },
+    {
+      "source": "/pages/servicos.html",
+      "destination": "/servicos",
+      "permanent": true
+    },
+    {
+      "source": "/pages/projetos.html",
+      "destination": "/projetos",
+      "permanent": true
+    },
+    {
+      "source": "/pages/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/pages/sobre.html",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/pages/contato.html",
+      "destination": "/contato",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/",
