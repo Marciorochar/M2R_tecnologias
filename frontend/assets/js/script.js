@@ -31,6 +31,10 @@ function initApp() {
             return 'projetos';
         }
 
+        if (parts.includes('blog')) {
+            return 'blog';
+        }
+
         return page;
     };
     const currentPath = normalizePage(window.location.pathname);

@@ -379,6 +379,124 @@ a {
     line-height: 1.65;
 }
 
+.blog-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card .text-link {
+    margin-top: auto;
+    padding-top: 24px;
+}
+
+.blog-meta {
+    margin-bottom: 12px !important;
+    color: var(--color-text-meta) !important;
+    font-size: 0.84rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.article-hero {
+    padding-bottom: 68px;
+}
+
+.article-hero .article-meta {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: start;
+    gap: 54px;
+}
+
+.article-content {
+    max-width: 780px;
+}
+
+.article-content h2 {
+    margin: 42px 0 14px;
+    color: var(--color-text-primary);
+    font-size: clamp(1.6rem, 2.7vw, 2.2rem);
+    line-height: 1.25;
+}
+
+.article-content h2:first-child {
+    margin-top: 0;
+}
+
+.article-content p,
+.article-content li {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.78;
+}
+
+.article-content p {
+    margin: 0 0 18px;
+}
+
+.article-content ul,
+.article-content ol {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0 28px;
+    padding-left: 22px;
+}
+
+.article-content li::marker {
+    color: var(--color-primary);
+    font-weight: 800;
+}
+
+.article-aside {
+    position: sticky;
+    top: 104px;
+    display: grid;
+    gap: 18px;
+}
+
+.article-aside-card {
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.article-aside-card h2 {
+    margin: 0 0 12px;
+    font-size: 1rem;
+}
+
+.article-aside-card p {
+    margin: 0 0 18px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+}
+
+.article-callout {
+    margin: 34px 0;
+    padding: 26px;
+    border-left: 4px solid var(--color-accent);
+    border-radius: 8px;
+    background-color: var(--color-accent-light);
+}
+
+.article-callout strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+}
+
+.article-callout p {
+    margin: 0;
+}
+
 .service-icon {
     display: inline-grid;
     min-width: 40px;
@@ -1282,12 +1400,17 @@ form textarea {
     .project-detail-grid,
     .project-tech-grid,
     .project-status-layout,
-    .project-mockup-grid {
+    .project-mockup-grid,
+    .article-layout {
         grid-template-columns: 1fr;
     }
 
     .error-page-layout {
         grid-template-columns: 1fr;
+    }
+
+    .article-aside {
+        position: static;
     }
 
     .home-hero {

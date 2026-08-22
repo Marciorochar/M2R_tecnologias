@@ -23,6 +23,9 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 | Projetos | `frontend/pages/projetos.html` | `/projetos` |
 | M2R Server | `frontend/pages/projetos/m2r-server.html` | `/projetos/m2r-server` |
 | Blog | `frontend/pages/blog.html` | `/blog` |
+| Artigo: Automacao para pequenos negocios | `frontend/pages/blog/automacao-para-pequenos-negocios.html` | `/blog/automacao-para-pequenos-negocios` |
+| Artigo: Site profissional fortalece marca | `frontend/pages/blog/site-profissional-fortalece-marca.html` | `/blog/site-profissional-fortalece-marca` |
+| Artigo: Organizacao de processos digitais | `frontend/pages/blog/organizacao-de-processos-digitais.html` | `/blog/organizacao-de-processos-digitais` |
 | Sobre | `frontend/pages/sobre.html` | `/sobre` |
 | Contato | `frontend/pages/contato.html` | `/contato` |
 | Erro 404 | `frontend/404.html` | `/404` |
@@ -71,6 +74,10 @@ M2R/
       projetos/
         m2r-server.html
       blog.html
+      blog/
+        automacao-para-pequenos-negocios.html
+        site-profissional-fortalece-marca.html
+        organizacao-de-processos-digitais.html
       sobre.html
       contato.html
   backend/
@@ -163,6 +170,9 @@ Rotas configuradas:
 - `/projetos`
 - `/projetos/m2r-server`
 - `/blog`
+- `/blog/automacao-para-pequenos-negocios`
+- `/blog/site-profissional-fortalece-marca`
+- `/blog/organizacao-de-processos-digitais`
 - `/sobre`
 - `/contato`
 - `/404`

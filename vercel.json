@@ -31,6 +31,21 @@
       "permanent": true
     },
     {
+      "source": "/blog/automacao-para-pequenos-negocios/",
+      "destination": "/blog/automacao-para-pequenos-negocios",
+      "permanent": true
+    },
+    {
+      "source": "/blog/site-profissional-fortalece-marca/",
+      "destination": "/blog/site-profissional-fortalece-marca",
+      "permanent": true
+    },
+    {
+      "source": "/blog/organizacao-de-processos-digitais/",
+      "destination": "/blog/organizacao-de-processos-digitais",
+      "permanent": true
+    },
+    {
       "source": "/sobre/",
       "destination": "/sobre",
       "permanent": true
@@ -58,6 +73,21 @@
     {
       "source": "/pages/blog.html",
       "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/pages/blog/automacao-para-pequenos-negocios.html",
+      "destination": "/blog/automacao-para-pequenos-negocios",
+      "permanent": true
+    },
+    {
+      "source": "/pages/blog/site-profissional-fortalece-marca.html",
+      "destination": "/blog/site-profissional-fortalece-marca",
+      "permanent": true
+    },
+    {
+      "source": "/pages/blog/organizacao-de-processos-digitais.html",
+      "destination": "/blog/organizacao-de-processos-digitais",
       "permanent": true
     },
     {
@@ -91,6 +121,18 @@
     {
       "source": "/blog",
       "destination": "/frontend/pages/blog.html"
+    },
+    {
+      "source": "/blog/automacao-para-pequenos-negocios",
+      "destination": "/frontend/pages/blog/automacao-para-pequenos-negocios.html"
+    },
+    {
+      "source": "/blog/site-profissional-fortalece-marca",
+      "destination": "/frontend/pages/blog/site-profissional-fortalece-marca.html"
+    },
+    {
+      "source": "/blog/organizacao-de-processos-digitais",
+      "destination": "/frontend/pages/blog/organizacao-de-processos-digitais.html"
     },
     {
       "source": "/sobre",
