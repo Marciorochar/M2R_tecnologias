@@ -1,0 +1,245 @@
+name: Validar site
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validacoes estaticas
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validar sintaxe JavaScript
+        run: node --check frontend/assets/js/script.js
+
+      - name: Validar vercel.json
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+
+          const config = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+
+          if (!Array.isArray(config.redirects)) {
+            throw new Error('vercel.json precisa de redirects.');
+          }
+
+          if (!Array.isArray(config.rewrites)) {
+            throw new Error('vercel.json precisa de rewrites.');
+          }
+
+          if (!Array.isArray(config.headers)) {
+            throw new Error('vercel.json precisa de headers.');
+          }
+
+          const catchAllRewrite = config.rewrites.find((rule) => rule.source === '/(.*)');
+          if (catchAllRewrite) {
+            throw new Error('Nao use rewrite catch-all para 404, pois pode retornar HTTP 200.');
+          }
+
+          const globalHeaders = config.headers.find((rule) => rule.source === '/(.*)');
+          const assetHeaders = config.headers.find((rule) => rule.source === '/assets/(.*)');
+          const requiredHeaders = ['X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy'];
+
+          for (const header of requiredHeaders) {
+            if (!globalHeaders?.headers?.some((item) => item.key === header)) {
+              throw new Error(`Header global ausente: ${header}`);
+            }
+
+            if (!assetHeaders?.headers?.some((item) => item.key === header)) {
+              throw new Error(`Header de assets ausente: ${header}`);
+            }
+          }
+
+          const cacheHeader = assetHeaders?.headers?.find((item) => item.key === 'Cache-Control');
+          if (!cacheHeader?.value?.includes('max-age=31536000') || !cacheHeader.value.includes('immutable')) {
+            throw new Error('Cache-Control de assets precisa usar cache longo e immutable.');
+          }
+
+          console.log('vercel.json OK');
+          NODE
+
+      - name: Validar sitemap
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+
+          const sitemap = fs.readFileSync('frontend/sitemap.xml', 'utf8');
+          const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+          const urls = [...sitemap.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)];
+
+          if (urls.length === 0) {
+            throw new Error('sitemap.xml nao possui URLs validas com lastmod.');
+          }
+
+          const rewrites = new Set(vercel.rewrites.map((rule) => rule.source));
+
+          for (const [, loc, lastmod] of urls) {
+            const url = new URL(loc);
+
+            if (url.origin !== 'https://m2rtecnologias.vercel.app') {
+              throw new Error(`URL fora do dominio oficial: ${loc}`);
+            }
+
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod)) {
+              throw new Error(`lastmod invalido em ${loc}: ${lastmod}`);
+            }
+
+            const path = url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
+            if (!rewrites.has(path)) {
+              throw new Error(`URL do sitemap sem rewrite correspondente: ${path}`);
+            }
+          }
+
+          console.log(`sitemap OK: ${urls.length} URLs`);
+          NODE
+
+      - name: Conferir links internos
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const htmlFiles = [];
+          const walk = (dir) => {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const fullPath = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(fullPath);
+              else if (entry.name.endsWith('.html')) htmlFiles.push(fullPath);
+            }
+          };
+
+          walk('frontend');
+          htmlFiles.push('404.html');
+
+          const siteRoutes = new Set([
+            '/',
+            '/servicos',
+            '/projetos',
+            '/projetos/m2r-server',
+            '/blog',
+            '/blog/automacao-para-pequenos-negocios',
+            '/blog/site-profissional-fortalece-marca',
+            '/blog/organizacao-de-processos-digitais',
+            '/sobre',
+            '/contato',
+            '/404',
+          ]);
+
+          const missing = [];
+          const attrPattern = /\b(?:href|src)="([^"]+)"/g;
+
+          for (const file of htmlFiles) {
+            const content = fs.readFileSync(file, 'utf8');
+
+            for (const match of content.matchAll(attrPattern)) {
+              const target = match[1];
+              if (/^(https?:|mailto:|tel:|#)/.test(target)) continue;
+
+              const clean = target.split('#')[0];
+              if (!clean) continue;
+              if (siteRoutes.has(clean)) continue;
+
+              let resolved;
+              if (clean.startsWith('/assets/')) {
+                resolved = path.join('frontend', clean.slice(1));
+              } else if (clean.startsWith('/')) {
+                continue;
+              } else {
+                resolved = path.join(path.dirname(file), clean);
+              }
+
+              if (!fs.existsSync(resolved)) {
+                missing.push(`${file}: link quebrado ${target}`);
+              }
+            }
+          }
+
+          if (missing.length) {
+            throw new Error(missing.join('\n'));
+          }
+
+          console.log('links internos OK');
+          NODE
+
+      - name: Bloquear Google Fonts
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const files = [];
+          const walk = (dir) => {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const fullPath = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(fullPath);
+              else if (/\.(html|css|js)$/.test(entry.name)) files.push(fullPath);
+            }
+          };
+
+          walk('frontend');
+
+          const offenders = files.filter((file) => {
+            const content = fs.readFileSync(file, 'utf8');
+            return content.includes('fonts.googleapis') || content.includes('fonts.gstatic');
+          });
+
+          if (offenders.length) {
+            throw new Error(`Google Fonts encontrado em:\n${offenders.join('\n')}`);
+          }
+
+          console.log('fontes externas OK');
+          NODE
+
+      - name: Conferir dimensoes das imagens
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const htmlFiles = [];
+          const walk = (dir) => {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const fullPath = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(fullPath);
+              else if (entry.name.endsWith('.html')) htmlFiles.push(fullPath);
+            }
+          };
+
+          walk('frontend');
+          htmlFiles.push('404.html');
+
+          const issues = [];
+          const imgPattern = /<img\b[^>]*>/g;
+
+          for (const file of htmlFiles) {
+            const content = fs.readFileSync(file, 'utf8');
+
+            for (const match of content.matchAll(imgPattern)) {
+              const tag = match[0];
+              if (!/\bwidth="/.test(tag)) issues.push(`${file}: imagem sem width: ${tag}`);
+              if (!/\bheight="/.test(tag)) issues.push(`${file}: imagem sem height: ${tag}`);
+            }
+          }
+
+          if (issues.length) {
+            throw new Error(issues.join('\n'));
+          }
+
+          console.log('dimensoes de imagens OK');
+          NODE

@@ -1,6 +1,7 @@
 # M2R Tecnologias
 
 [![Deploy](https://img.shields.io/badge/deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://m2rtecnologias.vercel.app/)
+[![Validar site](https://github.com/Marciorochar/M2R_tecnologias/actions/workflows/validate-site.yml/badge.svg)](https://github.com/Marciorochar/M2R_tecnologias/actions/workflows/validate-site.yml)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=000)](https://developer.mozilla.org/docs/Web/JavaScript)
@@ -23,6 +24,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Imagens da marca otimizadas e com dimensoes declaradas no HTML.
 - Melhorias de acessibilidade com foco visivel, link para pular ao conteudo e menu ativo com `aria-current`.
 - Headers de seguranca e cache configurados no `vercel.json`.
+- GitHub Actions para validar JS, Vercel, sitemap, links internos, fontes e dimensoes de imagens.
 
 ## Links
 
@@ -122,6 +124,9 @@ M2R/
       projetos.png
       blog.png
   .gitignore
+  .github/
+    workflows/
+      validate-site.yml
   CHANGELOG.md
   LICENSE
   README.md
@@ -270,6 +275,7 @@ git push origin main
 - Conferir `/404` e uma rota inexistente com status HTTP 404 no deploy.
 - Conferir `/robots.txt`.
 - Conferir `/sitemap.xml`.
+- Atualizar os prints em `docs/screenshots/` quando houver mudanca visual relevante.
 - Se o backend for publicado, testar `/healthz`.
 
 ## Status atual

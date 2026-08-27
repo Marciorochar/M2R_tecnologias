@@ -15,6 +15,7 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 
 - Headers de seguranca `X-Content-Type-Options`, `Referrer-Policy` e `Permissions-Policy`.
 - Cache longo para arquivos estaticos em `/assets/*`.
+- Workflow do GitHub Actions para validar site estatico em push e pull request.
 
 ## [1.0.0] - 2026-08-22
 
