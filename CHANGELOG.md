@@ -4,6 +4,13 @@ Todas as mudancas notaveis deste projeto serao documentadas aqui.
 
 O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas em `AAAA-MM-DD`.
 
+## [1.0.1] - 2026-08-27
+
+### Corrigido
+
+- Ajuste do fallback 404 para permitir status HTTP 404 real em rotas inexistentes na Vercel.
+- Inclusao de `404.html` na raiz do projeto para erro personalizado nativo da Vercel.
+
 ## [1.0.0] - 2026-08-22
 
 ### Adicionado

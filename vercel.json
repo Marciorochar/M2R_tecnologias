@@ -157,10 +157,6 @@
     {
       "source": "/404",
       "destination": "/frontend/404.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/404.html"
     }
   ]
 }

@@ -16,7 +16,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Frontend estatico dentro da pasta `frontend/`.
 - Backend Flask separado dentro da pasta `backend/`.
 - Rotas limpas configuradas no `vercel.json`.
-- Pagina `404.html` personalizada.
+- Pagina `404.html` personalizada com fallback nativo de erro 404 na Vercel.
 - `robots.txt` e `sitemap.xml` preparados para publicacao.
 - Formulario de contato sem login, sem usuario de e-mail, sem senha e sem SMTP.
 - Fonte de sistema para evitar dependencia externa de carregamento.
@@ -58,7 +58,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 | Artigo: Organizacao de processos digitais | `frontend/pages/blog/organizacao-de-processos-digitais.html` | `/blog/organizacao-de-processos-digitais` |
 | Sobre | `frontend/pages/sobre.html` | `/sobre` |
 | Contato | `frontend/pages/contato.html` | `/contato` |
-| Erro 404 | `frontend/404.html` | `/404` |
+| Erro 404 | `404.html` e `frontend/404.html` | `/404` e rotas inexistentes |
 
 ## Tecnologias
 
@@ -84,6 +84,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 
 ```text
 M2R/
+  404.html
   frontend/
     index.html
     404.html
@@ -199,6 +200,7 @@ deixar vazio
 ```
 
 O arquivo `vercel.json` faz o roteamento da raiz do projeto para os arquivos dentro de `frontend/`.
+A pagina `404.html` na raiz e usada pela Vercel como fallback nativo para rotas inexistentes, preservando o status HTTP 404.
 
 Rotas configuradas:
 
@@ -217,6 +219,7 @@ Rotas configuradas:
 - `/sitemap.xml`
 
 Tambem ha redirecionamentos para URLs antigas, como `/index.html` e `/pages/contato.html`.
+Rotas inexistentes nao usam rewrite generico; elas caem no 404 nativo da Vercel.
 
 ## Deploy do backend no Render
 
@@ -262,7 +265,7 @@ git push origin main
 - Conferir se as rotas limpas funcionam.
 - Testar menu mobile.
 - Testar o formulario abrindo o aplicativo de e-mail.
-- Conferir `/404` e uma rota inexistente.
+- Conferir `/404` e uma rota inexistente com status HTTP 404 no deploy.
 - Conferir `/robots.txt`.
 - Conferir `/sitemap.xml`.
 - Se o backend for publicado, testar `/healthz`.
