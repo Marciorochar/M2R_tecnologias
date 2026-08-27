@@ -22,6 +22,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Fonte de sistema para evitar dependencia externa de carregamento.
 - Imagens da marca otimizadas e com dimensoes declaradas no HTML.
 - Melhorias de acessibilidade com foco visivel, link para pular ao conteudo e menu ativo com `aria-current`.
+- Headers de seguranca e cache configurados no `vercel.json`.
 
 ## Links
 
@@ -201,6 +202,7 @@ deixar vazio
 
 O arquivo `vercel.json` faz o roteamento da raiz do projeto para os arquivos dentro de `frontend/`.
 A pagina `404.html` na raiz e usada pela Vercel como fallback nativo para rotas inexistentes, preservando o status HTTP 404.
+O mesmo arquivo tambem define headers de seguranca para todas as rotas e cache longo para arquivos em `/assets/*`.
 
 Rotas configuradas:
 

@@ -11,6 +11,11 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 - Ajuste do fallback 404 para permitir status HTTP 404 real em rotas inexistentes na Vercel.
 - Inclusao de `404.html` na raiz do projeto para erro personalizado nativo da Vercel.
 
+### Adicionado
+
+- Headers de seguranca `X-Content-Type-Options`, `Referrer-Policy` e `Permissions-Policy`.
+- Cache longo para arquivos estaticos em `/assets/*`.
+
 ## [1.0.0] - 2026-08-22
 
 ### Adicionado
