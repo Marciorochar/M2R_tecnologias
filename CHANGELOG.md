@@ -13,6 +13,7 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 - Testes automatizados para rotas principais do backend Flask e validacao de contato.
 - Limite de tamanho para requisicoes do backend.
 - Validacao no CI para manter `404.html` e `frontend/404.html` sincronizados.
+- Checkout completo no GitHub Actions para permitir `lastmod` confiavel no sitemap automatico.
 
 ### Alterado
 
@@ -21,6 +22,7 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 - Cache de `/assets/*` alterado para `max-age=3600, must-revalidate`, evitando `immutable` em arquivos com nomes fixos.
 - CORS do backend separado por ambiente, mantendo localhost apenas em desenvolvimento.
 - Validacao de links internos do CI passa a derivar rotas do `vercel.json`.
+- Gerador de sitemap passa a falhar em modo `--check` quando o historico Git necessario nao estiver disponivel.
 
 ## [1.0.3] - 2026-09-06
 
