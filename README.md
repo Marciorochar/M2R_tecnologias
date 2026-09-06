@@ -280,7 +280,7 @@ O workflow do GitHub Actions tambem roda em cada push e pull request para valida
 - links internos;
 - ausencia de Google Fonts;
 - dimensoes declaradas em imagens;
-- dependencias do backend;
+- dependencias do backend com versoes fixadas no `backend/requirements.txt`;
 - sintaxe Python;
 - testes Python, quando existirem;
 - auditoria de vulnerabilidades com `pip-audit`.
@@ -289,6 +289,8 @@ O Dependabot verifica semanalmente:
 
 - pacotes Python do `backend/requirements.txt`;
 - versoes usadas pelos workflows do GitHub Actions.
+
+As versoes das dependencias Python ficam somente em `backend/requirements.txt`. O workflow valida o formato com pin exato (`==`) e usa instalacao, testes e `pip-audit` para verificar compatibilidade e seguranca.
 
 Depois, envie para o GitHub:
 
