@@ -201,8 +201,12 @@ jobs:
           }
 
           const cacheHeader = assetHeaders?.headers?.find((item) => item.key === 'Cache-Control');
-          if (!cacheHeader?.value?.includes('max-age=31536000') || !cacheHeader.value.includes('immutable')) {
-            throw new Error('Cache-Control de assets precisa usar cache longo e immutable.');
+          if (!cacheHeader?.value?.includes('max-age=3600') || !cacheHeader.value.includes('must-revalidate')) {
+            throw new Error('Cache-Control de assets precisa usar cache curto com revalidacao para nomes de arquivos fixos.');
+          }
+
+          if (cacheHeader.value.includes('immutable')) {
+            throw new Error('Nao use immutable em /assets/* enquanto CSS, JS e imagens tiverem nomes fixos.');
           }
 
           const cspHeader = globalHeaders?.headers?.find((item) => item.key === 'Content-Security-Policy');

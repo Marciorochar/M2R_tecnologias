@@ -212,7 +212,7 @@ deixar vazio
 
 O arquivo `vercel.json` faz o roteamento da raiz do projeto para os arquivos dentro de `frontend/`.
 A pagina `404.html` na raiz e usada pela Vercel como fallback nativo para rotas inexistentes, preservando o status HTTP 404.
-O mesmo arquivo tambem define headers de seguranca para todas as rotas e cache longo para arquivos em `/assets/*`.
+O mesmo arquivo tambem define headers de seguranca para todas as rotas e cache curto com revalidacao para arquivos em `/assets/*`, pois CSS, JavaScript e imagens ainda usam nomes fixos.
 
 Rotas configuradas:
 

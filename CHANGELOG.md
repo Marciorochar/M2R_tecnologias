@@ -15,6 +15,7 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 
 - README atualizado com orientacao para gerar e validar o sitemap antes da publicacao.
 - Workflow ajustado para nao duplicar versoes de dependencias Python fora do `backend/requirements.txt`.
+- Cache de `/assets/*` alterado para `max-age=3600, must-revalidate`, evitando `immutable` em arquivos com nomes fixos.
 
 ## [1.0.3] - 2026-09-06
 
