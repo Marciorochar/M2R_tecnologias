@@ -25,6 +25,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Melhorias de acessibilidade com foco visivel, link para pular ao conteudo e menu ativo com `aria-current`.
 - Headers de seguranca e cache configurados no `vercel.json`.
 - GitHub Actions para validar JS, Vercel, sitemap, links internos, fontes e dimensoes de imagens.
+- Dependabot configurado para revisar dependencias Python e GitHub Actions semanalmente.
 
 ## Links
 
@@ -125,6 +126,7 @@ M2R/
       blog.png
   .gitignore
   .github/
+    dependabot.yml
     workflows/
       validate-site.yml
   CHANGELOG.md
@@ -271,6 +273,11 @@ O workflow do GitHub Actions tambem roda em cada push e pull request para valida
 - sintaxe Python;
 - testes Python, quando existirem;
 - auditoria de vulnerabilidades com `pip-audit`.
+
+O Dependabot verifica semanalmente:
+
+- pacotes Python do `backend/requirements.txt`;
+- versoes usadas pelos workflows do GitHub Actions.
 
 Depois, envie para o GitHub:
 

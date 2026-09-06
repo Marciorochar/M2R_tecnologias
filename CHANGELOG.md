@@ -12,6 +12,7 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 - Validacao no GitHub Actions para impedir remocao acidental das diretivas CSP principais.
 - Validacoes de CI para instalacao do backend, `pip-audit`, testes Python quando existirem, HTML e CSS.
 - `python-dotenv` atualizado para `1.2.2` apos auditoria automatizada de dependencias.
+- Dependabot configurado para atualizar semanalmente dependencias Python e GitHub Actions.
 
 ## [1.0.2] - 2026-09-06
 
