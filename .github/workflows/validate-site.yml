@@ -124,7 +124,7 @@ jobs:
               "Flask-Cors": "6.0.5",
               "Flask-Limiter": "4.1.1",
               "gunicorn": "26.2.0",
-              "python-dotenv": "1.0.1",
+              "python-dotenv": "1.2.2",
           }
 
           requirements = {}
@@ -147,6 +147,25 @@ jobs:
 
       - name: Validar sintaxe Python
         run: python -m py_compile backend/app.py
+
+      - name: Instalar dependencias do backend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r backend/requirements.txt
+
+      - name: Rodar testes Python
+        run: |
+          if find . -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
+            python -m pip install pytest
+            python -m pytest
+          else
+            echo "Sem testes Python no repositorio."
+          fi
+
+      - name: Auditar dependencias Python
+        run: |
+          python -m pip install pip-audit
+          python -m pip_audit -r backend/requirements.txt
 
       - name: Validar vercel.json
         run: |
@@ -253,6 +272,71 @@ jobs:
           }
 
           console.log(`sitemap OK: ${urls.length} URLs`);
+          NODE
+
+      - name: Validar HTML e CSS
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+
+          const htmlFiles = [];
+          const walk = (dir) => {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const fullPath = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(fullPath);
+              else if (entry.name.endsWith('.html')) htmlFiles.push(fullPath);
+            }
+          };
+
+          walk('frontend');
+          htmlFiles.push('404.html');
+
+          const issues = [];
+          for (const file of htmlFiles) {
+            const html = fs.readFileSync(file, 'utf8');
+
+            if (!/<html\s+lang="pt-BR"/.test(html)) {
+              issues.push(`${file}: atributo lang pt-BR ausente`);
+            }
+
+            if (!/<title>[^<]+<\/title>/.test(html)) {
+              issues.push(`${file}: title ausente`);
+            }
+
+            if (!/<meta\s+name="description"\s+content="[^"]+"/.test(html)) {
+              issues.push(`${file}: meta description ausente`);
+            }
+
+            if (!/<main\s+id="conteudo-principal"/.test(html)) {
+              issues.push(`${file}: main conteudo-principal ausente`);
+            }
+
+            if (!/class="skip-link"/.test(html)) {
+              issues.push(`${file}: skip link ausente`);
+            }
+
+            if (/\son[a-z]+\s*=/.test(html)) {
+              issues.push(`${file}: handler inline encontrado`);
+            }
+          }
+
+          const css = fs.readFileSync('frontend/assets/css/style.css', 'utf8');
+          const openBraces = (css.match(/\{/g) || []).length;
+          const closeBraces = (css.match(/\}/g) || []).length;
+          if (openBraces !== closeBraces) {
+            issues.push(`style.css: chaves desbalanceadas (${openBraces} abertas, ${closeBraces} fechadas)`);
+          }
+
+          if (/style="/.test(css)) {
+            issues.push('style.css: atributo style= nao deve aparecer no CSS');
+          }
+
+          if (issues.length) {
+            throw new Error(issues.join('\n'));
+          }
+
+          console.log(`HTML e CSS OK: ${htmlFiles.length} paginas`);
           NODE
 
       - name: Conferir links internos

@@ -250,13 +250,27 @@ Nao configure usuario ou senha de e-mail no Render.
 
 ## Validacao antes de publicar
 
-Use estes comandos antes de fazer commit:
+Use estes comandos para uma validacao local rapida antes de fazer commit:
 
 ```powershell
 python -m py_compile backend/app.py
 node --check frontend/assets/js/script.js
 git status
 ```
+
+O workflow do GitHub Actions tambem roda em cada push e pull request para validar:
+
+- JavaScript;
+- HTML e CSS;
+- `vercel.json`;
+- sitemap;
+- links internos;
+- ausencia de Google Fonts;
+- dimensoes declaradas em imagens;
+- dependencias do backend;
+- sintaxe Python;
+- testes Python, quando existirem;
+- auditoria de vulnerabilidades com `pip-audit`.
 
 Depois, envie para o GitHub:
 
