@@ -4,6 +4,19 @@ Todas as mudancas notaveis deste projeto serao documentadas aqui.
 
 O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas em `AAAA-MM-DD`.
 
+## [1.0.2] - 2026-09-06
+
+### Corrigido
+
+- Atualizacao das dependencias do backend para remover `Flask-Cors` da faixa afetada por vulnerabilidades conhecidas.
+
+### Alterado
+
+- `Flask` atualizado para `3.1.3`.
+- `Flask-Cors` atualizado para `6.0.5`.
+- `Flask-Limiter` atualizado para `4.1.1`.
+- `gunicorn` atualizado para `26.2.0`.
+
 ## [1.0.1] - 2026-08-27
 
 ### Corrigido
