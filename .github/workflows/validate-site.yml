@@ -244,6 +244,7 @@ jobs:
 
       - name: Validar sitemap
         run: |
+          node tools/generate-sitemap.js --check
           node - <<'NODE'
           const fs = require('node:fs');
 

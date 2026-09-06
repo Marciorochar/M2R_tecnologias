@@ -19,6 +19,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Rotas limpas configuradas no `vercel.json`.
 - Pagina `404.html` personalizada com fallback nativo de erro 404 na Vercel.
 - `robots.txt` e `sitemap.xml` preparados para publicacao.
+- Sitemap gerado a partir das rotas do `vercel.json`, com `lastmod` baseado no historico do Git.
 - Formulario de contato sem login, sem usuario de e-mail, sem senha e sem SMTP.
 - Fonte de sistema para evitar dependencia externa de carregamento.
 - Imagens da marca otimizadas e com dimensoes declaradas no HTML.
@@ -129,6 +130,8 @@ M2R/
     dependabot.yml
     workflows/
       validate-site.yml
+  tools/
+    generate-sitemap.js
   CHANGELOG.md
   LICENSE
   README.md
@@ -255,9 +258,16 @@ Nao configure usuario ou senha de e-mail no Render.
 Use estes comandos para uma validacao local rapida antes de fazer commit:
 
 ```powershell
+node tools/generate-sitemap.js --check
 python -m py_compile backend/app.py
 node --check frontend/assets/js/script.js
 git status
+```
+
+Quando uma pagina nova for criada ou uma rota mudar, atualize o sitemap com:
+
+```powershell
+node tools/generate-sitemap.js
 ```
 
 O workflow do GitHub Actions tambem roda em cada push e pull request para validar:
@@ -266,6 +276,7 @@ O workflow do GitHub Actions tambem roda em cada push e pull request para valida
 - HTML e CSS;
 - `vercel.json`;
 - sitemap;
+- sitemap atualizado a partir do `vercel.json`;
 - links internos;
 - ausencia de Google Fonts;
 - dimensoes declaradas em imagens;

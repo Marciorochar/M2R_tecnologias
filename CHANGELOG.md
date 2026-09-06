@@ -4,6 +4,17 @@ Todas as mudancas notaveis deste projeto serao documentadas aqui.
 
 O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas em `AAAA-MM-DD`.
 
+## [1.0.4] - 2026-09-06
+
+### Adicionado
+
+- Gerador de sitemap baseado nas rotas do `vercel.json`, com `lastmod` calculado pelo historico do Git.
+- Validacao no GitHub Actions para detectar `frontend/sitemap.xml` desatualizado.
+
+### Alterado
+
+- README atualizado com orientacao para gerar e validar o sitemap antes da publicacao.
+
 ## [1.0.3] - 2026-09-06
 
 ### Adicionado
