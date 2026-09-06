@@ -1520,12 +1520,11 @@ form textarea {
         padding: 10px 20px;
     }
 
-    .mobile-menu-btn {
+    .menu-js-enabled .mobile-menu-btn {
         display: block;
     }
 
     .nav-links {
-        display: none;
         width: 100%;
         flex-direction: column;
         align-items: stretch;
@@ -1536,7 +1535,11 @@ form textarea {
         animation: slideDown 0.25s ease forwards;
     }
 
-    .navbar.menu-open .nav-links {
+    .menu-js-enabled .nav-links {
+        display: none;
+    }
+
+    .menu-js-enabled .navbar.menu-open .nav-links {
         display: flex;
     }
 

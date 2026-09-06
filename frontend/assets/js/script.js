@@ -81,35 +81,38 @@ function initApp() {
             }
         });
 
-        // Criação dinâmica do botão Hambúrguer para mobile
-        const mobileBtn = document.createElement('button');
-        mobileBtn.className = 'mobile-menu-btn';
-        mobileBtn.innerHTML = '☰';
-        mobileBtn.setAttribute('aria-label', 'Abrir menu mobile');
-        mobileBtn.setAttribute('aria-expanded', 'false');
-        
         const navLinks = navbar.querySelector('.nav-links');
-        if (navLinks) {
-            navbar.insertBefore(mobileBtn, navLinks);
-        }
+        const mobileBtn = navbar.querySelector('.mobile-menu-btn');
+        if (navLinks && !navLinks.id) navLinks.id = 'menu-principal';
 
-        // Lógica de abrir/fechar o menu mobile
-        mobileBtn.addEventListener('click', () => {
-            const isOpen = navbar.classList.toggle('menu-open');
-            mobileBtn.innerHTML = isOpen ? '✕' : '☰';
-            mobileBtn.setAttribute('aria-expanded', isOpen.toString());
-        });
+        if (mobileBtn && navLinks) {
+            document.documentElement.classList.add('menu-js-enabled');
+            mobileBtn.setAttribute('aria-controls', navLinks.id);
 
-        // Fechar o menu ao clicar em um link
-        const links = navbar.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    navbar.classList.remove('menu-open');
-                    mobileBtn.innerHTML = '☰';
-                }
+            const setMobileMenuState = (isOpen) => {
+                navbar.classList.toggle('menu-open', isOpen);
+                mobileBtn.innerHTML = isOpen ? '✕' : '☰';
+                mobileBtn.setAttribute('aria-expanded', isOpen.toString());
+                mobileBtn.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+            };
+
+            setMobileMenuState(false);
+
+            // Lógica de abrir/fechar o menu mobile
+            mobileBtn.addEventListener('click', () => {
+                setMobileMenuState(!navbar.classList.contains('menu-open'));
             });
-        });
+
+            // Fechar o menu ao clicar em um link
+            const links = navbar.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        setMobileMenuState(false);
+                    }
+                });
+            });
+        }
     }
 
     /*
