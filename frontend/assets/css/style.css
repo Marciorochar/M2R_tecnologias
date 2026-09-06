@@ -1405,14 +1405,27 @@ form textarea {
 }
 
 .fade-in-section {
+    opacity: 1;
+    transform: none;
+}
+
+.reveal-animations-enabled .fade-in-section {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
-.fade-in-section.is-visible {
+.reveal-animations-enabled .fade-in-section.is-visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-animations-enabled .fade-in-section {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
 
 @keyframes slideDown {

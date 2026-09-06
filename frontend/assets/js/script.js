@@ -202,8 +202,13 @@ function initApp() {
     */
 
     const fadeInSections = document.querySelectorAll('.fade-in-section');
+    const canAnimateSections = (
+        'IntersectionObserver' in window &&
+        fadeInSections.length > 0 &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
 
-    if ('IntersectionObserver' in window && fadeInSections.length > 0) {
+    if (canAnimateSections) {
         const fadeInObserverOptions = {
             root: null,
             rootMargin: '0px',
@@ -224,6 +229,7 @@ function initApp() {
         fadeInSections.forEach(section => {
             fadeInObserver.observe(section);
         });
+        document.documentElement.classList.add('reveal-animations-enabled');
     } else {
         // Caso o navegador não suporte IntersectionObserver
         fadeInSections.forEach(section => {

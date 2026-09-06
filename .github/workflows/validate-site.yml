@@ -33,6 +33,34 @@ jobs:
       - name: Validar sintaxe JavaScript
         run: node --check frontend/assets/js/script.js
 
+      - name: Conferir animacoes progressivas
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+
+          const css = fs.readFileSync('frontend/assets/css/style.css', 'utf8');
+          const js = fs.readFileSync('frontend/assets/js/script.js', 'utf8');
+          const fadeBlock = css.match(/\.fade-in-section\s*\{[^}]*\}/);
+
+          if (!fadeBlock) {
+            throw new Error('Bloco base .fade-in-section nao encontrado.');
+          }
+
+          if (/opacity\s*:\s*0\b/.test(fadeBlock[0])) {
+            throw new Error('.fade-in-section nao pode iniciar invisivel no CSS base.');
+          }
+
+          if (!css.includes('.reveal-animations-enabled .fade-in-section')) {
+            throw new Error('Classe progressiva reveal-animations-enabled ausente no CSS.');
+          }
+
+          if (!js.includes("classList.add('reveal-animations-enabled')")) {
+            throw new Error('JavaScript precisa habilitar reveal-animations-enabled somente quando puder animar.');
+          }
+
+          console.log('animacoes progressivas OK');
+          NODE
+
       - name: Validar dependencias do backend
         run: |
           python - <<'PY'

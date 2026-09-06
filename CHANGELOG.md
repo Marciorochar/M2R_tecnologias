@@ -9,6 +9,8 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 ### Corrigido
 
 - Atualizacao das dependencias do backend para remover `Flask-Cors` da faixa afetada por vulnerabilidades conhecidas.
+- Animacao `fade-in-section` ajustada para manter o conteudo visivel quando JavaScript falhar, for bloqueado ou estiver indisponivel.
+- Dominio de exemplo do backend alinhado ao dominio oficial `https://m2rtecnologias.vercel.app`.
 
 ### Alterado
 
