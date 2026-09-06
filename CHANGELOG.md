@@ -4,6 +4,13 @@ Todas as mudancas notaveis deste projeto serao documentadas aqui.
 
 O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas em `AAAA-MM-DD`.
 
+## [1.0.3] - 2026-09-06
+
+### Adicionado
+
+- Content Security Policy nos headers da Vercel, incluindo `frame-ancestors 'none'` e compatibilidade com JSON-LD inline.
+- Validacao no GitHub Actions para impedir remocao acidental das diretivas CSP principais.
+
 ## [1.0.2] - 2026-09-06
 
 ### Corrigido

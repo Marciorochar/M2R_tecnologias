@@ -191,6 +191,32 @@ jobs:
             throw new Error('Cache-Control de assets precisa usar cache longo e immutable.');
           }
 
+          const cspHeader = globalHeaders?.headers?.find((item) => item.key === 'Content-Security-Policy');
+          if (!cspHeader) {
+            throw new Error('Content-Security-Policy ausente nos headers globais.');
+          }
+
+          const assetCspHeader = assetHeaders?.headers?.find((item) => item.key === 'Content-Security-Policy');
+          if (!assetCspHeader) {
+            throw new Error('Content-Security-Policy ausente nos headers de assets.');
+          }
+
+          const requiredCspDirectives = [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline'",
+            "style-src 'self'",
+            "object-src 'none'",
+            "frame-ancestors 'none'",
+            "base-uri 'self'",
+            "form-action 'self' mailto:",
+          ];
+
+          for (const directive of requiredCspDirectives) {
+            if (!cspHeader.value.includes(directive)) {
+              throw new Error(`Diretiva CSP ausente: ${directive}`);
+            }
+          }
+
           console.log('vercel.json OK');
           NODE
 
