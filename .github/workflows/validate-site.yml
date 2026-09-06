@@ -150,12 +150,8 @@ jobs:
 
       - name: Rodar testes Python
         run: |
-          if find . -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
-            python -m pip install pytest
-            python -m pytest
-          else
-            echo "Sem testes Python no repositorio."
-          fi
+          python -m pip install pytest
+          python -m pytest backend
 
       - name: Auditar dependencias Python
         run: |
@@ -280,6 +276,12 @@ jobs:
           const fs = require('node:fs');
           const path = require('node:path');
 
+          const root404 = fs.readFileSync('404.html', 'utf8').replace(/\r\n/g, '\n');
+          const frontend404 = fs.readFileSync('frontend/404.html', 'utf8').replace(/\r\n/g, '\n');
+          if (root404 !== frontend404) {
+            throw new Error('404.html e frontend/404.html precisam permanecer iguais.');
+          }
+
           const htmlFiles = [];
           const walk = (dir) => {
             for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -375,6 +377,7 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const path = require('node:path');
+          const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
 
           const htmlFiles = [];
           const walk = (dir) => {
@@ -388,19 +391,17 @@ jobs:
           walk('frontend');
           htmlFiles.push('404.html');
 
-          const siteRoutes = new Set([
-            '/',
-            '/servicos',
-            '/projetos',
-            '/projetos/m2r-server',
-            '/blog',
-            '/blog/automacao-para-pequenos-negocios',
-            '/blog/site-profissional-fortalece-marca',
-            '/blog/organizacao-de-processos-digitais',
-            '/sobre',
-            '/contato',
-            '/404',
-          ]);
+          const siteRoutes = new Set(
+            (vercel.rewrites || [])
+              .map((rule) => rule.source)
+              .filter((source) => source && !source.includes('('))
+          );
+
+          for (const redirect of vercel.redirects || []) {
+            if (redirect.destination?.startsWith('/')) {
+              siteRoutes.add(redirect.destination.replace(/\/$/, '') || '/');
+            }
+          }
 
           const missing = [];
           const attrPattern = /\b(?:href|src)="([^"]+)"/g;

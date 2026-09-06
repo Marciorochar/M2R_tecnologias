@@ -12,14 +12,20 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://m2rtecnologias.vercel.app")
+APP_ENV = os.getenv("APP_ENV", os.getenv("FLASK_ENV", "production")).lower()
 LOCAL_FRONTEND_URLS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://127.0.0.1:4173",
     "http://localhost:4173",
 ]
-CORS(app, resources={r"/api/*": {"origins": [FRONTEND_URL, *LOCAL_FRONTEND_URLS]}})
+allowed_origins = [FRONTEND_URL]
+if APP_ENV in {"dev", "development", "local", "test", "testing"}:
+    allowed_origins.extend(LOCAL_FRONTEND_URLS)
+
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 limiter = Limiter(
     get_remote_address,
@@ -47,6 +53,11 @@ def has_header_break(value):
 @app.errorhandler(429)
 def ratelimit_handler(_error):
     return jsonify({"error": "Muitas tentativas. Aguarde um pouco antes de enviar outra mensagem."}), 429
+
+
+@app.errorhandler(413)
+def request_too_large_handler(_error):
+    return jsonify({"error": "Requisicao muito grande."}), 413
 
 
 @app.get("/")

@@ -177,7 +177,10 @@ Variavel opcional:
 
 ```text
 FRONTEND_URL=https://m2rtecnologias.vercel.app
+APP_ENV=production
 ```
+
+Em producao, o CORS aceita apenas `FRONTEND_URL`. Em desenvolvimento local, use `APP_ENV=development` para permitir os servidores locais documentados no codigo.
 
 ## Contato
 
@@ -282,7 +285,7 @@ O workflow do GitHub Actions tambem roda em cada push e pull request para valida
 - dimensoes declaradas em imagens;
 - dependencias do backend com versoes fixadas no `backend/requirements.txt`;
 - sintaxe Python;
-- testes Python, quando existirem;
+- testes Python do backend Flask;
 - auditoria de vulnerabilidades com `pip-audit`.
 
 O Dependabot verifica semanalmente:
