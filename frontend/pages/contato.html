@@ -33,10 +33,10 @@
         <section class="section-block"><div class="container contact-layout">
             <div class="contact-intro fade-in-section"><span class="section-tag">M2R Tecnologias</span><h2>Fale com a nossa equipe</h2><p>Use o formulário para solicitar orçamento, discutir uma ideia ou tirar dúvidas sobre desenvolvimento web, automação, dados e sistemas personalizados.</p><div class="contact-direct"><a href="tel:+5522998270026">(22) 99827-0026</a><a href="mailto:marciinhofla@gmail.com">marciinhofla@gmail.com</a><a class="whatsapp-contact-link" href="https://wa.me/5522998270026?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20M2R%20Tecnologias%20e%20gostaria%20de%20conversar%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital." target="_blank" rel="noopener">Chamar no WhatsApp</a></div></div>
             <form id="contact-form" class="contact-form fade-in-section">
-                <label for="name">Nome</label><input id="name" name="name" type="text" placeholder="Como podemos chamar você?" required>
-                <label for="email">E-mail</label><input id="email" name="email" type="email" placeholder="voce@empresa.com" required>
-                <label for="phone">Telefone</label><input id="phone" name="phone" type="tel" placeholder="(00) 00000-0000">
-                <label for="message">Mensagem</label><textarea id="message" name="message" placeholder="Conte brevemente o que você precisa." required></textarea>
+                <label for="name">Nome</label><input id="name" name="name" type="text" placeholder="Como podemos chamar você?" autocomplete="name" maxlength="120" required>
+                <label for="email">E-mail</label><input id="email" name="email" type="email" placeholder="voce@empresa.com" autocomplete="email" maxlength="254" required>
+                <label for="phone">Telefone</label><input id="phone" name="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="30">
+                <label for="message">Mensagem</label><textarea id="message" name="message" placeholder="Conte brevemente o que você precisa." maxlength="2000" required></textarea>
                 <button type="submit" class="btn btn-primary">Enviar mensagem</button><p id="form-status" aria-live="polite"></p>
             </form>
         </div></section>
