@@ -145,14 +145,20 @@ class Site:
                     raise ValueError(f"Script executavel inline: {file}")
                 json.loads(content)
                 inline_count += 1
-        for group in self.config["headers"]:
+        csp_groups = 0
+        for group in self.config.get("headers", []):
             for header in group["headers"]:
                 if header["key"] != "Content-Security-Policy":
                     continue
-                directives = header["value"].split("; ")
-                actual = next(item for item in directives if item.startswith("script-src "))
-                if "unsafe-inline" in actual:
-                    raise ValueError("CSP nao pode permitir unsafe-inline")
+                csp_groups += 1
+                directives = {}
+                for item in header["value"].split(";"):
+                    parts = item.strip().split()
+                    if parts: directives[parts[0].lower()] = {token.lower() for token in parts[1:]}
+                if "script-src" not in directives: raise ValueError("CSP deve definir script-src")
+                for name in ("script-src", "script-src-elem", "script-src-attr"):
+                    if "'unsafe-inline'" in directives.get(name, set()): raise ValueError(f"CSP nao pode permitir unsafe-inline em {name}")
+        if not csp_groups: raise ValueError("Content-Security-Policy ausente nos headers")
         print(f"CSP e JSON-LD OK: {inline_count} blocos estruturados")
 
 
