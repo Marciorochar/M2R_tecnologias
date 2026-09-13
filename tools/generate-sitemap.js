@@ -1,6 +1,5 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 
 const SITE_ORIGIN = 'https://m2rtecnologias.vercel.app';
 const SITEMAP_PATH = path.join('frontend', 'sitemap.xml');
@@ -16,16 +15,7 @@ const destinationToFile = (destination) => {
     return destination.slice(1).replace(/\//g, path.sep);
 };
 
-const lastModifiedFor = (filePath) => {
-    try {
-        return execFileSync('git', ['log', '-1', '--format=%cs', '--', filePath], {
-            encoding: 'utf8',
-            stdio: ['ignore', 'pipe', 'ignore'],
-        }).trim();
-    } catch {
-        return '';
-    }
-};
+const dates = JSON.parse(fs.readFileSync('tools/sitemap-dates.json', 'utf8'));
 
 const buildSitemap = () => {
     const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
@@ -43,14 +33,15 @@ const buildSitemap = () => {
             throw new Error(`Arquivo da rota ${source} nao encontrado: ${filePath}`);
         }
 
-        const lastmod = lastModifiedFor(filePath);
-        if (!lastmod && CHECK_MODE) {
-            throw new Error(`Historico Git indisponivel para ${filePath}. Configure actions/checkout com fetch-depth: 0.`);
+        const lastmod = dates[source];
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod || '') ||
+            new Date(lastmod).toISOString().slice(0, 10) !== lastmod) {
+            throw new Error(`Data editorial ausente ou invalida para ${source}: tools/sitemap-dates.json`);
         }
 
         routes.push({
             loc: `${SITE_ORIGIN}${source === '/' ? '/' : source}`,
-            lastmod: lastmod || new Date().toISOString().slice(0, 10),
+            lastmod,
         });
     }
 

@@ -258,7 +258,9 @@ function initApp() {
     const contactRecipient = 'marciinhofla@gmail.com';
 
     if (contactForm && formStatus) {
-        contactForm.addEventListener('submit', function (event) {
+        contactForm.addEventListener('submit', (event) => event.preventDefault());
+        const prepareEmail = document.getElementById('prepare-email');
+        prepareEmail.addEventListener('click', function (event) {
             event.preventDefault();
 
             if (!contactForm.checkValidity()) {
@@ -286,8 +288,10 @@ function initApp() {
             );
 
             window.location.href = `mailto:${contactRecipient}?subject=${subject}&body=${body}`;
-            setFormStatus(formStatus, 'Seu aplicativo de e-mail foi aberto para concluir o envio.', 'success');
+            setFormStatus(formStatus, 'Se o aplicativo de e-mail abrir, revise a mensagem e conclua o envio nele. Caso contrário, copie os campos e envie para marciinhofla@gmail.com. Seus dados continuam aqui.', 'sending');
         });
+        contactForm.querySelectorAll('input, textarea, button').forEach(field => { field.disabled = false; });
+        contactForm.hidden = false;
     }
 
 }

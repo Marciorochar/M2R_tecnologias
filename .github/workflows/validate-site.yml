@@ -219,7 +219,7 @@ jobs:
 
           const requiredCspDirectives = [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'",
+            "script-src 'self'",
             "style-src 'self'",
             "object-src 'none'",
             "frame-ancestors 'none'",
@@ -374,72 +374,11 @@ jobs:
           console.log(`HTML e CSS OK: ${htmlFiles.length} paginas`);
           NODE
 
-      - name: Conferir links internos
+      - name: Conferir links internos e CSP
         run: |
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const path = require('node:path');
-          const vercel = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
-
-          const htmlFiles = [];
-          const walk = (dir) => {
-            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-              const fullPath = path.join(dir, entry.name);
-              if (entry.isDirectory()) walk(fullPath);
-              else if (entry.name.endsWith('.html')) htmlFiles.push(fullPath);
-            }
-          };
-
-          walk('frontend');
-          htmlFiles.push('404.html');
-
-          const siteRoutes = new Set(
-            (vercel.rewrites || [])
-              .map((rule) => rule.source)
-              .filter((source) => source && !source.includes('('))
-          );
-
-          for (const redirect of vercel.redirects || []) {
-            if (redirect.destination?.startsWith('/')) {
-              siteRoutes.add(redirect.destination.replace(/\/$/, '') || '/');
-            }
-          }
-
-          const missing = [];
-          const attrPattern = /\b(?:href|src)="([^"]+)"/g;
-
-          for (const file of htmlFiles) {
-            const content = fs.readFileSync(file, 'utf8');
-
-            for (const match of content.matchAll(attrPattern)) {
-              const target = match[1];
-              if (/^(https?:|mailto:|tel:|#)/.test(target)) continue;
-
-              const clean = target.split('#')[0];
-              if (!clean) continue;
-              if (siteRoutes.has(clean)) continue;
-
-              let resolved;
-              if (clean.startsWith('/assets/')) {
-                resolved = path.join('frontend', clean.slice(1));
-              } else if (clean.startsWith('/')) {
-                continue;
-              } else {
-                resolved = path.join(path.dirname(file), clean);
-              }
-
-              if (!fs.existsSync(resolved)) {
-                missing.push(`${file}: link quebrado ${target}`);
-              }
-            }
-          }
-
-          if (missing.length) {
-            throw new Error(missing.join('\n'));
-          }
-
-          console.log('links internos OK');
-          NODE
+          python tools/site_tools.py check
+          python tools/site_tools.py security
+          python -m unittest discover -s tools -p "test_*.py" -v
 
       - name: Bloquear Google Fonts
         run: |
