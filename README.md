@@ -9,13 +9,12 @@
 
 Site institucional da M2R Tecnologias, criado para apresentar servicos, projetos, conteudos, informacoes sobre a empresa e canais de contato.
 
-O projeto esta organizado para publicacao simples no GitHub e deploy do frontend pela Vercel. O backend Flask e opcional e pode ser usado para status, health check e validacao simples de dados de contato.
+O projeto esta organizado para publicacao simples no GitHub e deploy estatico pela Vercel. O contato funciona sem backend, sem usuario, sem senha e sem SMTP, usando `mailto:` e WhatsApp.
 
 ## Visao geral
 
 - Site multipaginas em HTML, CSS e JavaScript.
 - Frontend estatico dentro da pasta `frontend/`.
-- Backend Flask separado dentro da pasta `backend/`.
 - Rotas limpas configuradas no `vercel.json`.
 - Pagina `404.html` personalizada com fallback nativo de erro 404 na Vercel.
 - `robots.txt` e `sitemap.xml` preparados para publicacao.
@@ -76,15 +75,6 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Menu mobile
 - Animacoes leves com `IntersectionObserver`
 
-### Backend
-
-- Python
-- Flask
-- Flask-Cors
-- Flask-Limiter
-- Gunicorn
-- python-dotenv
-
 ## Estrutura do projeto
 
 ```text
@@ -116,10 +106,6 @@ M2R/
         organizacao-de-processos-digitais.html
       sobre.html
       contato.html
-  backend/
-    app.py
-    requirements.txt
-    .env.example
   docs/
     screenshots/
       home.png
@@ -135,7 +121,6 @@ M2R/
   CHANGELOG.md
   LICENSE
   README.md
-  render.yaml
   vercel.json
 ```
 
@@ -155,6 +140,7 @@ http://127.0.0.1:5500/
 
 O servidor reutiliza rewrites, redirects e headers do `vercel.json`, incluindo `/servicos`, `/contato`, assets e resposta 404 para rotas inexistentes. Use outra porta com `--port 5501` se necessario. Ele atende apenas em loopback e implementa as regras estaticas atuais; nao e um emulador completo da Vercel nem comprova comportamento em producao.
 
+<<<<<<< HEAD
 ## Como rodar o backend localmente
 
 ```powershell
@@ -190,6 +176,8 @@ O limitador usa memoria por processo por padrao: reinicios apagam contadores e w
 
 Respostas JSON: 200 para validacao bem-sucedida, 400 para JSON vazio/malformado, corpo que nao seja objeto ou campos invalidos, 415 para tipo de conteudo incompativel, 413 para corpo acima de 16 KiB e 429 apos duas tentativas por hora por endereco. Erros usam `error`; sucesso usa `message` e nao confirma envio. JSON `null`, listas, numeros, booleanos e strings no nivel raiz sao invalidos.
 
+=======
+>>>>>>> ba892d0 (Remove backend opcional)
 ## Contato
 
 O formulario da pagina de contato usa `mailto:` para solicitar a abertura do aplicativo de e-mail do visitante com a mensagem preenchida.
@@ -245,31 +233,12 @@ Rotas configuradas:
 Tambem ha redirecionamentos para URLs antigas, como `/index.html` e `/pages/contato.html`.
 Rotas inexistentes nao usam rewrite generico; elas caem no 404 nativo da Vercel.
 
-## Deploy do backend no Render
-
-O backend pode ser publicado pelo `render.yaml` na raiz do projeto ou configurado manualmente:
-
-```text
-Root Directory:
-backend
-
-Build Command:
-pip install -r requirements.txt
-
-Start Command:
-gunicorn app:app --bind 0.0.0.0:$PORT
-
-Health Check Path:
-/healthz
-```
-
-Nao configure usuario ou senha de e-mail no Render.
-
 ## Validacao antes de publicar
 
 Use estes comandos para uma validacao local rapida antes de fazer commit:
 
 ```powershell
+<<<<<<< HEAD
 node tools/generate-sitemap.js --check
 python tools/site_tools.py check
 python tools/site_tools.py security
@@ -278,6 +247,8 @@ python -m pip install -r backend/requirements.txt pytest pip-audit
 python -m pytest backend
 python -m pip_audit -r backend/requirements.txt
 python -m py_compile backend/app.py
+=======
+>>>>>>> ba892d0 (Remove backend opcional)
 node --check frontend/assets/js/script.js
 git status
 ```
@@ -331,9 +302,12 @@ git push origin main
 - Conferir `/404` e uma rota inexistente com status HTTP 404 no deploy.
 - Conferir `/robots.txt`.
 - Conferir `/sitemap.xml`.
+<<<<<<< HEAD
 - Atualizar os prints em `docs/screenshots/` quando houver mudanca visual relevante.
 - Se o backend for publicado, testar `/healthz`.
+=======
+>>>>>>> ba892d0 (Remove backend opcional)
 
 ## Status atual
 
-Projeto preparado para publicacao do frontend na Vercel e versionamento pelo GitHub.
+Projeto estatico preparado para publicacao na Vercel e versionamento pelo GitHub.

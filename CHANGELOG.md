@@ -52,6 +52,10 @@ O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas e
 
 ## [1.0.1] - 2026-08-27
 
+### Removido
+
+- Backend Flask opcional e configuracao antiga do Render, deixando o projeto como site estatico para Vercel.
+
 ### Corrigido
 
 - Ajuste do fallback 404 para permitir status HTTP 404 real em rotas inexistentes na Vercel.
