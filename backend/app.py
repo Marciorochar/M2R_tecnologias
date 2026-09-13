@@ -6,25 +6,32 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from werkzeug.exceptions import BadRequest
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024
 FRONTEND_URL = os.getenv("FRONTEND_URL", "https://m2rtecnologias.vercel.app")
+APP_ENV = os.getenv("APP_ENV", os.getenv("FLASK_ENV", "production")).lower()
 LOCAL_FRONTEND_URLS = [
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://127.0.0.1:4173",
     "http://localhost:4173",
 ]
-CORS(app, resources={r"/api/*": {"origins": [FRONTEND_URL, *LOCAL_FRONTEND_URLS]}})
+allowed_origins = [FRONTEND_URL]
+if APP_ENV in {"dev", "development", "local", "test", "testing"}:
+    allowed_origins.extend(LOCAL_FRONTEND_URLS)
+
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 limiter = Limiter(
     get_remote_address,
     app=app,
-    storage_uri="memory://",
+    storage_uri=os.getenv("RATELIMIT_STORAGE_URI", "memory://"),
 )
 
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
@@ -37,7 +44,11 @@ MAX_FIELD_LENGTHS = {
 
 
 def clean_field(value, max_length):
-    return str(value or "").strip()[:max_length]
+    if not isinstance(value, str):
+        raise ValueError("Os campos devem ser texto.")
+    if len(value) > max_length:
+        raise ValueError(f"Campo excede o limite de {max_length} caracteres.")
+    return value.strip()
 
 
 def has_header_break(value):
@@ -47,6 +58,11 @@ def has_header_break(value):
 @app.errorhandler(429)
 def ratelimit_handler(_error):
     return jsonify({"error": "Muitas tentativas. Aguarde um pouco antes de enviar outra mensagem."}), 429
+
+
+@app.errorhandler(413)
+def request_too_large_handler(_error):
+    return jsonify({"error": "Requisicao muito grande."}), 413
 
 
 @app.get("/")
@@ -73,11 +89,20 @@ def status():
 @app.post("/api/contato")
 @limiter.limit("2 per hour")
 def validate_contact():
-    data = request.get_json(silent=True) or {}
-    name = clean_field(data.get("name"), MAX_FIELD_LENGTHS["name"])
-    email = clean_field(data.get("email"), MAX_FIELD_LENGTHS["email"])
-    phone = clean_field(data.get("phone"), MAX_FIELD_LENGTHS["phone"])
-    message = clean_field(data.get("message"), MAX_FIELD_LENGTHS["message"])
+    if not request.is_json:
+        return jsonify({"error": "Use Content-Type application/json."}), 415
+    try:
+        data = request.get_json()
+    except BadRequest:
+        return jsonify({"error": "Corpo JSON vazio ou malformado."}), 400
+    if not isinstance(data, dict):
+        return jsonify({"error": "O corpo JSON deve ser um objeto."}), 400
+    try:
+        fields = {key: clean_field(data.get(key, ""), limit)
+                  for key, limit in MAX_FIELD_LENGTHS.items()}
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    name, email, phone, message = (fields[key] for key in MAX_FIELD_LENGTHS)
 
     if not name or not email or not message:
         return jsonify({"error": "Preencha nome, e-mail e mensagem."}), 400

@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Baixar codigo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Preparar Node.js
         uses: actions/setup-node@v4
@@ -150,12 +152,8 @@ jobs:
 
       - name: Rodar testes Python
         run: |
-          if find . -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
-            python -m pip install pytest
-            python -m pytest
-          else
-            echo "Sem testes Python no repositorio."
-          fi
+          python -m pip install pytest
+          python -m pytest backend
 
       - name: Auditar dependencias Python
         run: |
@@ -221,7 +219,7 @@ jobs:
 
           const requiredCspDirectives = [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'",
+            "script-src 'self'",
             "style-src 'self'",
             "object-src 'none'",
             "frame-ancestors 'none'",
@@ -279,6 +277,12 @@ jobs:
           node - <<'NODE'
           const fs = require('node:fs');
           const path = require('node:path');
+
+          const root404 = fs.readFileSync('404.html', 'utf8').replace(/\r\n/g, '\n');
+          const frontend404 = fs.readFileSync('frontend/404.html', 'utf8').replace(/\r\n/g, '\n');
+          if (root404 !== frontend404) {
+            throw new Error('404.html e frontend/404.html precisam permanecer iguais.');
+          }
 
           const htmlFiles = [];
           const walk = (dir) => {
@@ -370,73 +374,11 @@ jobs:
           console.log(`HTML e CSS OK: ${htmlFiles.length} paginas`);
           NODE
 
-      - name: Conferir links internos
+      - name: Conferir links internos e CSP
         run: |
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const path = require('node:path');
-
-          const htmlFiles = [];
-          const walk = (dir) => {
-            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-              const fullPath = path.join(dir, entry.name);
-              if (entry.isDirectory()) walk(fullPath);
-              else if (entry.name.endsWith('.html')) htmlFiles.push(fullPath);
-            }
-          };
-
-          walk('frontend');
-          htmlFiles.push('404.html');
-
-          const siteRoutes = new Set([
-            '/',
-            '/servicos',
-            '/projetos',
-            '/projetos/m2r-server',
-            '/blog',
-            '/blog/automacao-para-pequenos-negocios',
-            '/blog/site-profissional-fortalece-marca',
-            '/blog/organizacao-de-processos-digitais',
-            '/sobre',
-            '/contato',
-            '/404',
-          ]);
-
-          const missing = [];
-          const attrPattern = /\b(?:href|src)="([^"]+)"/g;
-
-          for (const file of htmlFiles) {
-            const content = fs.readFileSync(file, 'utf8');
-
-            for (const match of content.matchAll(attrPattern)) {
-              const target = match[1];
-              if (/^(https?:|mailto:|tel:|#)/.test(target)) continue;
-
-              const clean = target.split('#')[0];
-              if (!clean) continue;
-              if (siteRoutes.has(clean)) continue;
-
-              let resolved;
-              if (clean.startsWith('/assets/')) {
-                resolved = path.join('frontend', clean.slice(1));
-              } else if (clean.startsWith('/')) {
-                continue;
-              } else {
-                resolved = path.join(path.dirname(file), clean);
-              }
-
-              if (!fs.existsSync(resolved)) {
-                missing.push(`${file}: link quebrado ${target}`);
-              }
-            }
-          }
-
-          if (missing.length) {
-            throw new Error(missing.join('\n'));
-          }
-
-          console.log('links internos OK');
-          NODE
+          python tools/site_tools.py check
+          python tools/site_tools.py security
+          python -m unittest discover -s tools -p "test_*.py" -v
 
       - name: Bloquear Google Fonts
         run: |

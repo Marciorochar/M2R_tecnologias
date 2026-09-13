@@ -19,7 +19,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy do frontend
 - Rotas limpas configuradas no `vercel.json`.
 - Pagina `404.html` personalizada com fallback nativo de erro 404 na Vercel.
 - `robots.txt` e `sitemap.xml` preparados para publicacao.
-- Sitemap gerado a partir das rotas do `vercel.json`, com `lastmod` baseado no historico do Git.
+- Sitemap gerado a partir das rotas do `vercel.json`, com datas editoriais explicitas em `tools/sitemap-dates.json`.
 - Formulario de contato sem login, sem usuario de e-mail, sem senha e sem SMTP.
 - Fonte de sistema para evitar dependencia externa de carregamento.
 - Imagens da marca otimizadas e com dimensoes declaradas no HTML.
@@ -141,11 +141,10 @@ M2R/
 
 ## Como rodar o frontend localmente
 
-Entre na pasta `frontend` e inicie um servidor estatico:
+Pre-requisitos: Python 3.10 ou superior e Node.js 22 ou superior (para o sitemap). Na raiz do repositorio, inicie o servidor local, sem dependencias extras:
 
 ```powershell
-cd frontend
-python -m http.server 5500 --bind 127.0.0.1
+python tools/site_tools.py serve --port 5500
 ```
 
 Depois acesse:
@@ -154,7 +153,7 @@ Depois acesse:
 http://127.0.0.1:5500/
 ```
 
-Tambem e possivel abrir `frontend/index.html` com o Live Server do VS Code. As rotas limpas, como `/servicos` e `/contato`, sao resolvidas no deploy pela configuracao do `vercel.json`.
+O servidor reutiliza rewrites, redirects e headers do `vercel.json`, incluindo `/servicos`, `/contato`, assets e resposta 404 para rotas inexistentes. Use outra porta com `--port 5501` se necessario. Ele atende apenas em loopback e implementa as regras estaticas atuais; nao e um emulador completo da Vercel nem comprova comportamento em producao.
 
 ## Como rodar o backend localmente
 
@@ -177,11 +176,24 @@ Variavel opcional:
 
 ```text
 FRONTEND_URL=https://m2rtecnologias.vercel.app
+APP_ENV=production
+RATELIMIT_STORAGE_URI=memory://
 ```
+
+Em producao, o CORS aceita apenas `FRONTEND_URL`. Em desenvolvimento local, use `APP_ENV=development` para permitir os servidores locais documentados no codigo.
+
+O limitador usa memoria por processo por padrao: reinicios apagam contadores e workers nao os compartilham. Para usar a API em producao com varios workers, configure `RATELIMIT_STORAGE_URI` com armazenamento compartilhado e instale o driver correspondente (por exemplo, Redis). Nenhum servico externo e criado automaticamente. O endereco remoto continua sendo o fornecido pelo servidor; confirme a topologia do proxy antes de adicionar `ProxyFix` ou confiar em `X-Forwarded-For`.
+
+### Contrato de contato
+
+`POST /api/contato` apenas valida dados. Use `Content-Type: application/json` e um objeto com `name`, `email` e `message` obrigatorios; `phone` pode ser omitido. Todos os campos presentes devem ser strings. Limites antes de remover espacos nas extremidades: nome 120, e-mail 254, telefone 30 e mensagem 2000 caracteres. Conteudo excedente e rejeitado; quebras internas da mensagem sao preservadas. Nome, e-mail e telefone nao aceitam quebras internas de linha.
+
+Respostas JSON: 200 para validacao bem-sucedida, 400 para JSON vazio/malformado, corpo que nao seja objeto ou campos invalidos, 415 para tipo de conteudo incompativel, 413 para corpo acima de 16 KiB e 429 apos duas tentativas por hora por endereco. Erros usam `error`; sucesso usa `message` e nao confirma envio. JSON `null`, listas, numeros, booleanos e strings no nivel raiz sao invalidos.
 
 ## Contato
 
-O formulario da pagina de contato usa `mailto:` para abrir o aplicativo de e-mail do visitante com a mensagem preenchida.
+O formulario da pagina de contato usa `mailto:` para solicitar a abertura do aplicativo de e-mail do visitante com a mensagem preenchida.
+O botao Preparar e-mail solicita a abertura; o visitante precisa revisar e enviar no proprio aplicativo. Nao ha confirmacao de abertura ou entrega. Os campos permanecem preenchidos para copia manual. Sem JavaScript, os campos ficam desabilitados, o formulario fica oculto e os canais diretos continuam disponiveis; os campos nao possuem atributos `name`, evitando dados pessoais em uma submissao nativa.
 O site tambem possui link direto para WhatsApp com mensagem pre-preenchida e CTA fixo discreto no mobile.
 
 Nao e necessario configurar:
@@ -259,16 +271,26 @@ Use estes comandos para uma validacao local rapida antes de fazer commit:
 
 ```powershell
 node tools/generate-sitemap.js --check
+python tools/site_tools.py check
+python tools/site_tools.py security
+python -m unittest discover -s tools -p "test_*.py" -v
+python -m pip install -r backend/requirements.txt pytest pip-audit
+python -m pytest backend
+python -m pip_audit -r backend/requirements.txt
 python -m py_compile backend/app.py
 node --check frontend/assets/js/script.js
 git status
 ```
 
-Quando uma pagina nova for criada ou uma rota mudar, atualize o sitemap com:
+Quando uma pagina nova for criada ou uma rota mudar, registre a data real da mudanca editorial apenas nas rotas afetadas em `tools/sitemap-dates.json` e gere o sitemap. Datas existentes vieram do sitemap anterior; alteracoes em ferramentas, commits, checkout e builds nao atualizam datas de paginas. Esse registro explicito produz o mesmo resultado antes e depois do commit, inclusive sem historico Git. O teste cria um commit sem relacao com as paginas em outra data para verificar a estabilidade.
 
 ```powershell
 node tools/generate-sitemap.js
 ```
+
+A CSP permite scripts locais, sem `unsafe-inline`. Os blocos JSON-LD sao validados como dados estruturados, nao executam JavaScript, e o check confirma que permanecem JSON valido e que a politica final nao reintroduz permissoes inline.
+
+Testes opcionais de navegador: instale `playwright`, execute `python -m playwright install chromium` e depois `python tools/browser_check.py`. O teste usa servidor local temporario e intercepta o mailto, sem enviar mensagens.
 
 O workflow do GitHub Actions tambem roda em cada push e pull request para validar:
 
@@ -282,7 +304,7 @@ O workflow do GitHub Actions tambem roda em cada push e pull request para valida
 - dimensoes declaradas em imagens;
 - dependencias do backend com versoes fixadas no `backend/requirements.txt`;
 - sintaxe Python;
-- testes Python, quando existirem;
+- testes Python do backend Flask;
 - auditoria de vulnerabilidades com `pip-audit`.
 
 O Dependabot verifica semanalmente:
