@@ -319,7 +319,8 @@ select:focus:not(:focus-visible) {
 
 .intro-layout,
 .contact-layout,
-.home-about-layout {
+.home-about-layout,
+.founder-layout {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: 56px;
@@ -1138,6 +1139,49 @@ form textarea {
     margin: 0 0 16px;
 }
 
+#contact-form[hidden] {
+    display: none;
+}
+
+.founder-layout {
+    align-items: center;
+    gap: 64px;
+}
+
+.founder-photo {
+    overflow: hidden;
+    border: 1px solid var(--color-border-accent);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-md);
+}
+
+.founder-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.founder-content h2 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1.2;
+}
+
+.founder-content p {
+    max-width: 660px;
+    margin: 16px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.founder-content .btn {
+    margin-top: 28px;
+}
+
 .home-service-card {
     display: flex;
     flex-direction: column;
@@ -1467,6 +1511,7 @@ form textarea {
     .card-grid--three,
     .card-grid--two,
     .intro-layout,
+    .founder-layout,
     .contact-layout,
     .hero-layout,
     .home-about-layout,
@@ -1497,6 +1542,10 @@ form textarea {
         width: min(100%, 250px);
         justify-self: center;
         margin-top: 8px;
+    }
+
+    .founder-photo {
+        width: min(100%, 420px);
     }
 
     .project-highlight-visual {

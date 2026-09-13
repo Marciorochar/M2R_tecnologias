@@ -187,6 +187,10 @@
       "destination": "/frontend/pages/sobre.html"
     },
     {
+      "source": "/fundador",
+      "destination": "/frontend/pages/fundador.html"
+    },
+    {
       "source": "/contato",
       "destination": "/frontend/pages/contato.html"
     },

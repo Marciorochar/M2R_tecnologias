@@ -81,45 +81,35 @@ function initApp() {
             }
         });
 
+        // Criação dinâmica do botão Hambúrguer para mobile
+        const mobileBtn = document.createElement('button');
+        mobileBtn.className = 'mobile-menu-btn';
+        mobileBtn.innerHTML = '☰';
+        mobileBtn.setAttribute('aria-label', 'Abrir menu mobile');
+        mobileBtn.setAttribute('aria-expanded', 'false');
+        
         const navLinks = navbar.querySelector('.nav-links');
-        const mobileBtn = navbar.querySelector('.mobile-menu-btn');
-        if (navLinks && !navLinks.id) navLinks.id = 'menu-principal';
+        if (navLinks) {
+            navbar.insertBefore(mobileBtn, navLinks);
+        }
 
-        if (mobileBtn && navLinks) {
-            document.documentElement.classList.add('menu-js-enabled');
-            mobileBtn.setAttribute('aria-controls', navLinks.id);
+        // Lógica de abrir/fechar o menu mobile
+        mobileBtn.addEventListener('click', () => {
+            const isOpen = navbar.classList.toggle('menu-open');
+            mobileBtn.innerHTML = isOpen ? '✕' : '☰';
+            mobileBtn.setAttribute('aria-expanded', isOpen.toString());
+        });
 
-            const setMobileMenuState = (isOpen) => {
-                navbar.classList.toggle('menu-open', isOpen);
-                mobileBtn.innerHTML = isOpen ? '✕' : '☰';
-                mobileBtn.setAttribute('aria-expanded', isOpen.toString());
-                mobileBtn.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
-            };
-
-            setMobileMenuState(false);
-
-            // Lógica de abrir/fechar o menu mobile
-            mobileBtn.addEventListener('click', () => {
-                setMobileMenuState(!navbar.classList.contains('menu-open'));
-            });
-
-            // Fechar o menu ao clicar em um link
-            const links = navbar.querySelectorAll('a');
-            links.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth <= 768) {
-                        setMobileMenuState(false);
-                    }
-                });
-            });
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && navbar.classList.contains('menu-open')) {
-                    setMobileMenuState(false);
-                    mobileBtn.focus();
+        // Fechar o menu ao clicar em um link
+        const links = navbar.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navbar.classList.remove('menu-open');
+                    mobileBtn.innerHTML = '☰';
                 }
             });
-        }
+        });
     }
 
     /*
@@ -212,13 +202,8 @@ function initApp() {
     */
 
     const fadeInSections = document.querySelectorAll('.fade-in-section');
-    const canAnimateSections = (
-        'IntersectionObserver' in window &&
-        fadeInSections.length > 0 &&
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    );
 
-    if (canAnimateSections) {
+    if ('IntersectionObserver' in window && fadeInSections.length > 0) {
         const fadeInObserverOptions = {
             root: null,
             rootMargin: '0px',
@@ -239,7 +224,6 @@ function initApp() {
         fadeInSections.forEach(section => {
             fadeInObserver.observe(section);
         });
-        document.documentElement.classList.add('reveal-animations-enabled');
     } else {
         // Caso o navegador não suporte IntersectionObserver
         fadeInSections.forEach(section => {
@@ -258,9 +242,10 @@ function initApp() {
     const contactRecipient = 'marciinhofla@gmail.com';
 
     if (contactForm && formStatus) {
-        contactForm.addEventListener('submit', (event) => event.preventDefault());
-        const prepareEmail = document.getElementById('prepare-email');
-        prepareEmail.addEventListener('click', function (event) {
+        contactForm.hidden = false;
+        contactForm.querySelectorAll('input, textarea, button').forEach(field => { field.disabled = false; });
+        contactForm.addEventListener('submit', event => event.preventDefault());
+        document.getElementById('prepare-email')?.addEventListener('click', function (event) {
             event.preventDefault();
 
             if (!contactForm.checkValidity()) {
@@ -290,8 +275,6 @@ function initApp() {
             window.location.href = `mailto:${contactRecipient}?subject=${subject}&body=${body}`;
             setFormStatus(formStatus, 'Se o aplicativo de e-mail abrir, revise a mensagem e conclua o envio nele. Caso contrário, copie os campos e envie para marciinhofla@gmail.com. Seus dados continuam aqui.', 'sending');
         });
-        contactForm.querySelectorAll('input, textarea, button').forEach(field => { field.disabled = false; });
-        contactForm.hidden = false;
     }
 
 }
