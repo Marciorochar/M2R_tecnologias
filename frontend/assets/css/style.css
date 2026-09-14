@@ -1159,8 +1159,31 @@ form textarea {
 .founder-photo img {
     display: block;
     width: 100%;
+    height: auto;
     aspect-ratio: 1;
     object-fit: cover;
+}
+
+#fundador .founder-layout {
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: 40px;
+}
+
+#fundador .founder-photo {
+    width: 100%;
+    max-width: 300px;
+}
+
+@media (max-width: 700px) {
+    #fundador .founder-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 28px;
+    }
+
+    #fundador .founder-photo {
+        max-width: 240px;
+        margin-inline: auto;
+    }
 }
 
 .founder-content h2 {
