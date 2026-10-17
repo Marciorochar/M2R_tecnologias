@@ -1,4 +1,7 @@
 import os
+import json
+import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 import shutil
 import subprocess
 import tempfile
@@ -6,6 +9,18 @@ import unittest
 from pathlib import Path
 
 from site_tools import ROOT
+
+
+class RobotsParser(HTMLParser):
+    def __init__(self, html):
+        super().__init__()
+        self.noindex = False
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'meta' and attrs.get('name', '').lower() == 'robots':
+            self.noindex |= 'noindex' in attrs.get('content', '').lower().replace(',', ' ').split()
 
 
 class SitemapTests(unittest.TestCase):
@@ -34,5 +49,23 @@ class SitemapTests(unittest.TestCase):
             run("node", "tools/generate-sitemap.js", "--check")
             run("node", "tools/generate-sitemap.js")
             self.assertEqual(before, (root / "frontend/sitemap.xml").read_bytes())
-            self.assertEqual(before.count(b"<loc>"), 10)
+            config = json.loads((root / 'vercel.json').read_text(encoding='utf-8'))
+            expected = set()
+            for rule in config['rewrites']:
+                if rule['source'] == '/404' or not rule['destination'].endswith('.html'):
+                    continue
+                html = (root / rule['destination'].lstrip('/')).read_text(encoding='utf-8')
+                if not RobotsParser(html).noindex:
+                    expected.add('https://m2rtecnologias.vercel.app' + rule['source'])
+            actual = {item.text for item in ET.fromstring(before).findall('{*}url/{*}loc')}
+            self.assertEqual(actual, expected)
             self.assertNotIn(b"/404</loc>", before)
+            founder = root / 'frontend/pages/fundador.html'
+            html = founder.read_text(encoding='utf-8')
+            founder.write_text(html.replace('noindex, follow', 'index, follow'), encoding='utf-8')
+            run('node', 'tools/generate-sitemap.js')
+            with_founder = (root / 'frontend/sitemap.xml').read_text(encoding='utf-8')
+            self.assertIn('https://m2rtecnologias.vercel.app/fundador</loc>', with_founder)
+            founder.write_text(html, encoding='utf-8')
+            run('node', 'tools/generate-sitemap.js')
+            self.assertEqual(before, (root / 'frontend/sitemap.xml').read_bytes())
