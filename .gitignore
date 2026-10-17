@@ -32,3 +32,6 @@ build/
 Thumbs.db
 _backup/
 .venv-audit/
+.pytest_cache/
+test-results/
+playwright-report/
