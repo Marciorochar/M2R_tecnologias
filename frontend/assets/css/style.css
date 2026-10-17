@@ -1284,6 +1284,24 @@ form textarea {
     margin-top: 28px;
 }
 
+.founder-page-layout {
+    max-width: 1040px;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+}
+
+.founder-page-photo {
+    justify-self: center;
+    width: min(100%, 320px);
+}
+
+.founder-page-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+
 .home-service-card {
     display: flex;
     flex-direction: column;
@@ -1610,6 +1628,14 @@ form textarea {
 }
 
 @media (max-width: 900px) {
+    .founder-page-layout {
+        gap: 28px;
+    }
+
+    .founder-photo.founder-page-photo {
+        width: min(100%, 250px);
+    }
+
     .card-grid--three,
     .card-grid--two,
     .intro-layout,
