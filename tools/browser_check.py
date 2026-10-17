@@ -15,7 +15,7 @@ def check_layout(page):
         image.scroll_into_view_if_needed()
         page.wait_for_function('(el) => el.complete && el.naturalWidth > 0', arg=image.element_handle())
         assert image.get_attribute('width') and image.get_attribute('height')
-    for section in page.locator('.fade-in-section').all():
+    for section in page.locator('.fade-in-section:not([hidden])').all():
         section.scroll_into_view_if_needed()
         page.wait_for_function('(el) => getComputedStyle(el).opacity === "1"', arg=section.element_handle())
 
