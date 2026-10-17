@@ -1,6 +1,17 @@
 import pytest
+import runpy
+from pathlib import Path
+from unittest.mock import patch
 
 from app import app, clean_field, limiter, MAX_FIELD_LENGTHS
+
+
+@pytest.mark.parametrize('environment,debug', [('production', False), ('development', True), ('testing', False)])
+def test_script_debug_respects_environment(monkeypatch, environment, debug):
+    monkeypatch.setenv('APP_ENV', environment)
+    with patch('flask.Flask.run') as run:
+        runpy.run_path(str(Path(__file__).with_name('app.py')), run_name='__main__')
+    assert run.call_args.kwargs['debug'] is debug
 
 
 def client():

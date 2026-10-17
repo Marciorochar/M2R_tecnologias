@@ -35,89 +35,12 @@ jobs:
       - name: Validar sintaxe JavaScript
         run: node --check frontend/assets/js/script.js
 
-      - name: Conferir animacoes progressivas
+      - name: Testar navegacao e animacoes no Chromium
         run: |
-          node - <<'NODE'
-          const fs = require('node:fs');
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+          python tools/browser_check.py
 
-          const css = fs.readFileSync('frontend/assets/css/style.css', 'utf8');
-          const js = fs.readFileSync('frontend/assets/js/script.js', 'utf8');
-          const fadeBlock = css.match(/\.fade-in-section\s*\{[^}]*\}/);
-
-          if (!fadeBlock) {
-            throw new Error('Bloco base .fade-in-section nao encontrado.');
-          }
-
-          if (/opacity\s*:\s*0\b/.test(fadeBlock[0])) {
-            throw new Error('.fade-in-section nao pode iniciar invisivel no CSS base.');
-          }
-
-          if (!css.includes('.reveal-animations-enabled .fade-in-section')) {
-            throw new Error('Classe progressiva reveal-animations-enabled ausente no CSS.');
-          }
-
-          if (!js.includes("classList.add('reveal-animations-enabled')")) {
-            throw new Error('JavaScript precisa habilitar reveal-animations-enabled somente quando puder animar.');
-          }
-
-          console.log('animacoes progressivas OK');
-          NODE
-
-      - name: Conferir menu mobile progressivo
-        run: |
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const path = require('node:path');
-
-          const htmlFiles = [];
-          const walk = (dir) => {
-            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-              const fullPath = path.join(dir, entry.name);
-              if (entry.isDirectory()) walk(fullPath);
-              else if (entry.name.endsWith('.html')) htmlFiles.push(fullPath);
-            }
-          };
-
-          walk('frontend');
-          htmlFiles.push('404.html');
-
-          const issues = [];
-          for (const file of htmlFiles) {
-            const html = fs.readFileSync(file, 'utf8');
-            if (!html.includes('class="mobile-menu-btn"')) {
-              issues.push(`${file}: botao mobile ausente no HTML`);
-            }
-            if (!html.includes('aria-controls="menu-principal"')) {
-              issues.push(`${file}: aria-controls do menu ausente`);
-            }
-            if (!html.includes('aria-expanded="false"')) {
-              issues.push(`${file}: aria-expanded inicial ausente`);
-            }
-            if (!html.includes('id="menu-principal"')) {
-              issues.push(`${file}: id menu-principal ausente`);
-            }
-          }
-
-          const js = fs.readFileSync('frontend/assets/js/script.js', 'utf8');
-          if (js.includes('document.createElement') && js.includes('mobile-menu-btn')) {
-            issues.push('script.js: botao mobile nao deve ser criado dinamicamente');
-          }
-          if (!js.includes("setAttribute('aria-expanded', isOpen.toString())")) {
-            issues.push('script.js: aria-expanded precisa ser atualizado ao alternar o menu');
-          }
-          if (!js.includes("isOpen ? 'Fechar menu' : 'Abrir menu'")) {
-            issues.push('script.js: aria-label precisa alternar entre abrir e fechar menu');
-          }
-          if (!js.includes("event.key === 'Escape'")) {
-            issues.push('script.js: menu mobile precisa fechar com Escape');
-          }
-
-          if (issues.length) {
-            throw new Error(issues.join('\n'));
-          }
-
-          console.log('menu mobile progressivo OK');
-          NODE
 
       - name: Validar dependencias do backend
         run: |

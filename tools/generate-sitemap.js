@@ -33,6 +33,13 @@ const buildSitemap = () => {
             throw new Error(`Arquivo da rota ${source} nao encontrado: ${filePath}`);
         }
 
+        const html = fs.readFileSync(filePath, 'utf8');
+        const metaTags = html.match(/<meta\b[^>]*>/gi) || [];
+        if (metaTags.some(tag => /\bname\s*=\s*["']robots["']/i.test(tag) &&
+            /\bcontent\s*=\s*["'][^"']*\bnoindex\b/i.test(tag))) {
+            continue;
+        }
+
         const lastmod = dates[source];
         if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod || '') ||
             new Date(lastmod).toISOString().slice(0, 10) !== lastmod) {

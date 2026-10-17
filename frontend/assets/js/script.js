@@ -81,35 +81,36 @@ function initApp() {
             }
         });
 
-        // Criação dinâmica do botão Hambúrguer para mobile
-        const mobileBtn = document.createElement('button');
-        mobileBtn.className = 'mobile-menu-btn';
-        mobileBtn.innerHTML = '☰';
-        mobileBtn.setAttribute('aria-label', 'Abrir menu mobile');
-        mobileBtn.setAttribute('aria-expanded', 'false');
-        
+        const mobileBtn = navbar.querySelector('.mobile-menu-btn');
         const navLinks = navbar.querySelector('.nav-links');
-        if (navLinks) {
-            navbar.insertBefore(mobileBtn, navLinks);
-        }
-
-        // Lógica de abrir/fechar o menu mobile
-        mobileBtn.addEventListener('click', () => {
-            const isOpen = navbar.classList.toggle('menu-open');
-            mobileBtn.innerHTML = isOpen ? '✕' : '☰';
-            mobileBtn.setAttribute('aria-expanded', isOpen.toString());
-        });
-
-        // Fechar o menu ao clicar em um link
-        const links = navbar.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    navbar.classList.remove('menu-open');
-                    mobileBtn.innerHTML = '☰';
+        if (mobileBtn && navLinks) {
+            const mobileViewport = window.matchMedia('(max-width: 768px)');
+            const setMenuOpen = (isOpen) => {
+                navbar.classList.toggle('menu-open', isOpen);
+                mobileBtn.textContent = isOpen ? '✕' : '☰';
+                mobileBtn.setAttribute('aria-expanded', isOpen.toString());
+                mobileBtn.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+            };
+            mobileBtn.addEventListener('click', () => {
+                setMenuOpen(mobileViewport.matches && !navbar.classList.contains('menu-open'));
+            });
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && navbar.classList.contains('menu-open')) {
+                    setMenuOpen(false);
+                    mobileBtn.focus();
                 }
             });
-        });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => setMenuOpen(false));
+            });
+            mobileViewport.addEventListener('change', () => {
+                const focusWillHide = mobileViewport.matches && navLinks.contains(document.activeElement);
+                setMenuOpen(false);
+                if (focusWillHide) mobileBtn.focus();
+            });
+            setMenuOpen(false);
+            document.documentElement.classList.add('menu-js-enabled');
+        }
     }
 
     /*
@@ -203,32 +204,52 @@ function initApp() {
 
     const fadeInSections = document.querySelectorAll('.fade-in-section');
 
-    if ('IntersectionObserver' in window && fadeInSections.length > 0) {
-        const fadeInObserverOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const revealAll = () => {
+        document.documentElement.classList.remove('reveal-animations-enabled');
+        fadeInSections.forEach(section => section.classList.add('is-visible'));
+    };
+    if ('IntersectionObserver' in window && fadeInSections.length > 0 && !reducedMotion.matches) {
+        let fadeInObserver;
+        try {
+            const fadeInObserverOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0
+            };
 
-        const fadeInObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
+            fadeInObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
 
-                    // Para de observar após a animação
-                    observer.unobserve(entry.target);
+                        // Para de observar após a animação
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, fadeInObserverOptions);
+
+            fadeInSections.forEach(section => {
+                fadeInObserver.observe(section);
+            });
+            document.documentElement.classList.add('reveal-animations-enabled');
+            reducedMotion.addEventListener('change', () => {
+                if (reducedMotion.matches) {
+                    fadeInObserver.disconnect();
+                    revealAll();
                 }
             });
-        }, fadeInObserverOptions);
-
-        fadeInSections.forEach(section => {
-            fadeInObserver.observe(section);
-        });
+            // Bound the hidden state even if observer callbacks never arrive.
+            window.setTimeout(() => {
+                fadeInObserver.disconnect();
+                revealAll();
+            }, 5000);
+        } catch {
+            if (fadeInObserver) fadeInObserver.disconnect();
+            revealAll();
+        }
     } else {
-        // Caso o navegador não suporte IntersectionObserver
-        fadeInSections.forEach(section => {
-            section.classList.add('is-visible');
-        });
+        revealAll();
     }
 
     /*

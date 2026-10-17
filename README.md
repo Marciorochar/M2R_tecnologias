@@ -61,6 +61,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy estatico pe
 | Artigo: Site profissional fortalece marca | `frontend/pages/blog/site-profissional-fortalece-marca.html` | `/blog/site-profissional-fortalece-marca` |
 | Artigo: Organizacao de processos digitais | `frontend/pages/blog/organizacao-de-processos-digitais.html` | `/blog/organizacao-de-processos-digitais` |
 | Sobre | `frontend/pages/sobre.html` | `/sobre` |
+| Fundador (noindex temporario) | `frontend/pages/fundador.html` | `/fundador` |
 | Contato | `frontend/pages/contato.html` | `/contato` |
 | Erro 404 | `404.html` e `frontend/404.html` | `/404` e rotas inexistentes |
 
@@ -105,12 +106,17 @@ M2R/
         site-profissional-fortalece-marca.html
         organizacao-de-processos-digitais.html
       sobre.html
+      fundador.html
       contato.html
   docs/
     screenshots/
       home.png
       projetos.png
       blog.png
+  backend/
+    app.py
+    test_app.py
+    requirements.txt
   .gitignore
   .github/
     dependabot.yml
@@ -140,8 +146,11 @@ http://127.0.0.1:5500/
 
 O servidor reutiliza rewrites, redirects e headers do `vercel.json`, incluindo `/servicos`, `/contato`, assets e resposta 404 para rotas inexistentes. Use outra porta com `--port 5501` se necessario. Ele atende apenas em loopback e implementa as regras estaticas atuais; nao e um emulador completo da Vercel nem comprova comportamento em producao.
 
-<<<<<<< HEAD
 ## Como rodar o backend localmente
+
+O backend Flask e opcional e nao e executado pelo deploy estatico da Vercel.
+Crie um ambiente virtual antes de instalar suas dependencias. O endpoint de contato
+apenas valida dados; o site prepara o envio no aplicativo de e-mail do visitante.
 
 ```powershell
 cd backend
@@ -176,8 +185,6 @@ O limitador usa memoria por processo por padrao: reinicios apagam contadores e w
 
 Respostas JSON: 200 para validacao bem-sucedida, 400 para JSON vazio/malformado, corpo que nao seja objeto ou campos invalidos, 415 para tipo de conteudo incompativel, 413 para corpo acima de 16 KiB e 429 apos duas tentativas por hora por endereco. Erros usam `error`; sucesso usa `message` e nao confirma envio. JSON `null`, listas, numeros, booleanos e strings no nivel raiz sao invalidos.
 
-=======
->>>>>>> ba892d0 (Remove backend opcional)
 ## Contato
 
 O formulario da pagina de contato usa `mailto:` para solicitar a abertura do aplicativo de e-mail do visitante com a mensagem preenchida.
@@ -225,6 +232,7 @@ Rotas configuradas:
 - `/blog/site-profissional-fortalece-marca`
 - `/blog/organizacao-de-processos-digitais`
 - `/sobre`
+- `/fundador` (noindex temporario, fora do sitemap)
 - `/contato`
 - `/404`
 - `/robots.txt`
@@ -238,7 +246,6 @@ Rotas inexistentes nao usam rewrite generico; elas caem no 404 nativo da Vercel.
 Use estes comandos para uma validacao local rapida antes de fazer commit:
 
 ```powershell
-<<<<<<< HEAD
 node tools/generate-sitemap.js --check
 python tools/site_tools.py check
 python tools/site_tools.py security
@@ -247,9 +254,8 @@ python -m pip install -r backend/requirements.txt pytest pip-audit
 python -m pytest backend
 python -m pip_audit -r backend/requirements.txt
 python -m py_compile backend/app.py
-=======
->>>>>>> ba892d0 (Remove backend opcional)
 node --check frontend/assets/js/script.js
+python tools/browser_check.py
 git status
 ```
 
@@ -290,7 +296,7 @@ Depois, envie para o GitHub:
 ```powershell
 git add .
 git commit -m "Atualiza projeto M2R"
-git push origin main
+git push -u origin HEAD
 ```
 
 ## Checklist de publicacao
@@ -302,12 +308,15 @@ git push origin main
 - Conferir `/404` e uma rota inexistente com status HTTP 404 no deploy.
 - Conferir `/robots.txt`.
 - Conferir `/sitemap.xml`.
-<<<<<<< HEAD
 - Atualizar os prints em `docs/screenshots/` quando houver mudanca visual relevante.
 - Se o backend for publicado, testar `/healthz`.
-=======
->>>>>>> ba892d0 (Remove backend opcional)
 
 ## Status atual
+
+`/fundador` permanece acessivel com `noindex, follow`, fora do sitemap e sem CTA
+biografico em `/sobre`, ate validacao editorial da biografia. Datas dessa rota
+permanecem no registro editorial para uma futura publicacao. O gerador exclui
+paginas noindex e 404; testes comparam o sitemap com as rotas publicaveis.
+Veja `docs/auditoria-2026-10-17.md` para decisoes e verificacoes da auditoria.
 
 Projeto estatico preparado para publicacao na Vercel e versionamento pelo GitHub.
