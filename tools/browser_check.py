@@ -9,7 +9,7 @@ from site_tools import ROOT, Site, handler_for
 
 
 def check_layout(page):
-    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), page.url
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (page.url, page.evaluate("() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80), width: el.getBoundingClientRect().width}))"))
     assert page.locator('h1').count() == 1
     for image in page.locator('img').all():
         image.scroll_into_view_if_needed()
@@ -76,8 +76,8 @@ def check_site(browser, base):
                 page.screenshot(path=str(results / f'{route[1:]}-{width}.png'), full_page=True)
         print(f'PASS Chromium: {len(routes)} routes at {width}px', flush=True)
     for disabled in (True, False):
-        fallback = browser.new_context(java_script_enabled=not disabled, reduced_motion='reduce')
-        fp = fallback.new_page(viewport={'width': 390, 'height': 844})
+        fallback = browser.new_context(java_script_enabled=not disabled, reduced_motion='reduce', viewport={'width': 390, 'height': 844})
+        fp = fallback.new_page()
         for route in routes:
             fp.goto(base + route)
             check_layout(fp)
