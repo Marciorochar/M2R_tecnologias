@@ -27,6 +27,8 @@ O PNG original e a atualizacao de dependencia da main foram preservados.
 | P1 | Foto sem dimensoes e PNG pesado | 1254x1254 declarados, WebP sem perdas e PNG de fallback |
 | P1 | Navegacao fixa cobria conteudo sem JS no celular | Navbar no fluxo normal sem inicializacao JS |
 | P1 | Selo do fundador com texto claro sobre fundo claro | Fundo transparente no painel escuro |
+| P1 | Titulo longo e tamanho minimo das colunas geravam overflow no Chromium Linux | Quebra de palavras quando necessaria e tracks minmax(0, 1fr) |
+| P1 | Botao secundario branco sobre fundo claro em /fundador | Botao outline do proprio site |
 | P2 | README continha tres blocos de conflito | Reconciliacao mantendo backend opcional e contrato mailto |
 | P2 | Execucao direta do Flask habilitava debug em producao | Debug apenas com APP_ENV de desenvolvimento/local; teste de regressao |
 
@@ -72,13 +74,22 @@ Nenhum ambiente virtual ou arquivo pessoal foi removido.
 | python -m py_compile backend/app.py | PASS |
 | python -m pytest backend | PASS - 49 testes |
 | python -m pip_audit -r backend/requirements.txt | PASS - nenhuma vulnerabilidade conhecida |
-| python tools/browser_check.py | Em execucao; atualizar antes da entrega |
-| Workflow Validar site | Aguardando publicacao da PR |
+| python tools/browser_check.py | Resultados locais e execucao Linux nos checks da PR #10 |
+| Workflow Validar site | [Resultado atualizado nos checks da PR #10](https://github.com/Marciorochar/M2R_tecnologias/pull/10/checks) |
 
 O primeiro check de links executou antes da conversao WebP terminar e falhou
 por arquivo ainda ausente. A repeticao apos a conversao passou. O primeiro
 teste Chromium expunha uma espera ausente no proprio teste de resize; foi
 substituida por espera do estado observado apos o evento de media query.
+Expressoes de espera foram convertidas em funcoes para respeitar a CSP sem
+unsafe-eval. A CI identificou overflow em /projetos a 320 px no Linux, corrigido
+sem esconder conteudo. O fallback do teste foi ajustado para criar o viewport
+no BrowserContext e respeitar o atributo hidden do formulario sem JavaScript;
+a verificacao especifica continua exigindo que esse formulario esteja oculto.
+
+PR corretiva: https://github.com/Marciorochar/M2R_tecnologias/pull/10.
+Os checks vinculados a PR identificam o commit testado e mantem o resultado
+atualizado sem fixar o estado de uma execucao anterior neste documento.
 
 O servidor local testa as regras estaticas, nao emula toda a plataforma Vercel.
 `/404` e uma rota explicitamente reescrita e responde 200 no adaptador local;
