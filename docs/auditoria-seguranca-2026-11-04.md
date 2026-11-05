@@ -50,12 +50,25 @@ fallbacks sem JavaScript, movimento reduzido, observer fallbacks, redirecionamen
 e pagina 404. A configuracao de proxy agora e opt-in por quantidade explicita de
 saltos confiaveis, e as respostas recebem um identificador aleatorio de requisicao.
 
-AS-03, AS-04 e AS-05 ficam corrigidos no codigo, mas dependem de novo deploy para
-serem efetivos em producao. AS-06 foi endurecido: `memory://` continua disponivel
+AS-03, AS-04 e AS-05 ficam corrigidos no codigo e foram confirmados no dominio
+publico apos o deploy. AS-06 foi endurecido: `memory://` continua disponivel
 somente fora de producao e `ProxyFix` exige uma quantidade explicita de saltos
 confiaveis. AS-01 e AS-02 permanecem abertos: o desligamento do
 Render legado, a rotacao de segredos e a revisao de logs/banco/SMTP exigem acesso
-ao provedor. Nenhum deploy ou alteracao externa foi realizado nesta remediacao.
+ao provedor. O backend legado continua ativo e requer desativacao manual.
+
+## Auditoria publica pos-deploy
+
+Em 04/11/2026, apos a integracao na `main` pelos PRs #11, #14 e #15, foram
+repetidas verificacoes passivas em `https://m2rtecnologias.vercel.app`:
+
+- raiz, `/sobre`, `/fundador`, `/contato`, assets, robots e sitemap responderam corretamente;
+- `/backend/app.py`, `/.github/workflows/validate-site.yml`, `/docs/`, `/tools/` e `/vercel.json` responderam HTTP 404;
+- rota inexistente de teste respondeu HTTP 404;
+- HTTPS, HSTS, CSP, `nosniff`, Permissions-Policy e framing bloqueado permaneceram ativos;
+- Lighthouse na home marcou 100 em acessibilidade, boas praticas e SEO em mobile e desktop;
+- a imagem do fundador passou a ser carregada com CSS versionado e proporcao efetiva 4:5 no navegador;
+- `https://m2r-backend.onrender.com` continua respondendo e permanece como pendencia externa de alta prioridade.
 
 ## Escopo e limites
 
