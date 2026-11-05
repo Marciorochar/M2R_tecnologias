@@ -4,6 +4,15 @@ Todas as mudancas notaveis deste projeto serao documentadas aqui.
 
 O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas em `AAAA-MM-DD`.
 
+## [1.0.7] - 2026-11-04
+
+### Deploy e auditoria pública
+
+- correções de segurança integradas na `main` e confirmadas no domínio público;
+- caminhos internos passaram a responder HTTP 404;
+- auditoria pós-deploy confirmou headers, Lighthouse e proporção efetiva da imagem do fundador;
+- backend legado do Render permanece registrado como pendência externa.
+
 ## [1.0.6] - 2026-11-04
 
 ### Seguranca, acessibilidade e responsividade
