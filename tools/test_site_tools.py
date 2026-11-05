@@ -49,6 +49,21 @@ class SiteTests(unittest.TestCase):
     def test_security_policy(self):
         self.site.security()
 
+    def test_vercel_deployment_uses_a_strict_allowlist(self):
+        lines = [
+            line.strip()
+            for line in (self.site.root / ".vercelignore").read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+        self.assertEqual(lines, ["/*", "!frontend", "!404.html", "!vercel.json"])
+
+    def test_vercel_blocks_internal_paths_with_http_404(self):
+        routes = self.site.config["routes"]
+        blocked = [route for route in routes if route.get("status") == 404]
+        self.assertEqual(len(blocked), 2)
+        self.assertIn("backend", blocked[0]["src"])
+        self.assertIn("vercel", blocked[1]["src"])
+
     def test_html_entities_and_ids(self):
         document = Document('<a href="/contato?a=1&amp;b=2#nome">x</a><input id="nome">')
         self.assertEqual(document.links, ["/contato?a=1&b=2#nome"])

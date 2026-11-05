@@ -47,6 +47,16 @@
       ]
     }
   ],
+  "routes": [
+    {
+      "src": "^/(backend|docs|tools|\\.github)(/.*)?$",
+      "status": 404
+    },
+    {
+      "src": "^/(README\\.md|CHANGELOG\\.md|LICENSE|requirements-dev\\.txt|vercel\\.json|\\.vercelignore|\\.gitignore)$",
+      "status": 404
+    }
+  ],
   "redirects": [
     {
       "source": "/index.html",

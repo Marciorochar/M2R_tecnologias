@@ -1,6 +1,6 @@
 """Reproducible Playwright smoke test for the local site.
 
-Install: python -m pip install playwright && python -m playwright install chromium
+Install: python -m pip install -r requirements-dev.txt && python -m playwright install chromium
 Run from repository root: python tools/browser_check.py
 """
 import threading
@@ -18,6 +18,17 @@ def check_layout(page):
     for section in page.locator('.fade-in-section:not([hidden])').all():
         section.scroll_into_view_if_needed()
         page.wait_for_function('(el) => getComputedStyle(el).opacity === "1"', arg=section.element_handle())
+    form = page.locator('#contact-form')
+    if form.count():
+        assert form.get_attribute('aria-describedby') == 'form-intro'
+        assert page.locator('#form-status').get_attribute('role') == 'status'
+        for label in form.locator('label').all():
+            assert label.get_attribute('for')
+            assert form.locator(f'#{label.get_attribute("for")}').count() == 1
+    founder_picture = page.locator('#fundador .founder-photo picture')
+    if founder_picture.count():
+        box = founder_picture.bounding_box()
+        assert box and box['height'] > box['width']
 
 
 def check_menu(page, mobile):
@@ -118,7 +129,7 @@ def main():
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        raise SystemExit("Playwright ausente. Instale com: python -m pip install playwright; python -m playwright install chromium")
+        raise SystemExit("Playwright ausente. Instale requirements-dev.txt e execute: python -m playwright install chromium")
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler_for(Site()))
     thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()
     base = f"http://127.0.0.1:{server.server_port}"

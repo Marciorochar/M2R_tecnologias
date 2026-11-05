@@ -4,6 +4,29 @@ Todas as mudancas notaveis deste projeto serao documentadas aqui.
 
 O formato segue uma estrutura simples inspirada em Keep a Changelog, com datas em `AAAA-MM-DD`.
 
+## [1.0.6] - 2026-11-04
+
+### Seguranca, acessibilidade e responsividade
+
+- adicionada configuracao explicita de proxies confiaveis e identificador de requisicao no Flask;
+- melhorado o enquadramento responsivo da imagem do fundador com proporcao vertical consistente;
+- enriquecida a semantica do formulario de contato com descricao e regiao de status;
+- ampliados os testes de backend e navegador para cobrir esses controles.
+
+## [1.0.5] - 2026-11-04
+
+### Seguranca
+
+- Deploy da Vercel limitado ao frontend, 404 e configuracao de rotas por allowlist.
+- Backend com CORS por rota e metodo, headers de seguranca e schema JSON estrito.
+- Producao passa a exigir HTTPS para o frontend e Redis compartilhado para rate limiting.
+- GitHub Actions fixadas por SHA e ferramentas de validacao com versoes exatas.
+- Testes de regressao adicionados para CORS, headers, configuracao e artefato de deploy.
+
+### Documentacao
+
+- Backend legado no Render registrado como pendencia externa de desligamento e rotacao de credenciais.
+
 ## [1.0.4] - 2026-09-06
 
 ### Adicionado

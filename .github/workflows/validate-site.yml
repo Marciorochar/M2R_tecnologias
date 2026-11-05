@@ -18,26 +18,30 @@ jobs:
 
     steps:
       - name: Baixar codigo
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
       - name: Preparar Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 22
 
       - name: Preparar Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: "3.12"
+
+      - name: Instalar ferramentas de validacao
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
 
       - name: Validar sintaxe JavaScript
         run: node --check frontend/assets/js/script.js
 
       - name: Testar navegacao e animacoes no Chromium
         run: |
-          python -m pip install playwright
           python -m playwright install --with-deps chromium
           python tools/browser_check.py
 
@@ -47,41 +51,36 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          dependencies = []
-          for line in Path("backend/requirements.txt").read_text(encoding="utf-8").splitlines():
-              line = line.strip()
-              if not line or line.startswith("#"):
-                  continue
-              if "==" not in line:
-                  raise SystemExit(f"Dependencia sem pin exato: {line}")
-              name, version = line.split("==", 1)
-              if not name.strip() or not version.strip():
-                  raise SystemExit(f"Dependencia invalida: {line}")
-              dependencies.append(line)
+          for requirements in (Path("backend/requirements.txt"), Path("requirements-dev.txt")):
+              dependencies = []
+              for line in requirements.read_text(encoding="utf-8").splitlines():
+                  line = line.strip()
+                  if not line or line.startswith("#"):
+                      continue
+                  if "==" not in line:
+                      raise SystemExit(f"Dependencia sem pin exato em {requirements}: {line}")
+                  name, version = line.split("==", 1)
+                  if not name.strip() or not version.strip():
+                      raise SystemExit(f"Dependencia invalida em {requirements}: {line}")
+                  dependencies.append(line)
 
-          if not dependencies:
-              raise SystemExit("backend/requirements.txt nao possui dependencias validas")
+              if not dependencies:
+                  raise SystemExit(f"{requirements} nao possui dependencias validas")
 
-          print(f"dependencias do backend OK: {len(dependencies)} pins exatos")
+              print(f"{requirements} OK: {len(dependencies)} pins exatos")
           PY
 
       - name: Validar sintaxe Python
         run: python -m py_compile backend/app.py
 
       - name: Instalar dependencias do backend
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r backend/requirements.txt
+        run: python -m pip install -r backend/requirements.txt
 
       - name: Rodar testes Python
-        run: |
-          python -m pip install pytest
-          python -m pytest backend
+        run: python -m pytest backend
 
       - name: Auditar dependencias Python
-        run: |
-          python -m pip install pip-audit
-          python -m pip_audit -r backend/requirements.txt
+        run: python -m pip_audit -r backend/requirements.txt
 
       - name: Validar vercel.json
         run: |
@@ -100,6 +99,24 @@ jobs:
 
           if (!Array.isArray(config.headers)) {
             throw new Error('vercel.json precisa de headers.');
+          }
+
+          if (!Array.isArray(config.routes) || config.routes.length < 2) {
+            throw new Error('vercel.json precisa bloquear caminhos internos com routes.');
+          }
+
+          const internalRoutes = config.routes.filter((rule) => rule.status === 404);
+          if (internalRoutes.length < 2 || !internalRoutes.some((rule) => rule.src.includes('backend'))) {
+            throw new Error('Rotas internas precisam retornar HTTP 404.');
+          }
+
+          const deployAllowlist = fs.readFileSync('.vercelignore', 'utf8')
+            .split(/\r?\n/)
+            .map((line) => line.trim())
+            .filter((line) => line && !line.startsWith('#'));
+          const expectedAllowlist = ['/*', '!frontend', '!404.html', '!vercel.json'];
+          if (JSON.stringify(deployAllowlist) !== JSON.stringify(expectedAllowlist)) {
+            throw new Error('.vercelignore precisa manter a allowlist minima de deploy.');
           }
 
           const catchAllRewrite = config.rewrites.find((rule) => rule.source === '/(.*)');

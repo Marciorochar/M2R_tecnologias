@@ -32,13 +32,13 @@
         <section class="page-hero"><div class="container"><span class="section-tag section-tag--dark">Contato</span><h1>Vamos conversar sobre sua próxima solução</h1><p>Apresente seu contexto e receba um retorno para entender os próximos passos.</p></div></section>
         <section class="section-block"><div class="container contact-layout">
             <div class="contact-intro fade-in-section"><span class="section-tag">M2R Tecnologias</span><h2>Fale com a nossa equipe</h2><p>Use o formulário para solicitar orçamento, discutir uma ideia ou tirar dúvidas sobre desenvolvimento web, automação, dados e sistemas personalizados.</p><div class="contact-direct"><a href="tel:+5522998270026">(22) 99827-0026</a><a href="mailto:marciinhofla@gmail.com">marciinhofla@gmail.com</a><a class="whatsapp-contact-link" href="https://wa.me/5522998270026?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20M2R%20Tecnologias%20e%20gostaria%20de%20conversar%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital." target="_blank" rel="noopener">Chamar no WhatsApp</a></div></div>
-            <form id="contact-form" class="contact-form fade-in-section" hidden>
-                <p>Prepare seu e-mail aqui e conclua o envio no seu aplicativo de e-mail. Se ele não abrir, copie a mensagem e envie para <a href="mailto:marciinhofla@gmail.com">marciinhofla@gmail.com</a>.</p>
+            <form id="contact-form" class="contact-form fade-in-section" aria-describedby="form-intro" hidden>
+                <p id="form-intro">Prepare seu e-mail aqui e conclua o envio no seu aplicativo de e-mail. Se ele não abrir, copie a mensagem e envie para <a href="mailto:marciinhofla@gmail.com">marciinhofla@gmail.com</a>.</p>
                 <label for="name">Nome</label><input id="name" type="text" placeholder="Como podemos chamar você?" autocomplete="name" maxlength="120" required disabled>
                 <label for="email">E-mail</label><input id="email" type="email" placeholder="voce@empresa.com" autocomplete="email" maxlength="254" required disabled>
                 <label for="phone">Telefone</label><input id="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="30" disabled>
                 <label for="message">Mensagem</label><textarea id="message" placeholder="Conte brevemente o que você precisa." maxlength="2000" required disabled></textarea>
-                <button type="button" id="prepare-email" class="btn btn-primary" disabled>Preparar e-mail</button><p id="form-status" aria-live="polite"></p>
+                <button type="button" id="prepare-email" class="btn btn-primary" disabled>Preparar e-mail</button><p id="form-status" role="status" aria-live="polite"></p>
             </form>
             <noscript><p>Para conversar com a equipe, use o e-mail, telefone ou WhatsApp acima.</p></noscript>
         </div></section>

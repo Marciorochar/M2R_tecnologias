@@ -1182,18 +1182,27 @@ form textarea {
     width: 100%;
     display: grid;
     place-items: center;
-    padding: 32px;
+    padding: clamp(24px, 4vw, 40px);
     border: 0;
     border-radius: 0;
     background-color: var(--color-accent-light);
     box-shadow: none;
 }
 
+#fundador .founder-photo picture {
+    width: min(100%, 420px);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
 #fundador .founder-photo img {
-    width: min(100%, 360px);
-    max-height: 480px;
+    width: 100%;
+    height: 100%;
     aspect-ratio: auto;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: 50% 18%;
 }
 
 .founder-photo picture {
@@ -1251,9 +1260,8 @@ form textarea {
         padding: 28px;
     }
 
-    #fundador .founder-photo img {
-        width: min(100%, 280px);
-        max-height: 340px;
+    #fundador .founder-photo picture {
+        width: min(100%, 360px);
     }
 
     #fundador .founder-content {
