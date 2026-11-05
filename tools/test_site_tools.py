@@ -49,6 +49,14 @@ class SiteTests(unittest.TestCase):
     def test_security_policy(self):
         self.site.security()
 
+    def test_vercel_deployment_uses_a_strict_allowlist(self):
+        lines = [
+            line.strip()
+            for line in (self.site.root / ".vercelignore").read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+        self.assertEqual(lines, ["/*", "!frontend", "!404.html", "!vercel.json"])
+
     def test_html_entities_and_ids(self):
         document = Document('<a href="/contato?a=1&amp;b=2#nome">x</a><input id="nome">')
         self.assertEqual(document.links, ["/contato?a=1&b=2#nome"])

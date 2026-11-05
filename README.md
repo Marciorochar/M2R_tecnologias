@@ -155,6 +155,9 @@ apenas valida dados; o site prepara o envio no aplicativo de e-mail do visitante
 ```powershell
 cd backend
 python -m pip install -r requirements.txt
+$env:APP_ENV="development"
+$env:RATELIMIT_STORAGE_URI="memory://"
+$env:TRUSTED_PROXY_HOPS="0"
 python app.py
 ```
 
@@ -167,17 +170,28 @@ Rotas disponiveis:
 | GET | `/api/status` | Status da API |
 | POST | `/api/contato` | Validacao simples dos dados de contato |
 
-Variavel opcional:
+Configuracao local:
 
 ```text
 FRONTEND_URL=https://m2rtecnologias.vercel.app
-APP_ENV=production
+APP_ENV=development
 RATELIMIT_STORAGE_URI=memory://
+TRUSTED_PROXY_HOPS=0
 ```
 
-Em producao, o CORS aceita apenas `FRONTEND_URL`. Em desenvolvimento local, use `APP_ENV=development` para permitir os servidores locais documentados no codigo.
+Em producao, use `APP_ENV=production`, `FRONTEND_URL` com HTTPS e um
+`RATELIMIT_STORAGE_URI` compartilhado, como uma URL `rediss://` fornecida por um
+Redis gerenciado. O processo recusa inicializacao em producao com `memory://`.
+O CORS aceita somente a origem e os metodos de cada rota; valores com wildcard,
+caminho, credenciais ou HTTP em producao sao rejeitados na inicializacao.
 
-O limitador usa memoria por processo por padrao: reinicios apagam contadores e workers nao os compartilham. Para usar a API em producao com varios workers, configure `RATELIMIT_STORAGE_URI` com armazenamento compartilhado e instale o driver correspondente (por exemplo, Redis). Nenhum servico externo e criado automaticamente. O endereco remoto continua sendo o fornecido pelo servidor; confirme a topologia do proxy antes de adicionar `ProxyFix` ou confiar em `X-Forwarded-For`.
+`memory://` e permitido somente em desenvolvimento e testes. O endereco remoto
+continua sendo o fornecido pelo servidor por padrao. Configure
+`TRUSTED_PROXY_HOPS` somente com a quantidade conhecida de proxies reversos
+confiaveis; o Flask aplica `ProxyFix` apenas quando esse valor e maior que zero.
+As respostas incluem um `X-Request-ID` aleatorio para correlacao sem registrar
+dados pessoais, alem de CSP, `nosniff`, bloqueio de framing, politica de
+referenciador e HSTS em producao.
 
 ### Contrato de contato
 
@@ -220,6 +234,9 @@ deixar vazio
 O arquivo `vercel.json` faz o roteamento da raiz do projeto para os arquivos dentro de `frontend/`.
 A pagina `404.html` na raiz e usada pela Vercel como fallback nativo para rotas inexistentes, preservando o status HTTP 404.
 O mesmo arquivo tambem define headers de seguranca para todas as rotas e cache curto com revalidacao para arquivos em `/assets/*`, pois CSS, JavaScript e imagens ainda usam nomes fixos.
+O `.vercelignore` usa uma allowlist: somente `frontend/`, `404.html` e
+`vercel.json` entram no artefato. Backend, ferramentas, workflows, documentacao e
+arquivos de desenvolvimento nao devem ser servidos pelo dominio publico.
 
 Rotas configuradas:
 
@@ -250,7 +267,8 @@ node tools/generate-sitemap.js --check
 python tools/site_tools.py check
 python tools/site_tools.py security
 python -m unittest discover -s tools -p "test_*.py" -v
-python -m pip install -r backend/requirements.txt pytest pip-audit
+python -m pip install -r requirements-dev.txt
+python -m pip install -r backend/requirements.txt
 python -m pytest backend
 python -m pip_audit -r backend/requirements.txt
 python -m py_compile backend/app.py
@@ -267,19 +285,22 @@ node tools/generate-sitemap.js
 
 A CSP permite scripts locais, sem `unsafe-inline`. Os blocos JSON-LD sao validados como dados estruturados, nao executam JavaScript, e o check confirma que permanecem JSON valido e que a politica final nao reintroduz permissoes inline.
 
-Testes opcionais de navegador: instale `playwright`, execute `python -m playwright install chromium` e depois `python tools/browser_check.py`. O teste usa servidor local temporario e intercepta o mailto, sem enviar mensagens.
+Testes opcionais de navegador: depois de instalar `requirements-dev.txt`, execute
+`python -m playwright install chromium` e `python tools/browser_check.py`. O teste
+usa servidor local temporario e intercepta o mailto, sem enviar mensagens.
 
 O workflow do GitHub Actions tambem roda em cada push e pull request para validar:
 
 - JavaScript;
 - HTML e CSS;
 - `vercel.json`;
+- allowlist de arquivos da Vercel em `.vercelignore`;
 - sitemap;
 - sitemap atualizado a partir do `vercel.json`;
 - links internos;
 - ausencia de Google Fonts;
 - dimensoes declaradas em imagens;
-- dependencias do backend com versoes fixadas no `backend/requirements.txt`;
+- dependencias do backend e das ferramentas com versoes fixadas;
 - sintaxe Python;
 - testes Python do backend Flask;
 - auditoria de vulnerabilidades com `pip-audit`.
@@ -287,9 +308,12 @@ O workflow do GitHub Actions tambem roda em cada push e pull request para valida
 O Dependabot verifica semanalmente:
 
 - pacotes Python do `backend/requirements.txt`;
+- ferramentas Python do `requirements-dev.txt`;
 - versoes usadas pelos workflows do GitHub Actions.
 
-As versoes das dependencias Python ficam somente em `backend/requirements.txt`. O workflow valida o formato com pin exato (`==`) e usa instalacao, testes e `pip-audit` para verificar compatibilidade e seguranca.
+As dependencias de runtime ficam em `backend/requirements.txt`; ferramentas de
+teste ficam em `requirements-dev.txt`. O workflow valida pins exatos (`==`), usa
+GitHub Actions fixadas por SHA e executa testes e `pip-audit`.
 
 Depois, envie para o GitHub:
 
@@ -308,8 +332,10 @@ git push -u origin HEAD
 - Conferir `/404` e uma rota inexistente com status HTTP 404 no deploy.
 - Conferir `/robots.txt`.
 - Conferir `/sitemap.xml`.
+- Confirmar que `/backend/app.py`, `/.github/` e `/docs/` retornam HTTP 404.
 - Atualizar os prints em `docs/screenshots/` quando houver mudanca visual relevante.
-- Se o backend for publicado, testar `/healthz`.
+- Se o backend for publicado, testar `/healthz`, headers, CORS e rate limiting.
+- Confirmar que nenhum backend legado permanece ativo antes de encerrar a remediacao.
 
 ## Status atual
 
@@ -318,5 +344,10 @@ biografico em `/sobre`, ate validacao editorial da biografia. Datas dessa rota
 permanecem no registro editorial para uma futura publicacao. O gerador exclui
 paginas noindex e 404; testes comparam o sitemap com as rotas publicaveis.
 Veja `docs/auditoria-2026-10-17.md` para decisoes e verificacoes da auditoria.
+
+O backend legado `m2r-backend.onrender.com` identificado na auditoria de
+04/11/2026 deve permanecer desligado. Desativacao do servico, rotacao de JWT,
+banco e SMTP, e revisao dos logs sao tarefas no painel do provedor e nao sao
+executadas por este repositorio. Consulte `docs/auditoria-seguranca-2026-11-04.md`.
 
 Projeto estatico preparado para publicacao na Vercel e versionamento pelo GitHub.

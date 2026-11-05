@@ -1,14 +1,32 @@
-import pytest
+import os
 import runpy
 from pathlib import Path
 from unittest.mock import patch
 
-from app import app, clean_field, limiter, MAX_FIELD_LENGTHS
+import pytest
+
+os.environ.setdefault("APP_ENV", "testing")
+os.environ.setdefault("RATELIMIT_STORAGE_URI", "memory://")
+
+from app import (
+    app,
+    clean_field,
+    limiter,
+    MAX_FIELD_LENGTHS,
+    validate_frontend_origin,
+    validate_app_environment,
+    validate_proxy_hops,
+    validate_rate_limit_storage,
+)
 
 
 @pytest.mark.parametrize('environment,debug', [('production', False), ('development', True), ('testing', False)])
 def test_script_debug_respects_environment(monkeypatch, environment, debug):
     monkeypatch.setenv('APP_ENV', environment)
+    monkeypatch.setenv(
+        'RATELIMIT_STORAGE_URI',
+        'rediss://localhost:6379/0' if environment == 'production' else 'memory://',
+    )
     with patch('flask.Flask.run') as run:
         runpy.run_path(str(Path(__file__).with_name('app.py')), run_name='__main__')
     assert run.call_args.kwargs['debug'] is debug
@@ -25,6 +43,7 @@ def test_healthz_returns_ok():
 
     assert response.status_code == 200
     assert response.get_json() == {"status": "ok"}
+    assert len(response.headers["X-Request-ID"]) == 32
 
 
 def test_api_status_returns_service_status():
@@ -32,6 +51,115 @@ def test_api_status_returns_service_status():
 
     assert response.status_code == 200
     assert response.get_json()["status"] == "ativo"
+
+
+def test_security_headers_are_applied():
+    response = client().get("/api/status")
+
+    assert response.headers["Content-Security-Policy"] == (
+        "default-src 'none'; base-uri 'none'; frame-ancestors 'none'"
+    )
+    assert response.headers["X-Content-Type-Options"] == "nosniff"
+    assert response.headers["X-Frame-Options"] == "DENY"
+    assert response.headers["Referrer-Policy"] == "no-referrer"
+    assert response.headers["Cross-Origin-Resource-Policy"] == "same-site"
+    assert response.headers["Cache-Control"] == "no-store"
+    assert "Strict-Transport-Security" not in response.headers
+
+
+def test_hsts_is_applied_in_production():
+    previous = app.config["APP_ENV"]
+    app.config["APP_ENV"] = "production"
+    try:
+        response = client().get("/healthz")
+        assert response.headers["Strict-Transport-Security"] == (
+            "max-age=63072000; includeSubDomains; preload"
+        )
+    finally:
+        app.config["APP_ENV"] = previous
+
+
+def test_cors_allows_only_the_configured_origin():
+    allowed = client().get(
+        "/api/status", headers={"Origin": "https://m2rtecnologias.vercel.app"}
+    )
+    blocked = client().get(
+        "/api/status", headers={"Origin": "https://evil.example"}
+    )
+
+    assert allowed.headers["Access-Control-Allow-Origin"] == (
+        "https://m2rtecnologias.vercel.app"
+    )
+    assert "Access-Control-Allow-Origin" not in blocked.headers
+
+
+def test_cors_preflight_is_limited_by_route():
+    origin = "https://m2rtecnologias.vercel.app"
+    status = client().options(
+        "/api/status",
+        headers={"Origin": origin, "Access-Control-Request-Method": "GET"},
+    )
+    contact = client().options(
+        "/api/contato",
+        headers={
+            "Origin": origin,
+            "Access-Control-Request-Method": "POST",
+            "Access-Control-Request-Headers": "Content-Type",
+        },
+    )
+
+    assert "GET" in status.headers["Access-Control-Allow-Methods"]
+    assert "POST" not in status.headers["Access-Control-Allow-Methods"]
+    assert "POST" in contact.headers["Access-Control-Allow-Methods"]
+    assert "DELETE" not in contact.headers["Access-Control-Allow-Methods"]
+    assert contact.headers["Access-Control-Allow-Headers"] == "Content-Type"
+
+
+@pytest.mark.parametrize("origin", [
+    "*",
+    "javascript:alert(1)",
+    "https://example.com/path",
+    "https://user:password@example.com",
+])
+def test_frontend_origin_rejects_unsafe_values(origin):
+    with pytest.raises(RuntimeError):
+        validate_frontend_origin(origin, "production")
+
+
+def test_frontend_origin_requires_https_in_production():
+    with pytest.raises(RuntimeError):
+        validate_frontend_origin("http://m2rtecnologias.vercel.app", "production")
+
+
+def test_app_environment_rejects_unknown_values():
+    with pytest.raises(RuntimeError):
+        validate_app_environment("prod")
+
+
+def test_memory_rate_limit_storage_is_rejected_in_production():
+    with pytest.raises(RuntimeError):
+        validate_rate_limit_storage("memory://", "production")
+
+
+def test_non_redis_rate_limit_storage_is_rejected_in_production():
+    with pytest.raises(RuntimeError):
+        validate_rate_limit_storage("memcached://localhost:11211", "production")
+
+
+def test_shared_rate_limit_storage_is_accepted_in_production():
+    uri = "rediss://localhost:6379/0"
+    assert validate_rate_limit_storage(uri, "production") == uri
+
+
+@pytest.mark.parametrize("value,expected", [("0", 0), ("1", 1), (2, 2)])
+def test_proxy_hops_accepts_non_negative_integers(value, expected):
+    assert validate_proxy_hops(value) == expected
+
+
+@pytest.mark.parametrize("value", ["-1", "one", "1.5", ""])
+def test_proxy_hops_rejects_invalid_values(value):
+    with pytest.raises(RuntimeError):
+        validate_proxy_hops(value)
 
 
 def test_contact_accepts_valid_payload():
@@ -54,6 +182,18 @@ def test_contact_rejects_missing_email():
 
     assert response.status_code == 400
     assert "error" in response.get_json()
+
+
+def test_contact_rejects_unexpected_fields():
+    response = client().post("/api/contato", json={
+        **VALID,
+        "admin": True,
+    })
+
+    assert response.status_code == 400
+    assert response.get_json() == {
+        "error": "O corpo JSON possui campos nao permitidos."
+    }
 
 
 def test_contact_rejects_invalid_email():
