@@ -35,7 +35,7 @@ depois de rotacionar todas as credenciais relacionadas.
 Em 04/11/2026, a branch `codex/security-remediation-2026-11-04` recebeu as
 correcoes que podem ser controladas pelo codigo:
 
-- allowlist `.vercelignore` para impedir publicacao de backend, docs, tools e workflows;
+- allowlist `.vercelignore` e rotas Vercel com status 404 para impedir acesso a backend, docs, tools e workflows;
 - CORS por rota e metodo, validacao fail-closed da origem e headers no Flask;
 - Redis obrigatorio para rate limiting em producao;
 - schema JSON estrito e limite para `/api/status`;

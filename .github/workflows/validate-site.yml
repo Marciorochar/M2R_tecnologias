@@ -101,6 +101,15 @@ jobs:
             throw new Error('vercel.json precisa de headers.');
           }
 
+          if (!Array.isArray(config.routes) || config.routes.length < 2) {
+            throw new Error('vercel.json precisa bloquear caminhos internos com routes.');
+          }
+
+          const internalRoutes = config.routes.filter((rule) => rule.status === 404);
+          if (internalRoutes.length < 2 || !internalRoutes.some((rule) => rule.src.includes('backend'))) {
+            throw new Error('Rotas internas precisam retornar HTTP 404.');
+          }
+
           const deployAllowlist = fs.readFileSync('.vercelignore', 'utf8')
             .split(/\r?\n/)
             .map((line) => line.trim())
