@@ -73,13 +73,15 @@ function initApp() {
     */
     if (navbar) {
         // Efeito de scroll (Shrink/Shadow)
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+        let navbarIsScrolled = false;
+        const updateNavbarScrollState = () => {
+            const shouldBeScrolled = window.scrollY > 20;
+            if (shouldBeScrolled === navbarIsScrolled) return;
+            navbarIsScrolled = shouldBeScrolled;
+            navbar.classList.toggle('scrolled', shouldBeScrolled);
+        };
+        updateNavbarScrollState();
+        window.addEventListener('scroll', updateNavbarScrollState, { passive: true });
 
         const mobileBtn = navbar.querySelector('.mobile-menu-btn');
         const navLinks = navbar.querySelector('.nav-links');

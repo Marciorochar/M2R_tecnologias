@@ -1,4 +1,6 @@
 import http.client
+import json
+import re
 import threading
 import unittest
 from http.server import ThreadingHTTPServer
@@ -48,6 +50,48 @@ class SiteTests(unittest.TestCase):
 
     def test_security_policy(self):
         self.site.security()
+
+    def test_form_focus_keeps_a_visible_outline(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        rule = re.search(r"form input:focus-visible,\s*form textarea:focus-visible\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(rule)
+        self.assertNotIn("outline: none", rule.group(1))
+
+    def test_scroll_listener_is_passive_and_avoids_redundant_class_updates(self):
+        script = (self.site.root / "frontend/assets/js/script.js").read_text(encoding="utf-8")
+        self.assertIn("window.addEventListener('scroll', updateNavbarScrollState, { passive: true })", script)
+        self.assertIn("if (shouldBeScrolled === navbarIsScrolled) return", script)
+
+    def test_frontend_transport_and_static_cache_headers(self):
+        config = json.loads((self.site.root / "vercel.json").read_text(encoding="utf-8"))
+        asset_headers = {item["key"]: item["value"] for item in config["headers"][0]["headers"]}
+        global_headers = {item["key"]: item["value"] for item in config["headers"][1]["headers"]}
+        self.assertEqual(asset_headers["Cache-Control"], "public, max-age=604800, must-revalidate")
+        self.assertEqual(global_headers["Strict-Transport-Security"], "max-age=2592000")
+
+    def test_blog_titles_fit_search_result_target(self):
+        for page in (self.site.root / "frontend/pages/blog").glob("*.html"):
+            title = re.search(r"<title>(.*?)</title>", page.read_text(encoding="utf-8")).group(1)
+            self.assertLessEqual(len(title), 60, f"Título longo em {page.name}: {title}")
+
+    def test_new_window_links_announce_the_context_change(self):
+        pages = list((self.site.root / "frontend").rglob("*.html")) + [self.site.root / "404.html"]
+        for page in pages:
+            html = page.read_text(encoding="utf-8")
+            for link in re.findall(r"<a\b[^>]*target=[\"']_blank[\"'][^>]*>", html, re.IGNORECASE):
+                self.assertRegex(link, r"aria-label=[\"'][^\"']*(?:nova aba|aplicativo)[^\"']*[\"']", page.name)
+
+    def test_founder_image_has_responsive_webp_variants(self):
+        image_dir = self.site.root / "frontend/assets/img"
+        for width in (400, 640, 900):
+            image = image_dir / f"Eu_fundador-{width}.webp"
+            self.assertTrue(image.is_file(), image.name)
+            self.assertLessEqual(image.stat().st_size, 250_000, image.name)
+        for page_name in ("sobre.html", "fundador.html"):
+            html = (self.site.root / "frontend/pages" / page_name).read_text(encoding="utf-8")
+            self.assertIn("Eu_fundador-400.webp 400w", html)
+            self.assertIn("Eu_fundador-640.webp 640w", html)
+            self.assertIn("Eu_fundador-900.webp 900w", html)
 
     def test_vercel_deployment_uses_a_strict_allowlist(self):
         lines = [

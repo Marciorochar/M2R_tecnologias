@@ -968,12 +968,11 @@ form textarea {
     transition: background-color var(--transition-medium), border-color var(--transition-medium), box-shadow var(--transition-medium);
 }
 
-form input:focus,
-form textarea:focus {
+form input:focus-visible,
+form textarea:focus-visible {
     border-color: var(--color-primary);
     background-color: var(--color-surface);
-    box-shadow: 0 0 0 4px rgba(90, 59, 32, 0.1);
-    outline: none;
+    box-shadow: 0 0 0 6px rgba(11, 92, 142, 0.16);
 }
 
 form textarea {
