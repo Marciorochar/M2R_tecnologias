@@ -25,6 +25,8 @@ O projeto esta organizado para publicacao simples no GitHub e deploy estatico pe
 - Melhorias de acessibilidade com foco visivel, link para pular ao conteudo e menu ativo com `aria-current`.
 - Headers de seguranca e cache configurados no `vercel.json`.
 - GitHub Actions para validar JS, Vercel, sitemap, links internos, fontes e dimensoes de imagens.
+- Auditoria axe-core no navegador para violacoes WCAG graves em telas de celular e desktop.
+- Relatorio Lighthouse das quatro categorias principais, publicado como artefato do CI.
 - Dependabot configurado para revisar dependencias Python e GitHub Actions semanalmente.
 
 ## Links
@@ -35,6 +37,8 @@ O projeto esta organizado para publicacao simples no GitHub e deploy estatico pe
 - Robots: [https://m2rtecnologias.vercel.app/robots.txt](https://m2rtecnologias.vercel.app/robots.txt)
 
 ## Prints do site
+
+As capturas atualizadas (`home`, `projetos` e `blog`) sao geradas automaticamente nos testes de navegador e ficam disponiveis no artefato `site-previews` de cada execucao do GitHub Actions. As imagens abaixo sao registros versionados do projeto.
 
 ### Pagina inicial
 
@@ -145,6 +149,23 @@ http://127.0.0.1:5500/
 ```
 
 O servidor reutiliza rewrites, redirects e headers do `vercel.json`, incluindo `/servicos`, `/contato`, assets e resposta 404 para rotas inexistentes. Use outra porta com `--port 5501` se necessario. Ele atende apenas em loopback e implementa as regras estaticas atuais; nao e um emulador completo da Vercel nem comprova comportamento em producao.
+
+## Verificacoes de qualidade
+
+Na raiz do projeto, com Python 3.12, Node.js 22 e Chromium disponiveis:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+npm ci --ignore-scripts
+python -m playwright install chromium
+python -m unittest discover -s tools -p "test_*.py"
+python tools/browser_check.py
+python tools/lighthouse_check.py
+```
+
+O teste Playwright confere navegacao, responsividade, menu, ausencia de erros JavaScript e acessibilidade usando `axe-core` nas larguras de 390 e 1024 px. Apenas violacoes `serious` e `critical` das regras WCAG 2.0/2.1 A/AA reprovam esse teste; a verificacao automatizada nao substitui uma revisao manual com teclado e leitor de tela.
+
+O Lighthouse salva o relatorio JSON em `test-results/lighthouse-home.json`, arquivo que tambem fica disponivel para download nos artefatos da execucao do GitHub Actions por 14 dias. As notas de desempenho, acessibilidade, boas praticas e SEO sao informativas e nao possuem limite minimo bloqueante nesta fase. Assim, variacoes de desempenho nao interrompem o fluxo de desenvolvimento.
 
 ## Como rodar o backend localmente
 
