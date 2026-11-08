@@ -58,6 +58,38 @@ class SiteTests(unittest.TestCase):
         self.assertIsNotNone(rule)
         self.assertNotIn("outline: none", rule.group(1))
 
+    def test_brand_palette_and_primary_button_have_adequate_contrast(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        root = re.search(r":root\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(root)
+        tokens = dict(re.findall(r"(--[\w-]+):\s*(#[0-9a-fA-F]{6})\s*;", root.group(1)))
+        expected = {
+            "--color-primary-dark": "#3b2416",  # Cacau
+            "--color-accent": "#c77a3b",        # Cobre
+            "--color-blue-dark": "#123c49",     # Azul-petróleo
+            "--color-surface": "#ffffff",       # Branco
+            "--color-accent-light": "#f7f3ed",  # Marfim
+        }
+        for token, color in expected.items():
+            with self.subTest(token=token):
+                self.assertEqual(tokens.get(token), color)
+
+        button = re.search(r"\.btn-primary\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(button)
+        self.assertIn("background-color: var(--color-accent)", button.group(1))
+        self.assertIn("color: var(--color-accent-contrast)", button.group(1))
+
+        def luminance(hex_color):
+            channels = [int(hex_color[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+            channels = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+            return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+
+        text_color = luminance(tokens["--color-accent-contrast"])
+        for background in ("--color-accent", "--color-accent-hover"):
+            with self.subTest(background=background):
+                a, b = sorted((text_color, luminance(tokens[background])), reverse=True)
+                self.assertGreaterEqual((a + 0.05) / (b + 0.05), 4.5)
+
     def test_scroll_listener_is_passive_and_avoids_redundant_class_updates(self):
         script = (self.site.root / "frontend/assets/js/script.js").read_text(encoding="utf-8")
         self.assertIn("window.addEventListener('scroll', updateNavbarScrollState, { passive: true })", script)
