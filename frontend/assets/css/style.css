@@ -1557,6 +1557,47 @@ form textarea {
     display: none;
 }
 
+.breadcrumbs {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding-top: 104px;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumbs li + li::before {
+    margin-right: 8px;
+    content: "/";
+}
+
+.breadcrumbs a {
+    color: var(--color-primary);
+}
+
+.breadcrumbs [aria-current="page"] {
+    font-weight: 700;
+}
+
+.page-hero + .section-block,
+.breadcrumbs + .page-hero {
+    scroll-margin-top: 90px;
+}
+
+.contact-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
 .fade-in-section {
     opacity: 1;
     transform: none;
@@ -1765,6 +1806,34 @@ form textarea {
         border-radius: 999px;
         background-color: #bff0d2;
         content: "";
+    }
+
+    .contact-page .mobile-whatsapp-cta {
+        display: none;
+    }
+
+    .breadcrumbs {
+        width: min(100% - 28px, 1120px);
+        padding-top: 88px;
+    }
+}
+
+@media (max-width: 360px) {
+    .mobile-whatsapp-cta {
+        width: 48px;
+        min-width: 48px;
+        padding: 0;
+        font-size: 0;
+    }
+
+    .mobile-whatsapp-cta::before {
+        display: none;
+    }
+
+    .mobile-whatsapp-cta::after {
+        content: "WA";
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
     }
 }
 
