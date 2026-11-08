@@ -24,6 +24,18 @@ class RobotsParser(HTMLParser):
 
 
 class SitemapTests(unittest.TestCase):
+    def test_recent_editorial_dates_are_recorded(self):
+        dates = json.loads((ROOT / "tools/sitemap-dates.json").read_text(encoding="utf-8"))
+        for route in ("/sobre", "/servicos", "/projetos", "/blog",
+                      "/blog/automacao-para-pequenos-negocios",
+                      "/blog/site-profissional-fortalece-marca",
+                      "/blog/organizacao-de-processos-digitais", "/contato"):
+            self.assertEqual(dates[route], "2026-11-07", route)
+
+        for page in (ROOT / "frontend/pages/blog").glob("*.html"):
+            html = page.read_text(encoding="utf-8")
+            self.assertIn('"dateModified":"2026-11-07"', html, page.name)
+
     def test_unrelated_commit_does_not_change_dates(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

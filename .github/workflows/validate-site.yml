@@ -139,8 +139,9 @@ jobs:
           }
 
           const cacheHeader = assetHeaders?.headers?.find((item) => item.key === 'Cache-Control');
-          if (!cacheHeader?.value?.includes('max-age=3600') || !cacheHeader.value.includes('must-revalidate')) {
-            throw new Error('Cache-Control de assets precisa usar cache curto com revalidacao para nomes de arquivos fixos.');
+          const maxAge = Number(cacheHeader?.value?.match(/(?:^|,\s*)max-age=(\d+)/)?.[1]);
+          if (!Number.isInteger(maxAge) || maxAge < 86400 || maxAge > 2592000 || !cacheHeader.value.includes('must-revalidate')) {
+            throw new Error('Cache-Control de assets precisa usar 1 a 30 dias com must-revalidate.');
           }
 
           if (cacheHeader.value.includes('immutable')) {
@@ -155,6 +156,12 @@ jobs:
           const assetCspHeader = assetHeaders?.headers?.find((item) => item.key === 'Content-Security-Policy');
           if (!assetCspHeader) {
             throw new Error('Content-Security-Policy ausente nos headers de assets.');
+          }
+
+          const hstsHeader = globalHeaders?.headers?.find((item) => item.key === 'Strict-Transport-Security');
+          const hstsMaxAge = Number(hstsHeader?.value?.match(/max-age=(\d+)/)?.[1]);
+          if (!Number.isInteger(hstsMaxAge) || hstsMaxAge < 15552000 || /includeSubDomains|preload/i.test(hstsHeader.value)) {
+            throw new Error('HSTS precisa usar ao menos seis meses, sem includeSubDomains ou preload nesta fase.');
           }
 
           const requiredCspDirectives = [
@@ -211,6 +218,9 @@ jobs:
 
           console.log(`sitemap OK: ${urls.length} URLs`);
           NODE
+
+      - name: Validar versoes dos assets
+        run: node tools/version-assets.js --check
 
       - name: Validar HTML e CSS
         run: |

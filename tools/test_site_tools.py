@@ -1,4 +1,5 @@
 import http.client
+import hashlib
 import json
 import re
 import threading
@@ -66,8 +67,30 @@ class SiteTests(unittest.TestCase):
         config = json.loads((self.site.root / "vercel.json").read_text(encoding="utf-8"))
         asset_headers = {item["key"]: item["value"] for item in config["headers"][0]["headers"]}
         global_headers = {item["key"]: item["value"] for item in config["headers"][1]["headers"]}
-        self.assertEqual(asset_headers["Cache-Control"], "public, max-age=604800, must-revalidate")
-        self.assertEqual(global_headers["Strict-Transport-Security"], "max-age=2592000")
+        cache = asset_headers["Cache-Control"]
+        max_age = int(re.search(r"(?:^|,\s*)max-age=(\d+)", cache).group(1))
+        self.assertGreaterEqual(max_age, 86_400)
+        self.assertLessEqual(max_age, 2_592_000)
+        self.assertIn("must-revalidate", cache)
+        self.assertNotIn("immutable", cache)
+        hsts = global_headers["Strict-Transport-Security"]
+        self.assertGreaterEqual(int(re.search(r"max-age=(\d+)", hsts).group(1)), 15_552_000)
+        self.assertNotIn("includeSubDomains", hsts)
+        self.assertNotIn("preload", hsts)
+
+    def test_asset_references_use_current_content_hashes(self):
+        assets = {
+            "style.css": self.site.root / "frontend/assets/css/style.css",
+            "script.js": self.site.root / "frontend/assets/js/script.js",
+        }
+        versions = {name: hashlib.sha256(path.read_bytes()).hexdigest()[:10]
+                    for name, path in assets.items()}
+        pages = list((self.site.root / "frontend").rglob("*.html")) + [self.site.root / "404.html"]
+        for page in pages:
+            html = page.read_text(encoding="utf-8")
+            for name, version in versions.items():
+                if name in html:
+                    self.assertIn(f"{name}?v={version}", html, page.name)
 
     def test_blog_titles_fit_search_result_target(self):
         for page in (self.site.root / "frontend/pages/blog").glob("*.html"):
@@ -92,6 +115,53 @@ class SiteTests(unittest.TestCase):
             self.assertIn("Eu_fundador-400.webp 400w", html)
             self.assertIn("Eu_fundador-640.webp 640w", html)
             self.assertIn("Eu_fundador-900.webp 900w", html)
+
+    def test_founder_social_image_is_optimized_and_complete(self):
+        image_dir = self.site.root / "frontend/assets/img"
+        social = image_dir / "Eu_fundador-social.jpg"
+        self.assertTrue(social.is_file())
+        self.assertLessEqual(social.stat().st_size, 250_000)
+        self.assertFalse((image_dir / "Eu_fundador.png").exists())
+        self.assertFalse((image_dir / "Eu_fundador.webp").exists())
+        html = (self.site.root / "frontend/pages/fundador.html").read_text(encoding="utf-8")
+        for expected in ("Eu_fundador-social.jpg", "og:image:width", "og:image:height",
+                         "og:image:alt", "twitter:card", "twitter:image"):
+            self.assertIn(expected, html)
+
+    def test_page_specific_structured_data_and_breadcrumbs(self):
+        expectations = {
+            "index.html": '"@type":"WebSite"',
+            "pages/servicos.html": '"@type":"Service"',
+            "pages/blog.html": '"@type":"CollectionPage"',
+            "pages/projetos/m2r-server.html": '"@type":"CreativeWork"',
+        }
+        for relative, expected in expectations.items():
+            html = (self.site.root / "frontend" / relative).read_text(encoding="utf-8")
+            self.assertIn(expected, html, relative)
+        internal_pages = [p for p in (self.site.root / "frontend/pages").rglob("*.html")
+                          if p.name != "fundador.html"]
+        for page in internal_pages:
+            html = page.read_text(encoding="utf-8")
+            self.assertIn('class="breadcrumbs"', html, page.name)
+            self.assertIn('"@type":"BreadcrumbList"', html, page.name)
+
+    def test_contact_has_copy_fallback_and_no_floating_duplicate(self):
+        html = (self.site.root / "frontend/pages/contato.html").read_text(encoding="utf-8")
+        script = (self.site.root / "frontend/assets/js/script.js").read_text(encoding="utf-8")
+        self.assertIn('class="contact-page"', html)
+        self.assertIn('id="copy-message"', html)
+        self.assertIn("navigator.clipboard", script)
+        self.assertIn("contact-page .mobile-whatsapp-cta", (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8"))
+
+    def test_generic_internal_link_labels_are_removed(self):
+        pages = list((self.site.root / "frontend").rglob("*.html"))
+        for page in pages:
+            html = page.read_text(encoding="utf-8")
+            self.assertNotRegex(html, r">(?:Ver servi(?:ç|Ã§)os|Ver artigo)<", page.name)
+
+    def test_mobile_whatsapp_cta_compacts_at_360px(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        self.assertRegex(css, r"@media\s*\(max-width:\s*360px\)[\s\S]*?\.mobile-whatsapp-cta")
 
     def test_vercel_deployment_uses_a_strict_allowlist(self):
         lines = [

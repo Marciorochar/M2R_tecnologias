@@ -233,7 +233,7 @@ deixar vazio
 
 O arquivo `vercel.json` faz o roteamento da raiz do projeto para os arquivos dentro de `frontend/`.
 A pagina `404.html` na raiz e usada pela Vercel como fallback nativo para rotas inexistentes, preservando o status HTTP 404.
-O mesmo arquivo tambem define headers de seguranca para todas as rotas e cache curto com revalidacao para arquivos em `/assets/*`, pois CSS, JavaScript e imagens ainda usam nomes fixos.
+O mesmo arquivo tambem define headers de seguranca para todas as rotas e cache de sete dias com revalidacao para arquivos em `/assets/*`. CSS e JavaScript recebem um hash de conteudo na query string, validado por `tools/version-assets.js`.
 O `.vercelignore` usa uma allowlist: somente `frontend/`, `404.html` e
 `vercel.json` entram no artefato. Backend, ferramentas, workflows, documentacao e
 arquivos de desenvolvimento nao devem ser servidos pelo dominio publico.
@@ -264,6 +264,7 @@ Use estes comandos para uma validacao local rapida antes de fazer commit:
 
 ```powershell
 node tools/generate-sitemap.js --check
+node tools/version-assets.js --check
 python tools/site_tools.py check
 python tools/site_tools.py security
 python -m unittest discover -s tools -p "test_*.py" -v
