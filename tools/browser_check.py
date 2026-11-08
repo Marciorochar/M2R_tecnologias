@@ -11,6 +11,14 @@ from site_tools import ROOT, Site, handler_for
 def check_layout(page):
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (page.url, page.evaluate("() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80), width: el.getBoundingClientRect().width}))"))
     assert page.locator('h1').count() == 1
+    breadcrumbs = page.locator('.breadcrumbs')
+    if breadcrumbs.count():
+        hero = page.locator('.page-hero')
+        assert hero.count() == 1
+        assert breadcrumbs.evaluate('(el) => getComputedStyle(el).backgroundColor') == hero.evaluate(
+            '(el) => getComputedStyle(el).backgroundColor'
+        ), f'Breadcrumbs desconectados visualmente do hero: {page.url}'
+        assert breadcrumbs.bounding_box()['width'] >= page.viewport_size['width'] - 1, page.url
     if page.viewport_size['width'] <= 900 and page.locator('body.home-page').count():
         hero = page.locator('.home-hero .hero-layout').bounding_box()
         copy = page.locator('.home-hero-copy').bounding_box()
