@@ -1557,38 +1557,7 @@ form textarea {
     display: none;
 }
 
-.breadcrumbs {
-    width: min(1120px, calc(100% - 40px));
-    margin: 0 auto;
-    padding-top: 104px;
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-}
-
-.breadcrumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.breadcrumbs li + li::before {
-    margin-right: 8px;
-    content: "/";
-}
-
-.breadcrumbs a {
-    color: var(--color-primary);
-}
-
-.breadcrumbs [aria-current="page"] {
-    font-weight: 700;
-}
-
-.page-hero + .section-block,
-.breadcrumbs + .page-hero {
+.page-hero + .section-block {
     scroll-margin-top: 90px;
 }
 
@@ -1812,10 +1781,6 @@ form textarea {
         display: none;
     }
 
-    .breadcrumbs {
-        width: min(100% - 28px, 1120px);
-        padding-top: 88px;
-    }
 }
 
 @media (max-width: 360px) {

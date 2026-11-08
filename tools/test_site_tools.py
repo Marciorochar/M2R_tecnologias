@@ -83,8 +83,10 @@ class SiteTests(unittest.TestCase):
             "style.css": self.site.root / "frontend/assets/css/style.css",
             "script.js": self.site.root / "frontend/assets/js/script.js",
         }
-        versions = {name: hashlib.sha256(path.read_bytes()).hexdigest()[:10]
-                    for name, path in assets.items()}
+        versions = {
+            name: hashlib.sha256(path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()).hexdigest()[:10]
+            for name, path in assets.items()
+        }
         pages = list((self.site.root / "frontend").rglob("*.html")) + [self.site.root / "404.html"]
         for page in pages:
             html = page.read_text(encoding="utf-8")
@@ -142,7 +144,7 @@ class SiteTests(unittest.TestCase):
                           if p.name != "fundador.html"]
         for page in internal_pages:
             html = page.read_text(encoding="utf-8")
-            self.assertIn('class="breadcrumbs"', html, page.name)
+            self.assertNotIn('class="breadcrumbs"', html, page.name)
             self.assertIn('"@type":"BreadcrumbList"', html, page.name)
 
     def test_contact_has_copy_fallback_and_no_floating_duplicate(self):
