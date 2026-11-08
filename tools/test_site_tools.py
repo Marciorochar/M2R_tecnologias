@@ -169,6 +169,12 @@ class SiteTests(unittest.TestCase):
             self.assertIn("Eu_fundador-640.webp 640w", html)
             self.assertIn("Eu_fundador-900.webp 900w", html)
 
+    def test_project_mockups_have_semantics_for_accessible_names(self):
+        html = (self.site.root / 'frontend/pages/projetos/m2r-server.html').read_text(encoding='utf-8')
+        self.assertRegex(html, r'<div class="project-progress-panel[^\"]*" role="group" aria-label="Progresso do M2R Server"')
+        for name in ('Mockup de painel administrativo', 'Mockup de monitoramento do servidor'):
+            self.assertRegex(html, rf'<div class="project-mockup[^\"]*" role="img" aria-label="{name}"')
+
     def test_founder_social_image_is_optimized_and_complete(self):
         image_dir = self.site.root / "frontend/assets/img"
         social = image_dir / "Eu_fundador-social.jpg"
