@@ -268,35 +268,45 @@ function initApp() {
         contactForm.hidden = false;
         contactForm.querySelectorAll('input, textarea, button').forEach(field => { field.disabled = false; });
         contactForm.addEventListener('submit', event => event.preventDefault());
-        document.getElementById('prepare-email')?.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            if (!contactForm.checkValidity()) {
-                contactForm.reportValidity();
-                setFormStatus(formStatus, 'Preencha os campos obrigatórios corretamente.', 'error');
-                return;
-            }
-
+        const buildContactMessage = () => {
             const name = (document.getElementById('name')?.value || '').trim();
             const email = (document.getElementById('email')?.value || '').trim();
             const phone = (document.getElementById('phone')?.value || '').trim();
             const message = (document.getElementById('message')?.value || '').trim();
-
-            if (!name || !email || !message) {
-                setFormStatus(formStatus, 'Preencha nome, e-mail e mensagem.', 'error');
-                return;
+            return { name, email, phone, message, text: `Nome: ${name}\nE-mail: ${email}\nTelefone: ${phone || 'Não informado'}\n\nMensagem:\n${message}` };
+        };
+        const validateContactForm = () => {
+            if (!contactForm.checkValidity()) {
+                contactForm.reportValidity();
+                setFormStatus(formStatus, 'Preencha os campos obrigatórios corretamente.', 'error');
+                return null;
             }
-
-            const subject = encodeURIComponent(`Contato pelo site M2R - ${name}`);
-            const body = encodeURIComponent(
-                `Nome: ${name}\n` +
-                `E-mail: ${email}\n` +
-                `Telefone: ${phone || 'Não informado'}\n\n` +
-                `Mensagem:\n${message}`
-            );
+            const fields = buildContactMessage();
+            if (!fields.name || !fields.email || !fields.message) {
+                setFormStatus(formStatus, 'Preencha nome, e-mail e mensagem.', 'error');
+                return null;
+            }
+            return fields;
+        };
+        document.getElementById('prepare-email')?.addEventListener('click', function (event) {
+            event.preventDefault();
+            const fields = validateContactForm();
+            if (!fields) return;
+            const subject = encodeURIComponent(`Contato pelo site M2R - ${fields.name}`);
+            const body = encodeURIComponent(fields.text);
 
             window.location.href = `mailto:${contactRecipient}?subject=${subject}&body=${body}`;
             setFormStatus(formStatus, 'Se o aplicativo de e-mail abrir, revise a mensagem e conclua o envio nele. Caso contrário, copie os campos e envie para marciinhofla@gmail.com. Seus dados continuam aqui.', 'sending');
+        });
+        document.getElementById('copy-message')?.addEventListener('click', async function () {
+            const fields = validateContactForm();
+            if (!fields) return;
+            try {
+                await navigator.clipboard.writeText(`${fields.text}\n\nDestino: ${contactRecipient}`);
+                setFormStatus(formStatus, 'Mensagem copiada. Envie para marciinhofla@gmail.com no canal de sua preferência.', 'success');
+            } catch {
+                setFormStatus(formStatus, 'Não foi possível copiar automaticamente. Selecione os campos e envie para marciinhofla@gmail.com.', 'error');
+            }
         });
     }
 
