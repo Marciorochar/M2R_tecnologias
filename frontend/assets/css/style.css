@@ -1,24 +1,28 @@
 /* M2R Tecnologias - institutional multipage stylesheet */
 :root {
-    --color-primary: #5a3b20;
-    --color-primary-dark: #3f2915;
-    --color-primary-hover: #3f2915;
-    --color-primary-light: #7b5532;
-    --color-accent: #c89a63;
-    --color-accent-light: #fff7ed;
-    --color-blue-dark: #10233a;
-    --color-blue-mid: #17304d;
-    --color-background: #f5f5f5;
+    /* M2R: cacau, branco, cobre e azul-petróleo. */
+    --color-primary: #5a3422;
+    --color-primary-dark: #3b2416;
+    --color-primary-hover: #43281a;
+    --color-primary-light: #875637;
+    --color-accent: #c77a3b;
+    --color-accent-hover: #e1a26f;
+    --color-accent-on-dark: #e4b27d;
+    --color-accent-contrast: #1e1711;
+    --color-accent-light: #f7f3ed;
+    --color-blue-dark: #123c49;
+    --color-blue-mid: #1d5665;
+    --color-background: #f7f3ed;
     --color-surface: #ffffff;
-    --color-surface-alt: #f7f7f7;
-    --color-surface-interactive: #e0e0e0;
-    --color-text-primary: #1f1f1f;
-    --color-text-secondary: #3f3f3f;
-    --color-text-meta: #5f5f5f;
+    --color-surface-alt: #f8f6f2;
+    --color-surface-interactive: #e8e3dd;
+    --color-text-primary: #20252a;
+    --color-text-secondary: #424a50;
+    --color-text-meta: #58636b;
     --color-text-inverse: #ffffff;
-    --color-border: #d4d4d4;
-    --color-border-accent: #c89a63;
-    --color-focus: #0b5c8e;
+    --color-border: #d8cec3;
+    --color-border-accent: #c77a3b;
+    --color-focus: #0c6a82;
     --font-family-main: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -63,7 +67,7 @@ select:focus-visible,
 [tabindex]:focus-visible {
     outline: 3px solid var(--color-focus);
     outline-offset: 4px;
-    box-shadow: 0 0 0 6px rgba(11, 92, 142, 0.16);
+    box-shadow: 0 0 0 6px rgba(12, 106, 130, 0.16);
 }
 
 a:focus:not(:focus-visible),
@@ -146,7 +150,7 @@ select:focus:not(:focus-visible) {
 .navbar a {
     position: relative;
     padding: 8px 15px;
-    color: #3a3a3a;
+    color: var(--color-text-secondary);
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
@@ -218,12 +222,12 @@ select:focus:not(:focus-visible) {
 }
 
 .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-inverse) !important;
+    background-color: var(--color-accent);
+    color: var(--color-accent-contrast) !important;
 }
 
 .btn-primary:hover {
-    background-color: var(--color-primary-hover);
+    background-color: var(--color-accent-hover);
 }
 
 .btn-secondary {
@@ -304,7 +308,7 @@ select:focus:not(:focus-visible) {
     display: inline-block;
     margin-bottom: 12px;
     padding: 8px 14px;
-    border: 1px solid #ead7c0;
+    border: 1px solid var(--color-border);
     border-radius: 999px;
     background-color: var(--color-accent-light);
     color: var(--color-primary);
@@ -393,7 +397,7 @@ select:focus:not(:focus-visible) {
 .blog-card,
 .project-card {
     min-height: 100%;
-    border: 1px solid #cfcfcf;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-sm);
@@ -515,7 +519,7 @@ select:focus:not(:focus-visible) {
 
 .article-aside-card {
     padding: 24px;
-    border: 1px solid #cfcfcf;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-sm);
@@ -607,7 +611,7 @@ select:focus:not(:focus-visible) {
 .m2r-server-visual span:last-child {
     padding: 6px 9px;
     border: 1px solid rgba(255, 255, 255, 0.35);
-    color: var(--color-accent);
+    color: var(--color-accent-on-dark);
     font-size: 0.72rem;
 }
 
@@ -675,7 +679,7 @@ select:focus:not(:focus-visible) {
     padding: 28px;
     border: 1px solid rgba(239, 195, 143, 0.34);
     border-radius: 8px;
-    background-color: #0b1728;
+    background-color: #0b2830;
     color: #d7e3ef;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -807,7 +811,7 @@ select:focus:not(:focus-visible) {
     align-content: start;
     gap: 14px;
     padding: 24px;
-    background-color: #10233a;
+    background-color: var(--color-blue-dark);
 }
 
 .mockup-sidebar span {
@@ -824,13 +828,13 @@ select:focus:not(:focus-visible) {
     display: grid;
     gap: 20px;
     padding: 24px;
-    background-color: #f7f4ef;
+    background-color: var(--color-accent-light);
 }
 
 .mockup-header {
     height: 48px;
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: var(--color-surface);
     box-shadow: var(--shadow-sm);
 }
 
@@ -842,21 +846,21 @@ select:focus:not(:focus-visible) {
 
 .mockup-cards span {
     min-height: 82px;
-    border: 1px solid #ead7c0;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background-color: #fffaf4;
+    background-color: var(--color-surface);
 }
 
 .mockup-chart {
     min-height: 116px;
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(200, 154, 99, 0.18), rgba(16, 35, 58, 0.14));
+    background: linear-gradient(135deg, rgba(199, 122, 59, 0.2), rgba(18, 60, 73, 0.15));
 }
 
 .project-mockup--server {
     display: block;
     padding: 24px;
-    background-color: #0b1728;
+    background-color: #0b2830;
 }
 
 .mockup-console {
@@ -864,7 +868,7 @@ select:focus:not(:focus-visible) {
     padding: 24px;
     border: 1px solid rgba(239, 195, 143, 0.28);
     border-radius: 8px;
-    background-color: #0f2238;
+    background-color: #143e4c;
     color: #d7e3ef;
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
@@ -872,7 +876,7 @@ select:focus:not(:focus-visible) {
 .mockup-console span {
     display: block;
     margin-bottom: 20px;
-    color: var(--color-accent);
+    color: var(--color-accent-on-dark);
     font-weight: 800;
 }
 
@@ -1005,7 +1009,7 @@ form textarea {
     padding: 136px 0 82px;
     overflow: hidden;
     background:
-        linear-gradient(90deg, rgba(16, 35, 58, 0.98) 0%, rgba(16, 35, 58, 0.94) 48%, rgba(63, 41, 21, 0.38) 100%),
+        linear-gradient(90deg, rgba(59, 36, 22, 0.98) 0%, rgba(59, 36, 22, 0.94) 48%, rgba(18, 60, 73, 0.78) 100%),
         repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 92px),
         repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 92px),
         var(--color-blue-dark);
@@ -1052,12 +1056,12 @@ form textarea {
 .home-hero .btn-primary,
 .project-highlight-content .btn-primary {
     background-color: var(--color-accent);
-    color: #1e1711 !important;
+    color: var(--color-accent-contrast) !important;
 }
 
 .home-hero .btn-primary:hover,
 .project-highlight-content .btn-primary:hover {
-    background-color: #ddb07b;
+    background-color: var(--color-accent-hover);
 }
 
 .home-hero .btn {
@@ -1098,8 +1102,8 @@ form textarea {
     place-items: center;
     border: 1px solid rgba(239, 195, 143, 0.78);
     background:
-        linear-gradient(145deg, #fffaf4 0%, #f1ddc3 100%);
-    box-shadow: -18px 18px 0 rgba(200, 154, 99, 0.26), 0 24px 60px rgba(0, 0, 0, 0.3);
+        linear-gradient(145deg, #ffffff 0%, #ead5bc 100%);
+    box-shadow: -18px 18px 0 rgba(199, 122, 59, 0.28), 0 24px 60px rgba(0, 0, 0, 0.3);
 }
 
 .home-hero-visual::before,
@@ -1311,7 +1315,7 @@ form textarea {
     grid-template-columns: minmax(300px, 0.88fr) minmax(0, 1.12fr);
     overflow: hidden;
     border: 1px solid rgba(239, 195, 143, 0.34);
-    background: linear-gradient(135deg, #10233a 0%, var(--color-blue-mid) 100%);
+    background: linear-gradient(135deg, var(--color-blue-dark) 0%, var(--color-blue-mid) 100%);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
 }
 
@@ -1497,8 +1501,8 @@ form textarea {
 
 .site-footer {
     padding: 48px 0 22px;
-    background-color: #1f1f1f;
-    color: #f5f5f5;
+    background-color: var(--color-blue-dark);
+    color: var(--color-text-inverse);
     text-align: left;
 }
 
@@ -1534,7 +1538,7 @@ form textarea {
 }
 
 .footer-links a {
-    color: #f5f5f5;
+    color: var(--color-text-inverse);
     font-size: 0.95rem;
     font-weight: 600;
     text-decoration: none;
@@ -1542,7 +1546,7 @@ form textarea {
 }
 
 .footer-links a:hover {
-    color: var(--color-accent);
+    color: var(--color-accent-on-dark);
 }
 
 .footer-copyright {

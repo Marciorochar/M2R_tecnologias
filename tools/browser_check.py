@@ -12,6 +12,10 @@ def check_layout(page):
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (page.url, page.evaluate("() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80), width: el.getBoundingClientRect().width}))"))
     assert page.locator('h1').count() == 1
     assert page.locator('.breadcrumbs').count() == 0, f'Trilha de navegação ainda visível: {page.url}'
+    # Verifica a identidade visual e a legibilidade do CTA em todas as rotas e larguras.
+    for button in page.locator('.btn-primary:visible').all():
+        colors = button.evaluate('(el) => { const style = getComputedStyle(el); return [style.backgroundColor, style.color]; }')
+        assert colors[0] in ('rgb(199, 122, 59)', 'rgb(225, 162, 111)') and colors[1] == 'rgb(30, 23, 17)', (page.url, colors)
     if page.viewport_size['width'] <= 900 and page.locator('body.home-page').count():
         hero = page.locator('.home-hero .hero-layout').bounding_box()
         copy = page.locator('.home-hero-copy').bounding_box()
@@ -123,7 +127,7 @@ def check_site(browser, base):
     page.goto(base + '/sobre')
     page.emulate_media(reduced_motion='reduce')
     check_layout(page)
-    assert page.locator('#fundador').evaluate('el => getComputedStyle(el).backgroundColor') == 'rgb(16, 35, 58)'
+    assert page.locator('#fundador').evaluate('el => getComputedStyle(el).backgroundColor') == 'rgb(18, 60, 73)'
     for redirect in site.config.get('redirects', []):
         response = context.request.get(base + redirect['source'], max_redirects=0)
         assert response.status in (307, 308)
