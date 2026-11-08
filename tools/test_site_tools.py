@@ -93,15 +93,9 @@ class SiteTests(unittest.TestCase):
             r"\.home-hero\s+\.hero-layout\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)",
         )
 
-    def test_breadcrumbs_visually_join_the_hero(self):
+    def test_unused_visible_breadcrumb_styles_are_removed(self):
         css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
-        breadcrumbs = re.search(r"(?m)^\.breadcrumbs\s*\{([^}]*)\}", css)
-        links = re.search(r"(?m)^\.breadcrumbs a\s*\{([^}]*)\}", css)
-        self.assertIsNotNone(breadcrumbs)
-        self.assertIsNotNone(links)
-        self.assertIn("width: 100%", breadcrumbs.group(1))
-        self.assertIn("background-color: var(--color-primary-dark)", breadcrumbs.group(1))
-        self.assertIn("color: var(--color-text-inverse)", links.group(1))
+        self.assertNotIn(".breadcrumbs", css)
 
     def test_asset_references_use_current_content_hashes(self):
         assets = {
@@ -165,12 +159,12 @@ class SiteTests(unittest.TestCase):
         for relative, expected in expectations.items():
             html = (self.site.root / "frontend" / relative).read_text(encoding="utf-8")
             self.assertIn(expected, html, relative)
-        internal_pages = [p for p in (self.site.root / "frontend/pages").rglob("*.html")
-                          if p.name != "fundador.html"]
+        internal_pages = list((self.site.root / "frontend/pages").rglob("*.html"))
         for page in internal_pages:
             html = page.read_text(encoding="utf-8")
-            self.assertIn('class="breadcrumbs"', html, page.name)
-            self.assertIn('"@type":"BreadcrumbList"', html, page.name)
+            self.assertNotIn('class="breadcrumbs"', html, page.name)
+            if page.name != "fundador.html":
+                self.assertIn('"@type":"BreadcrumbList"', html, page.name)
 
     def test_contact_has_copy_fallback_and_no_floating_duplicate(self):
         html = (self.site.root / "frontend/pages/contato.html").read_text(encoding="utf-8")
