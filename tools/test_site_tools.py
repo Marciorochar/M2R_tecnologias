@@ -69,6 +69,9 @@ class SiteTests(unittest.TestCase):
             "--color-blue-dark": "#123c49",     # Azul-petróleo
             "--color-surface": "#ffffff",       # Branco
             "--color-accent-light": "#f7f3ed",  # Marfim
+            "--color-action-bronze": "#a45d25",  # Bronze de alto contraste
+            "--color-action-bronze-hover": "#8e491c",
+            "--color-action-text": "#ffffff",
         }
         for token, color in expected.items():
             with self.subTest(token=token):
@@ -76,16 +79,22 @@ class SiteTests(unittest.TestCase):
 
         button = re.search(r"\.btn-primary\s*\{([^}]*)\}", css)
         self.assertIsNotNone(button)
-        self.assertIn("background-color: var(--color-accent)", button.group(1))
-        self.assertIn("color: var(--color-accent-contrast)", button.group(1))
+        self.assertIn("background-color: var(--color-action-bronze)", button.group(1))
+        self.assertIn("color: var(--color-action-text)", button.group(1))
+        self.assertNotIn("--color-accent-contrast", css)
+
+        hero_button = re.search(r"\.home-hero \.btn-primary,\s*\.project-highlight-content \.btn-primary\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(hero_button)
+        self.assertIn("background-color: var(--color-action-bronze)", hero_button.group(1))
+        self.assertIn("color: var(--color-action-text)", hero_button.group(1))
 
         def luminance(hex_color):
             channels = [int(hex_color[index:index + 2], 16) / 255 for index in (1, 3, 5)]
             channels = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
             return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
 
-        text_color = luminance(tokens["--color-accent-contrast"])
-        for background in ("--color-accent", "--color-accent-hover"):
+        text_color = luminance(tokens["--color-action-text"])
+        for background in ("--color-action-bronze", "--color-action-bronze-hover"):
             with self.subTest(background=background):
                 a, b = sorted((text_color, luminance(tokens[background])), reverse=True)
                 self.assertGreaterEqual((a + 0.05) / (b + 0.05), 4.5)

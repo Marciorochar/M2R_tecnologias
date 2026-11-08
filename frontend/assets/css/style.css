@@ -6,9 +6,11 @@
     --color-primary-hover: #43281a;
     --color-primary-light: #875637;
     --color-accent: #c77a3b;
-    --color-accent-hover: #e1a26f;
     --color-accent-on-dark: #e4b27d;
-    --color-accent-contrast: #1e1711;
+    /* Bronze dos CTAs escurecido para texto branco legivel (WCAG AA). */
+    --color-action-bronze: #a45d25;
+    --color-action-bronze-hover: #8e491c;
+    --color-action-text: #ffffff;
     --color-accent-light: #f7f3ed;
     --color-blue-dark: #123c49;
     --color-blue-mid: #1d5665;
@@ -222,12 +224,12 @@ select:focus:not(:focus-visible) {
 }
 
 .btn-primary {
-    background-color: var(--color-accent);
-    color: var(--color-accent-contrast) !important;
+    background-color: var(--color-action-bronze);
+    color: var(--color-action-text) !important;
 }
 
 .btn-primary:hover {
-    background-color: var(--color-accent-hover);
+    background-color: var(--color-action-bronze-hover);
 }
 
 .btn-secondary {
@@ -1055,13 +1057,13 @@ form textarea {
 
 .home-hero .btn-primary,
 .project-highlight-content .btn-primary {
-    background-color: var(--color-accent);
-    color: var(--color-accent-contrast) !important;
+    background-color: var(--color-action-bronze);
+    color: var(--color-action-text) !important;
 }
 
 .home-hero .btn-primary:hover,
 .project-highlight-content .btn-primary:hover {
-    background-color: var(--color-accent-hover);
+    background-color: var(--color-action-bronze-hover);
 }
 
 .home-hero .btn {

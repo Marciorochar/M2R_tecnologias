@@ -61,7 +61,7 @@ def check_layout(page):
     # Verifica a identidade visual e a legibilidade do CTA em todas as rotas e larguras.
     for button in page.locator('.btn-primary:visible').all():
         colors = button.evaluate('(el) => { const style = getComputedStyle(el); return [style.backgroundColor, style.color]; }')
-        assert colors[0] in ('rgb(199, 122, 59)', 'rgb(225, 162, 111)') and colors[1] == 'rgb(30, 23, 17)', (page.url, colors)
+        assert colors[0] in ('rgb(164, 93, 37)', 'rgb(142, 73, 28)') and colors[1] == 'rgb(255, 255, 255)', (page.url, colors)
     if page.viewport_size['width'] <= 900 and page.locator('body.home-page').count():
         hero = page.locator('.home-hero .hero-layout').bounding_box()
         copy = page.locator('.home-hero-copy').bounding_box()
