@@ -1557,40 +1557,7 @@ form textarea {
     display: none;
 }
 
-.breadcrumbs {
-    width: 100%;
-    margin: 0;
-    padding: 104px max(20px, calc((100% - 1120px) / 2)) 0;
-    background-color: var(--color-primary-dark);
-    color: rgba(255, 255, 255, 0.84);
-    font-size: 0.9rem;
-}
-
-.breadcrumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.breadcrumbs li + li::before {
-    margin-right: 8px;
-    content: "/";
-}
-
-.breadcrumbs a {
-    color: var(--color-text-inverse);
-    text-underline-offset: 3px;
-}
-
-.breadcrumbs [aria-current="page"] {
-    font-weight: 700;
-}
-
-.page-hero + .section-block,
-.breadcrumbs + .page-hero {
+.page-hero + .section-block {
     scroll-margin-top: 90px;
 }
 
@@ -1818,10 +1785,6 @@ form textarea {
     .contact-page .mobile-whatsapp-cta {
         display: none;
     }
-
-    .breadcrumbs {
-        padding: 88px 20px 0;
-    }
 }
 
 @media (max-width: 360px) {
@@ -1847,10 +1810,6 @@ form textarea {
     .container,
     .footer-copyright {
         width: min(100% - 28px, 1120px);
-    }
-
-    .breadcrumbs {
-        padding-inline: 14px;
     }
 
     .page-hero {
