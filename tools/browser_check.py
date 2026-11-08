@@ -11,6 +11,14 @@ from site_tools import ROOT, Site, handler_for
 def check_layout(page):
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (page.url, page.evaluate("() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80), width: el.getBoundingClientRect().width}))"))
     assert page.locator('h1').count() == 1
+    if page.viewport_size['width'] <= 900 and page.locator('body.home-page').count():
+        hero = page.locator('.home-hero .hero-layout').bounding_box()
+        copy = page.locator('.home-hero-copy').bounding_box()
+        assert hero and copy and copy['width'] >= hero['width'] * 0.7, (
+            f'Hero comprimido em {page.viewport_size["width"]} px: '
+            f'texto={copy["width"] if copy else "invisível"}, '
+            f'grade={hero["width"] if hero else "invisível"}'
+        )
     for image in page.locator('img').all():
         image.scroll_into_view_if_needed()
         page.wait_for_function('(el) => el.complete && el.naturalWidth > 0', arg=image.element_handle())
@@ -75,7 +83,7 @@ def check_site(browser, base):
     page.on('pageerror', lambda error: errors.append(str(error)))
     results = ROOT / 'test-results'
     results.mkdir(exist_ok=True)
-    for width in (320, 390, 768, 1024, 1440):
+    for width in (320, 390, 640, 768, 1024, 1440):
         page.set_viewport_size({'width': width, 'height': 900})
         for route in routes:
             response = page.goto(base + route)

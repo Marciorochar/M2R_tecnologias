@@ -78,6 +78,21 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn("includeSubDomains", hsts)
         self.assertNotIn("preload", hsts)
 
+    def test_csp_retains_secure_transport_and_email_fallback(self):
+        for section in self.site.config["headers"]:
+            csp = next(item["value"] for item in section["headers"]
+                       if item["key"] == "Content-Security-Policy")
+            self.assertIn("form-action 'self' mailto:", csp)
+            self.assertIn("upgrade-insecure-requests", csp)
+
+    def test_home_hero_mobile_grid_explicitly_stacks_columns(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        mobile_rules = css.rsplit("@media (max-width: 900px)", 1)[-1].split("@media (max-width: 768px)", 1)[0]
+        self.assertRegex(
+            mobile_rules,
+            r"\.home-hero\s+\.hero-layout\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)",
+        )
+
     def test_asset_references_use_current_content_hashes(self):
         assets = {
             "style.css": self.site.root / "frontend/assets/css/style.css",
@@ -144,7 +159,7 @@ class SiteTests(unittest.TestCase):
                           if p.name != "fundador.html"]
         for page in internal_pages:
             html = page.read_text(encoding="utf-8")
-            self.assertNotIn('class="breadcrumbs"', html, page.name)
+            self.assertIn('class="breadcrumbs"', html, page.name)
             self.assertIn('"@type":"BreadcrumbList"', html, page.name)
 
     def test_contact_has_copy_fallback_and_no_floating_duplicate(self):
