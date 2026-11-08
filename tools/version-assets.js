@@ -19,7 +19,10 @@ const htmlFiles = [...walkHtml(path.join(ROOT, 'frontend')), path.join(ROOT, '40
 let stale = false;
 
 for (const [name, assetPath] of ASSETS) {
-    const hash = crypto.createHash('sha256').update(fs.readFileSync(assetPath)).digest('hex').slice(0, 10);
+    // Git may materialize text assets with CRLF on Windows and LF on Linux.
+    // Hash canonical UTF-8 text so generated URLs are identical on every runner.
+    const source = fs.readFileSync(assetPath, 'utf8').replace(/\r\n?/g, '\n');
+    const hash = crypto.createHash('sha256').update(source, 'utf8').digest('hex').slice(0, 10);
     const pattern = new RegExp(`${name.replace('.', '\\.')}(?:\\?v=[A-Za-z0-9._-]+)?`, 'g');
     for (const htmlPath of htmlFiles) {
         const current = fs.readFileSync(htmlPath, 'utf8');
