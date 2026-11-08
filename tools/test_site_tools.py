@@ -180,6 +180,20 @@ class SiteTests(unittest.TestCase):
         self.assertIn("backend", blocked[0]["src"])
         self.assertIn("vercel", blocked[1]["src"])
 
+    def test_physical_html_paths_redirect_to_canonical_routes(self):
+        redirects = {
+            rule["source"]: rule
+            for rule in self.site.config["redirects"]
+        }
+        for rewrite in self.site.config["rewrites"]:
+            destination = rewrite["destination"]
+            if not destination.endswith(".html"):
+                continue
+            with self.subTest(physical_path=destination):
+                self.assertIn(destination, redirects)
+                self.assertEqual(redirects[destination]["destination"], rewrite["source"])
+                self.assertTrue(redirects[destination].get("permanent"))
+
     def test_html_entities_and_ids(self):
         document = Document('<a href="/contato?a=1&amp;b=2#nome">x</a><input id="nome">')
         self.assertEqual(document.links, ["/contato?a=1&b=2#nome"])
@@ -192,7 +206,9 @@ class SiteTests(unittest.TestCase):
         try:
             for route, status in [("/", 200), ("/servicos", 200), ("/contato?ref=test", 200),
                                   ("/missing", 404), ("/missing/nested", 404),
-                                  ("/pages/contato.html?ref=test", 308), ("/assets/js/script.js?v=1", 200)]:
+                                  ("/pages/contato.html?ref=test", 308),
+                                  ("/frontend/pages/contato.html?ref=test", 308),
+                                  ("/assets/js/script.js?v=1", 200)]:
                 with self.subTest(route=route):
                     connection = http.client.HTTPConnection(*server.server_address)
                     connection.request("GET", route)
