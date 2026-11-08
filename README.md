@@ -27,7 +27,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy estatico pe
 - GitHub Actions para validar JS, Vercel, sitemap, links internos, fontes e dimensoes de imagens.
 - Auditoria axe-core no navegador para violacoes WCAG graves em telas de celular e desktop.
 - Relatorio Lighthouse das quatro categorias principais, publicado como artefato do CI.
-- Dependabot configurado para revisar dependencias Python e GitHub Actions semanalmente.
+- Dependabot configurado para revisar dependencias Python, npm e GitHub Actions semanalmente.
 
 ## Links
 
@@ -38,7 +38,7 @@ O projeto esta organizado para publicacao simples no GitHub e deploy estatico pe
 
 ## Prints do site
 
-As capturas atualizadas (`home`, `projetos` e `blog`) sao geradas automaticamente nos testes de navegador e ficam disponiveis no artefato `site-previews` de cada execucao do GitHub Actions. As imagens abaixo sao registros versionados do projeto.
+Capturas atualizadas em novembro de 2026 com a paleta cacau, cobre, marfim e azul-petroleo. Novas capturas dessas tres paginas sao geradas nos testes de navegador e disponibilizadas no artefato `site-previews` de cada execucao do GitHub Actions.
 
 ### Pagina inicial
 
@@ -157,6 +157,7 @@ Na raiz do projeto, com Python 3.12, Node.js 22 e Chromium disponiveis:
 ```powershell
 python -m pip install -r requirements-dev.txt
 npm ci --ignore-scripts
+npm audit --audit-level=high
 python -m playwright install chromium
 python -m unittest discover -s tools -p "test_*.py"
 python tools/browser_check.py

@@ -31,24 +31,24 @@
 
 **Files:** `package.json`, `package-lock.json`, `tools/browser_check.py`, `tools/test_site_tools.py`, `.github/workflows/validate-site.yml`.
 
-- [ ] Criar teste que detecte ausência do arquivo axe e que exija verificação efetiva de violações graves.
-- [ ] Executar o teste e observar falha pela função ausente.
-- [ ] Instalar versões fixadas de `axe-core` e `lighthouse`, integrar `axe.run` ao Chromium e `npm ci` ao workflow.
-- [ ] Executar testes de axe e corrigir apenas problemas reais identificados, se houver.
+- [x] Criar teste que detecte ausência do arquivo axe e que exija verificação efetiva de violações graves.
+- [x] Executar o teste e observar falha pela função ausente.
+- [x] Instalar versões fixadas de `axe-core` e `lighthouse`, integrar `axe.run` ao Chromium e `npm ci` ao workflow.
+- [x] Executar testes de axe e corrigir apenas problemas reais identificados, se houver.
 
 ### Task 2: Relatório Lighthouse
 
 **Files:** `tools/lighthouse_check.py`, `tools/test_lighthouse_check.py`, `.github/workflows/validate-site.yml`.
 
-- [ ] Criar testes de parsing/relato para resultados completos, incompletos e scores baixos não bloqueantes.
-- [ ] Confirmar falha antes da implementação.
-- [ ] Implementar geração local do JSON, relatório legível e upload do artefato no GitHub Actions.
-- [ ] Executar Lighthouse localmente e conferir as quatro categorias.
+- [x] Criar testes de parsing/relato para resultados completos, incompletos e scores baixos não bloqueantes.
+- [x] Confirmar falha antes da implementação.
+- [x] Implementar geração local do JSON, relatório legível e upload do artefato no GitHub Actions.
+- [x] Executar Lighthouse no CI e conferir as quatro categorias (Chromium local bloqueado pelo ambiente).
 
 ### Task 3: Documentação e evidências visuais
 
-**Files:** `README.md`, `tools/browser_check.py`, `.github/workflows/validate-site.yml`.
+**Files:** `README.md`, `docs/screenshots/*.png`, `tools/browser_check.py`, `.github/workflows/validate-site.yml`.
 
-- [ ] Gerar capturas atuais de três páginas com Chromium em 1365×768 e anexar artefato no CI.
-- [ ] Conferir as imagens geradas no CI e atualizar a documentação dos testes.
-- [ ] Executar a suíte completa, conferir `git diff --check`, revisar o escopo e criar PR sem merge.
+- [x] Gerar capturas atuais de três páginas com Chromium em 1365×768 e anexar artefato no CI.
+- [x] Conferir as imagens geradas no CI, atualizar os arquivos versionados e documentar os testes.
+- [x] Executar a suíte completa no CI, conferir `git diff --check`, revisar o escopo e criar PR sem merge.

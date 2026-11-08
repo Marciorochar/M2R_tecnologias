@@ -9,7 +9,8 @@ Ampliar os controles de qualidade do site M2R Tecnologias sem mudar serviços ex
 - Automatizar uma auditoria axe-core nas páginas do site pelo Chromium já utilizado em `tools/browser_check.py`.
 - Bloquear o CI apenas por violações axe de impacto `critical` ou `serious`, exibindo a rota e os elementos afetados. Os demais resultados são informativos.
 - Executar Lighthouse contra o servidor estático local, registrar as notas das quatro categorias e disponibilizar o relatório JSON. Notas não são bloqueantes nesta etapa por sua variabilidade entre execuções.
-- Gerar novas capturas de três páginas em cada execução de CI, publicando-as em um artefato temporário para revisão sem alterar arquivos binários versionados; documentar os comandos de validação.
+- Atualizar as três capturas versionadas do README com imagens reais da paleta atual; continuar gerando capturas no CI como artefato temporário para revisão.
+- Monitorar semanalmente as novas dependências npm no Dependabot e bloquear vulnerabilidades de severidade alta nas ferramentas de desenvolvimento.
 
 ## Não escopo
 

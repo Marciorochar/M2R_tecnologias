@@ -27,15 +27,21 @@ def check_accessibility(page):
             resultTypes: ['violations'],
         });
     }""", AXE_TAGS)
+    def describe(finding):
+        return f"{finding['impact']} / {finding['id']}: " + ', '.join(
+            ' '.join(node.get('target', [])) for node in finding.get('nodes', [])[:5]
+        )
+
     serious = serious_axe_violations(report)
+    informative = [item for item in report['violations'] if item.get('impact') in ('moderate', 'minor')]
+    if informative:
+        print(
+            f'INFO axe em {page.url}: {len(informative)} achado(s) nao bloqueante(s): '
+            + '; '.join(describe(item) for item in informative),
+            flush=True,
+        )
     if serious:
-        details = [
-            f"{finding['impact']} / {finding['id']}: " + ', '.join(
-                ' '.join(node.get('target', [])) for node in finding.get('nodes', [])[:5]
-            )
-            for finding in serious
-        ]
-        raise AssertionError(f'Falha axe em {page.url}: ' + '; '.join(details))
+        raise AssertionError(f'Falha axe em {page.url}: ' + '; '.join(describe(item) for item in serious))
 
 
 def chromium_launch_options(playwright):
@@ -131,6 +137,14 @@ def check_site(browser, base):
     page.on('pageerror', lambda error: errors.append(str(error)))
     results = ROOT / 'test-results'
     results.mkdir(exist_ok=True)
+    # Produz evidencias mesmo quando um teste posterior falhar.
+    preview = results / 'site-previews'
+    preview.mkdir(exist_ok=True)
+    page.set_viewport_size({'width': 1365, 'height': 768})
+    for name, route in (('home', '/'), ('projetos', '/projetos'), ('blog', '/blog')):
+        page.goto(base + route)
+        page.evaluate("window.scrollTo({top: 0, behavior: 'instant'})")
+        page.screenshot(path=str(preview / f'{name}.png'), full_page=False)
     for width in (320, 390, 640, 768, 1024, 1440):
         page.set_viewport_size({'width': width, 'height': 900})
         for route in routes:
@@ -173,14 +187,6 @@ def check_site(browser, base):
     page.emulate_media(reduced_motion='reduce')
     check_layout(page)
     assert page.locator('#fundador').evaluate('el => getComputedStyle(el).backgroundColor') == 'rgb(18, 60, 73)'
-    # Preview atual do layout para revisao visual nos artefatos de cada PR.
-    preview = results / 'site-previews'
-    preview.mkdir(exist_ok=True)
-    page.set_viewport_size({'width': 1365, 'height': 768})
-    for name, route in (('home', '/'), ('projetos', '/projetos'), ('blog', '/blog')):
-        page.goto(base + route)
-        page.evaluate("window.scrollTo({top: 0, behavior: 'instant'})")
-        page.screenshot(path=str(preview / f'{name}.png'), full_page=False)
     for redirect in site.config.get('redirects', []):
         response = context.request.get(base + redirect['source'], max_redirects=0)
         assert response.status in (307, 308)
