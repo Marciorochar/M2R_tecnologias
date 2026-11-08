@@ -73,6 +73,61 @@
       "permanent": true
     },
     {
+      "source": "/frontend/pages/servicos.html",
+      "destination": "/servicos",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/projetos.html",
+      "destination": "/projetos",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/projetos/m2r-server.html",
+      "destination": "/projetos/m2r-server",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/blog.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/blog/automacao-para-pequenos-negocios.html",
+      "destination": "/blog/automacao-para-pequenos-negocios",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/blog/site-profissional-fortalece-marca.html",
+      "destination": "/blog/site-profissional-fortalece-marca",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/blog/organizacao-de-processos-digitais.html",
+      "destination": "/blog/organizacao-de-processos-digitais",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/sobre.html",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/fundador.html",
+      "destination": "/fundador",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/pages/contato.html",
+      "destination": "/contato",
+      "permanent": true
+    },
+    {
+      "source": "/frontend/404.html",
+      "destination": "/404",
+      "permanent": true
+    },
+    {
       "source": "/servicos/",
       "destination": "/servicos",
       "permanent": true
@@ -110,6 +165,11 @@
     {
       "source": "/sobre/",
       "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/fundador/",
+      "destination": "/fundador",
       "permanent": true
     },
     {
@@ -155,6 +215,11 @@
     {
       "source": "/pages/sobre.html",
       "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/pages/fundador.html",
+      "destination": "/fundador",
       "permanent": true
     },
     {

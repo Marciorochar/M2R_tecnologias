@@ -1675,6 +1675,11 @@ form textarea {
         grid-template-columns: minmax(0, 1fr);
     }
 
+    /* The desktop home selector is more specific than the generic .hero-layout. */
+    .home-hero .hero-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     .error-page-layout {
         grid-template-columns: 1fr;
     }

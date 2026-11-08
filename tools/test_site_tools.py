@@ -78,13 +78,30 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn("includeSubDomains", hsts)
         self.assertNotIn("preload", hsts)
 
+    def test_csp_retains_secure_transport_and_email_fallback(self):
+        for section in self.site.config["headers"]:
+            csp = next(item["value"] for item in section["headers"]
+                       if item["key"] == "Content-Security-Policy")
+            self.assertIn("form-action 'self' mailto:", csp)
+            self.assertIn("upgrade-insecure-requests", csp)
+
+    def test_home_hero_mobile_grid_explicitly_stacks_columns(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        mobile_rules = css.rsplit("@media (max-width: 900px)", 1)[-1].split("@media (max-width: 768px)", 1)[0]
+        self.assertRegex(
+            mobile_rules,
+            r"\.home-hero\s+\.hero-layout\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)",
+        )
+
     def test_asset_references_use_current_content_hashes(self):
         assets = {
             "style.css": self.site.root / "frontend/assets/css/style.css",
             "script.js": self.site.root / "frontend/assets/js/script.js",
         }
-        versions = {name: hashlib.sha256(path.read_bytes()).hexdigest()[:10]
-                    for name, path in assets.items()}
+        versions = {
+            name: hashlib.sha256(path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()).hexdigest()[:10]
+            for name, path in assets.items()
+        }
         pages = list((self.site.root / "frontend").rglob("*.html")) + [self.site.root / "404.html"]
         for page in pages:
             html = page.read_text(encoding="utf-8")
@@ -178,6 +195,20 @@ class SiteTests(unittest.TestCase):
         self.assertIn("backend", blocked[0]["src"])
         self.assertIn("vercel", blocked[1]["src"])
 
+    def test_physical_html_paths_redirect_to_canonical_routes(self):
+        redirects = {
+            rule["source"]: rule
+            for rule in self.site.config["redirects"]
+        }
+        for rewrite in self.site.config["rewrites"]:
+            destination = rewrite["destination"]
+            if not destination.endswith(".html"):
+                continue
+            with self.subTest(physical_path=destination):
+                self.assertIn(destination, redirects)
+                self.assertEqual(redirects[destination]["destination"], rewrite["source"])
+                self.assertTrue(redirects[destination].get("permanent"))
+
     def test_html_entities_and_ids(self):
         document = Document('<a href="/contato?a=1&amp;b=2#nome">x</a><input id="nome">')
         self.assertEqual(document.links, ["/contato?a=1&b=2#nome"])
@@ -190,7 +221,9 @@ class SiteTests(unittest.TestCase):
         try:
             for route, status in [("/", 200), ("/servicos", 200), ("/contato?ref=test", 200),
                                   ("/missing", 404), ("/missing/nested", 404),
-                                  ("/pages/contato.html?ref=test", 308), ("/assets/js/script.js?v=1", 200)]:
+                                  ("/pages/contato.html?ref=test", 308),
+                                  ("/frontend/pages/contato.html?ref=test", 308),
+                                  ("/assets/js/script.js?v=1", 200)]:
                 with self.subTest(route=route):
                     connection = http.client.HTTPConnection(*server.server_address)
                     connection.request("GET", route)
