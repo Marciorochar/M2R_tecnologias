@@ -1558,10 +1558,11 @@ form textarea {
 }
 
 .breadcrumbs {
-    width: min(1120px, calc(100% - 40px));
-    margin: 0 auto;
-    padding-top: 104px;
-    color: var(--color-text-secondary);
+    width: 100%;
+    margin: 0;
+    padding: 104px max(20px, calc((100% - 1120px) / 2)) 0;
+    background-color: var(--color-primary-dark);
+    color: rgba(255, 255, 255, 0.84);
     font-size: 0.9rem;
 }
 
@@ -1580,7 +1581,8 @@ form textarea {
 }
 
 .breadcrumbs a {
-    color: var(--color-primary);
+    color: var(--color-text-inverse);
+    text-underline-offset: 3px;
 }
 
 .breadcrumbs [aria-current="page"] {
@@ -1818,8 +1820,7 @@ form textarea {
     }
 
     .breadcrumbs {
-        width: min(100% - 28px, 1120px);
-        padding-top: 88px;
+        padding: 88px 20px 0;
     }
 }
 
@@ -1846,6 +1847,10 @@ form textarea {
     .container,
     .footer-copyright {
         width: min(100% - 28px, 1120px);
+    }
+
+    .breadcrumbs {
+        padding-inline: 14px;
     }
 
     .page-hero {

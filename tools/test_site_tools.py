@@ -93,6 +93,16 @@ class SiteTests(unittest.TestCase):
             r"\.home-hero\s+\.hero-layout\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)",
         )
 
+    def test_breadcrumbs_visually_join_the_hero(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        breadcrumbs = re.search(r"(?m)^\.breadcrumbs\s*\{([^}]*)\}", css)
+        links = re.search(r"(?m)^\.breadcrumbs a\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(breadcrumbs)
+        self.assertIsNotNone(links)
+        self.assertIn("width: 100%", breadcrumbs.group(1))
+        self.assertIn("background-color: var(--color-primary-dark)", breadcrumbs.group(1))
+        self.assertIn("color: var(--color-text-inverse)", links.group(1))
+
     def test_asset_references_use_current_content_hashes(self):
         assets = {
             "style.css": self.site.root / "frontend/assets/css/style.css",
