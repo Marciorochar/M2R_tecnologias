@@ -64,13 +64,13 @@ class SiteTests(unittest.TestCase):
         self.assertIsNotNone(root)
         tokens = dict(re.findall(r"(--[\w-]+):\s*(#[0-9a-fA-F]{6})\s*;", root.group(1)))
         expected = {
-            "--color-primary-dark": "#3b2416",  # Cacau
-            "--color-accent": "#c77a3b",        # Cobre
-            "--color-blue-dark": "#123c49",     # Azul-petróleo
+            "--color-primary-dark": "#3b261b",  # Marrom profundo
+            "--color-accent": "#87562f",        # Bronze
+            "--color-blue-dark": "#3b261b",     # Superfície escura da marca
             "--color-surface": "#ffffff",       # Branco
-            "--color-accent-light": "#f7f3ed",  # Marfim
-            "--color-action-bronze": "#a45d25",  # Bronze de alto contraste
-            "--color-action-bronze-hover": "#8e491c",
+            "--color-accent-light": "#f7f4ef",  # Off-white
+            "--color-action-bronze": "#87562f",  # Bronze de alto contraste
+            "--color-action-bronze-hover": "#704321",
             "--color-action-text": "#ffffff",
         }
         for token, color in expected.items():
@@ -133,10 +133,6 @@ class SiteTests(unittest.TestCase):
             mobile_rules,
             r"\.home-hero\s+\.hero-layout\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\)",
         )
-
-    def test_unused_visible_breadcrumb_styles_are_removed(self):
-        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
-        self.assertNotIn(".breadcrumbs", css)
 
     def test_asset_references_use_current_content_hashes(self):
         assets = {
@@ -209,8 +205,8 @@ class SiteTests(unittest.TestCase):
         internal_pages = list((self.site.root / "frontend/pages").rglob("*.html"))
         for page in internal_pages:
             html = page.read_text(encoding="utf-8")
-            self.assertNotIn('class="breadcrumbs"', html, page.name)
             if page.name != "fundador.html":
+                self.assertIn('class="breadcrumbs"', html, page.name)
                 self.assertIn('"@type":"BreadcrumbList"', html, page.name)
 
     def test_contact_has_copy_fallback_and_no_floating_duplicate(self):

@@ -1,31 +1,38 @@
 /* M2R Tecnologias - institutional multipage stylesheet */
 :root {
-    /* M2R: cacau, branco, cobre e azul-petróleo. */
-    --color-primary: #5a3422;
-    --color-primary-dark: #3b2416;
-    --color-primary-hover: #43281a;
-    --color-primary-light: #875637;
-    --color-accent: #c77a3b;
+    /* M2R palette: cacau, off-white e bronze. */
+    --color-primary: #5a3b20;
+    --color-primary-dark: #3b261b;
+    --color-primary-hover: #4a301e;
+    --color-primary-light: #76502f;
+    --color-accent: #87562f;
     --color-accent-on-dark: #e4b27d;
-    /* Bronze dos CTAs escurecido para texto branco legivel (WCAG AA). */
-    --color-action-bronze: #a45d25;
-    --color-action-bronze-hover: #8e491c;
+    --color-action-bronze: #87562f;
+    --color-action-bronze-hover: #704321;
     --color-action-text: #ffffff;
-    --color-accent-light: #f7f3ed;
-    --color-blue-dark: #123c49;
-    --color-blue-mid: #1d5665;
-    --color-background: #f7f3ed;
+    --color-accent-light: #f7f4ef;
+    --color-blue-dark: #3b261b;
+    --color-blue-mid: #4a301e;
+    --color-background: #f7f4ef;
     --color-surface: #ffffff;
-    --color-surface-alt: #f8f6f2;
+    --color-surface-alt: #f1ece5;
     --color-surface-interactive: #e8e3dd;
-    --color-text-primary: #20252a;
+    --color-text-primary: #26221e;
     --color-text-secondary: #424a50;
-    --color-text-meta: #58636b;
+    --color-text-meta: #625a52;
     --color-text-inverse: #ffffff;
-    --color-border: #d8cec3;
-    --color-border-accent: #c77a3b;
-    --color-focus: #0c6a82;
+    --color-border: #ded6cc;
+    --color-border-accent: #c89a63;
+    --color-focus: #71451f;
+    --color-ink: #26221e;
+    --color-muted: #625a52;
+    --color-focus-on-dark: #f4d29f;
     --font-family-main: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --font-size-body: 1rem;
+    --line-height-body: 1.65;
+    --radius-control: 4px;
+    --radius-surface: 4px;
+    --space-section: clamp(64px, 8vw, 104px);
     --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.12);
     --transition-medium: 0.25s;
@@ -1936,5 +1943,66 @@ form textarea {
     .footer-links {
         flex-direction: column;
         gap: 12px;
+    }
+}
+
+/* M2R visual refresh: warm materials, clear hierarchy, accessible actions. */
+.btn-primary,
+.home-hero .btn-primary,
+.project-highlight-content .btn-primary {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-inverse);
+}
+
+.btn-primary:hover,
+.home-hero .btn-primary:hover,
+.project-highlight-content .btn-primary:hover {
+    background-color: var(--color-action-bronze-hover);
+    border-color: var(--color-action-bronze-hover);
+    color: var(--color-text-inverse);
+}
+
+.home-hero {
+    background-color: var(--color-primary-dark);
+    background-image: linear-gradient(115deg, #3b261b 0%, #4a301e 72%, #5a3b20 100%);
+}
+
+.home-hero-visual {
+    border: 1px solid rgba(200, 154, 99, 0.55);
+    border-radius: 2px;
+    background: var(--color-accent-light);
+    box-shadow: 14px 14px 0 rgba(200, 154, 99, 0.22);
+}
+
+.navbar {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.service-card,
+    .project-card,
+    .blog-card {
+    border-color: var(--color-border);
+    border-radius: 4px;
+    box-shadow: 0 8px 22px rgba(59, 38, 27, 0.06);
+}
+
+.service-card:hover,
+.project-card:hover,
+.article-card:hover {
+    border-color: var(--color-border-accent);
+    box-shadow: 0 12px 26px rgba(59, 38, 27, 0.12);
+}
+
+.site-footer {
+    background-color: var(--color-primary-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .service-card,
+    .project-card,
+    .blog-card,
+    .btn {
+        transition: none;
     }
 }
