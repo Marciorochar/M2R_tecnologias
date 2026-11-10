@@ -58,6 +58,47 @@ class SiteTests(unittest.TestCase):
         self.assertIsNotNone(rule)
         self.assertNotIn("outline: none", rule.group(1))
 
+    def test_brand_palette_and_primary_button_have_adequate_contrast(self):
+        css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
+        root = re.search(r":root\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(root)
+        tokens = dict(re.findall(r"(--[\w-]+):\s*(#[0-9a-fA-F]{6})\s*;", root.group(1)))
+        expected = {
+            "--color-primary-dark": "#3b261b",  # Marrom profundo
+            "--color-accent": "#87562f",        # Bronze
+            "--color-blue-dark": "#3b261b",     # Superfície escura da marca
+            "--color-surface": "#ffffff",       # Branco
+            "--color-accent-light": "#f7f4ef",  # Off-white
+            "--color-action-bronze": "#87562f",  # Bronze de alto contraste
+            "--color-action-bronze-hover": "#704321",
+            "--color-action-text": "#ffffff",
+        }
+        for token, color in expected.items():
+            with self.subTest(token=token):
+                self.assertEqual(tokens.get(token), color)
+
+        button = re.search(r"\.btn-primary\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(button)
+        self.assertIn("background-color: var(--color-action-bronze)", button.group(1))
+        self.assertIn("color: var(--color-action-text)", button.group(1))
+        self.assertNotIn("--color-accent-contrast", css)
+
+        hero_button = re.search(r"\.home-hero \.btn-primary,\s*\.project-highlight-content \.btn-primary\s*\{([^}]*)\}", css)
+        self.assertIsNotNone(hero_button)
+        self.assertIn("background-color: var(--color-action-bronze)", hero_button.group(1))
+        self.assertIn("color: var(--color-action-text)", hero_button.group(1))
+
+        def luminance(hex_color):
+            channels = [int(hex_color[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+            channels = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+            return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+
+        text_color = luminance(tokens["--color-action-text"])
+        for background in ("--color-action-bronze", "--color-action-bronze-hover"):
+            with self.subTest(background=background):
+                a, b = sorted((text_color, luminance(tokens[background])), reverse=True)
+                self.assertGreaterEqual((a + 0.05) / (b + 0.05), 4.5)
+
     def test_scroll_listener_is_passive_and_avoids_redundant_class_updates(self):
         script = (self.site.root / "frontend/assets/js/script.js").read_text(encoding="utf-8")
         self.assertIn("window.addEventListener('scroll', updateNavbarScrollState, { passive: true })", script)
@@ -133,6 +174,12 @@ class SiteTests(unittest.TestCase):
             self.assertIn("Eu_fundador-640.webp 640w", html)
             self.assertIn("Eu_fundador-900.webp 900w", html)
 
+    def test_project_mockups_have_semantics_for_accessible_names(self):
+        html = (self.site.root / 'frontend/pages/projetos/m2r-server.html').read_text(encoding='utf-8')
+        self.assertRegex(html, r'<div class="project-progress-panel[^\"]*" role="group" aria-label="Progresso do M2R Server"')
+        for name in ('Mockup de painel administrativo', 'Mockup de monitoramento do servidor'):
+            self.assertRegex(html, rf'<div class="project-mockup[^\"]*" role="img" aria-label="{name}"')
+
     def test_founder_social_image_is_optimized_and_complete(self):
         image_dir = self.site.root / "frontend/assets/img"
         social = image_dir / "Eu_fundador-social.jpg"
@@ -155,12 +202,12 @@ class SiteTests(unittest.TestCase):
         for relative, expected in expectations.items():
             html = (self.site.root / "frontend" / relative).read_text(encoding="utf-8")
             self.assertIn(expected, html, relative)
-        internal_pages = [p for p in (self.site.root / "frontend/pages").rglob("*.html")
-                          if p.name != "fundador.html"]
+        internal_pages = list((self.site.root / "frontend/pages").rglob("*.html"))
         for page in internal_pages:
             html = page.read_text(encoding="utf-8")
-            self.assertIn('class="breadcrumbs"', html, page.name)
-            self.assertIn('"@type":"BreadcrumbList"', html, page.name)
+            if page.name != "fundador.html":
+                self.assertIn('class="breadcrumbs"', html, page.name)
+                self.assertIn('"@type":"BreadcrumbList"', html, page.name)
 
     def test_contact_has_copy_fallback_and_no_floating_duplicate(self):
         html = (self.site.root / "frontend/pages/contato.html").read_text(encoding="utf-8")

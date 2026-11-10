@@ -36,14 +36,42 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements-dev.txt
+          npm ci --ignore-scripts
+
+      - name: Testar verificadores do site
+        run: python -m unittest discover -s tools -p 'test_*.py'
+
+      - name: Auditar dependencias Node.js
+        run: npm audit --audit-level=high
 
       - name: Validar sintaxe JavaScript
         run: node --check frontend/assets/js/script.js
 
-      - name: Testar navegacao e animacoes no Chromium
+      - name: Testar navegacao, responsividade e acessibilidade no Chromium
         run: |
           python -m playwright install --with-deps chromium
           python tools/browser_check.py
+
+      - name: Auditar pagina inicial com Lighthouse
+        run: python tools/lighthouse_check.py
+
+      - name: Anexar relatorio Lighthouse
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lighthouse-home
+          path: test-results/lighthouse-home.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Anexar capturas atuais do site
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site-previews
+          path: test-results/site-previews/*.png
+          if-no-files-found: warn
+          retention-days: 14
 
 
       - name: Validar dependencias do backend
@@ -328,7 +356,6 @@ jobs:
         run: |
           python tools/site_tools.py check
           python tools/site_tools.py security
-          python -m unittest discover -s tools -p "test_*.py" -v
 
       - name: Bloquear Google Fonts
         run: |

@@ -3,14 +3,64 @@
 Install: python -m pip install -r requirements-dev.txt && python -m playwright install chromium
 Run from repository root: python tools/browser_check.py
 """
+import os
+import shutil
 import threading
 from http.server import ThreadingHTTPServer
 from site_tools import ROOT, Site, handler_for
+
+AXE_SOURCE = ROOT / 'node_modules' / 'axe-core' / 'axe.min.js'
+AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
+
+
+def serious_axe_violations(report):
+    """Only high-severity axe findings block this incremental quality gate."""
+    return [item for item in report['violations'] if item.get('impact') in ('serious', 'critical')]
+
+
+def check_accessibility(page):
+    """Audit the rendered DOM without changing the site's production CSP."""
+    report = page.evaluate("""async tags => {
+        if (!window.axe) throw new Error('axe-core nao foi carregado');
+        return await window.axe.run(document, {
+            runOnly: {type: 'tag', values: tags},
+            resultTypes: ['violations'],
+        });
+    }""", AXE_TAGS)
+    def describe(finding):
+        return f"{finding['impact']} / {finding['id']}: " + ', '.join(
+            ' '.join(node.get('target', [])) for node in finding.get('nodes', [])[:5]
+        )
+
+    serious = serious_axe_violations(report)
+    informative = [item for item in report['violations'] if item.get('impact') in ('moderate', 'minor')]
+    if informative:
+        print(
+            f'INFO axe em {page.url}: {len(informative)} achado(s) nao bloqueante(s): '
+            + '; '.join(describe(item) for item in informative),
+            flush=True,
+        )
+    if serious:
+        raise AssertionError(f'Falha axe em {page.url}: ' + '; '.join(describe(item) for item in serious))
+
+
+def chromium_launch_options(playwright):
+    """Use Playwright's browser in CI, or system Chromium on local machines."""
+    explicit = os.environ.get('CHROME_PATH')
+    if explicit:
+        return {'executable_path': explicit}
+    if not os.path.isfile(playwright.chromium.executable_path) and shutil.which('chromium'):
+        return {'executable_path': shutil.which('chromium')}
+    return {}
 
 
 def check_layout(page):
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (page.url, page.evaluate("() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80), width: el.getBoundingClientRect().width}))"))
     assert page.locator('h1').count() == 1
+    # Verifica a identidade visual e a legibilidade do CTA em todas as rotas e larguras.
+    for button in page.locator('.btn-primary:visible').all():
+        colors = button.evaluate('(el) => { const style = getComputedStyle(el); return [style.backgroundColor, style.color]; }')
+        assert colors[0] in ('rgb(135, 86, 47)', 'rgb(112, 67, 33)') and colors[1] == 'rgb(255, 255, 255)', (page.url, colors)
     if page.viewport_size['width'] <= 900 and page.locator('body.home-page').count():
         hero = page.locator('.home-hero .hero-layout').bounding_box()
         copy = page.locator('.home-hero-copy').bounding_box()
@@ -75,14 +125,25 @@ def check_menu(page, mobile):
 
 
 def check_site(browser, base):
+    if not AXE_SOURCE.is_file():
+        raise RuntimeError('axe-core ausente. Execute npm ci --ignore-scripts antes dos testes.')
     site = Site()
     routes = [r['source'] for r in site.config['rewrites'] if r['destination'].endswith('.html')]
     context = browser.new_context()
+    context.add_init_script(path=str(AXE_SOURCE))
     page = context.new_page()
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
     results = ROOT / 'test-results'
     results.mkdir(exist_ok=True)
+    # Produz evidencias mesmo quando um teste posterior falhar.
+    preview = results / 'site-previews'
+    preview.mkdir(exist_ok=True)
+    page.set_viewport_size({'width': 1365, 'height': 768})
+    for name, route in (('home', '/'), ('projetos', '/projetos'), ('blog', '/blog')):
+        page.goto(base + route)
+        page.evaluate("window.scrollTo({top: 0, behavior: 'instant'})")
+        page.screenshot(path=str(preview / f'{name}.png'), full_page=False)
     for width in (320, 390, 640, 768, 1024, 1440):
         page.set_viewport_size({'width': width, 'height': 900})
         for route in routes:
@@ -90,6 +151,8 @@ def check_site(browser, base):
             assert response.status == 200
             check_menu(page, width <= 768)
             check_layout(page)
+            if width in (390, 1024):
+                check_accessibility(page)
             if route in ('/sobre', '/fundador'):
                 page.evaluate('document.activeElement.blur(); window.scrollTo({top: 0, behavior: "instant"})')
                 page.screenshot(path=str(results / f'{route[1:]}-{width}.png'), full_page=True)
@@ -143,7 +206,7 @@ def main():
     base = f"http://127.0.0.1:{server.server_port}"
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(**chromium_launch_options(p))
             check_site(browser, base)
             page = browser.new_page()
             page.goto(base + "/contato"); assert page.locator("#contact-form").is_visible()
@@ -160,7 +223,7 @@ def main():
             menu.click(); assert menu.get_attribute("aria-expanded") == "true"; page.keyboard.press("Escape"); assert menu.get_attribute("aria-expanded") == "false"
             browser.close()
         with sync_playwright() as p:
-            browser = p.chromium.launch(); page = browser.new_page(java_script_enabled=False); page.goto(base + "/contato"); assert not page.locator("#contact-form").is_visible(); browser.close()
+            browser = p.chromium.launch(**chromium_launch_options(p)); page = browser.new_page(java_script_enabled=False); page.goto(base + "/contato"); assert not page.locator("#contact-form").is_visible(); browser.close()
     finally:
         server.shutdown(); server.server_close(); thread.join()
 if __name__ == "__main__": main()
