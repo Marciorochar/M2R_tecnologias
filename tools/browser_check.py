@@ -122,7 +122,7 @@ def check_site(browser, base):
     page.goto(base + '/sobre')
     page.emulate_media(reduced_motion='reduce')
     check_layout(page)
-    assert page.locator('#fundador').evaluate('el => getComputedStyle(el).backgroundColor') == 'rgb(16, 35, 58)'
+    assert page.locator('#fundador').evaluate('el => getComputedStyle(el).backgroundColor') == 'rgb(59, 38, 27)'
     for redirect in site.config.get('redirects', []):
         response = context.request.get(base + redirect['source'], max_redirects=0)
         assert response.status in (307, 308)
