@@ -7,6 +7,7 @@
     if (!hero || !svg) return;
 
     const video = hero.querySelector('.home-hero-motion-video');
+    const motionToggle = document.getElementById('m2r-motion-toggle');
     const sourcePaths = [...svg.querySelectorAll('#m2r-circuit-paths path')];
     const traces = document.getElementById('m2r-trace-render');
     const nodes = document.getElementById('m2r-node-render');
@@ -29,6 +30,13 @@
     let frameHandle = null;
     let previousFrame = performance.now();
     let inView = true;
+    let userPaused = false;
+    let pendingPointer = null;
+
+    function listenForMediaChange(query, callback) {
+        if (typeof query.addEventListener === 'function') query.addEventListener('change', callback);
+        else if (typeof query.addListener === 'function') query.addListener(callback);
+    }
 
     function draw(name, attributes, parent) {
         const element = document.createElementNS(svgNS, name);
@@ -82,7 +90,11 @@
     }
 
     function onPointerMove(event) {
-        if (touch.matches || reducedMotion.matches) return;
+        if (touch.matches || reducedMotion.matches || userPaused) return;
+        pendingPointer = { clientX: event.clientX, clientY: event.clientY };
+    }
+
+    function updatePointer(event) {
         pointer = svgPoint(event);
         const rect = hero.getBoundingClientRect();
         const x = 100 * (event.clientX - rect.left) / rect.width;
@@ -119,6 +131,7 @@
     }
 
     function onPointerLeave() {
+        pendingPointer = null;
         pointer = null;
         paths.forEach(path => { path.proximity = 0; });
         cursorNode.setAttribute('opacity', '0');
@@ -130,7 +143,7 @@
     }
 
     function energize(position) {
-        if (reducedMotion.matches) return;
+        if (reducedMotion.matches || userPaused) return;
         const now = performance.now();
         activeUntil = now + 1750;
         statusText.textContent = 'Conexões ativadas';
@@ -143,8 +156,18 @@
     function frame(now) {
         frameHandle = null;
         if (reducedMotion.matches || document.hidden || !inView) return;
+        const frameInterval = touch.matches ? 1000 / 30 : 1000 / 60;
+        if (now - previousFrame < frameInterval) {
+            frameHandle = window.requestAnimationFrame(frame);
+            return;
+        }
         const delta = Math.min(0.04, (now - previousFrame) / 1000);
         previousFrame = now;
+        if (pendingPointer) {
+            const latestPointer = pendingPointer;
+            pendingPointer = null;
+            updatePointer(latestPointer);
+        }
         elapsed += delta;
         const boosted = now < activeUntil;
         if (!boosted && activeUntil !== 0) {
@@ -180,7 +203,7 @@
     }
 
     function refreshAnimation() {
-        const shouldAnimate = !reducedMotion.matches && !document.hidden && inView;
+        const shouldAnimate = !reducedMotion.matches && !document.hidden && inView && !userPaused;
         if (video) {
             if (shouldAnimate) video.play().catch(() => {});
             else video.pause();
@@ -190,13 +213,19 @@
             frameHandle = null;
         }
         if (shouldAnimate && frameHandle === null) {
-            previousFrame = performance.now();
+            previousFrame = performance.now() - (touch.matches ? 1000 / 30 : 1000 / 60);
             frameHandle = window.requestAnimationFrame(frame);
         }
+        if (motionToggle) motionToggle.hidden = reducedMotion.matches;
         if (reducedMotion.matches) {
             onPointerLeave();
             statusText.textContent = 'Circuitos em repouso';
             tip.textContent = 'Movimento reduzido conforme sua preferência';
+            activate.disabled = true;
+        } else if (userPaused) {
+            onPointerLeave();
+            statusText.textContent = 'Animações pausadas';
+            tip.textContent = 'Retome pelo controle de movimento no canto superior';
             activate.disabled = true;
         } else {
             activate.disabled = false;
@@ -215,7 +244,17 @@
         if (position.x >= 535 || touch.matches) energize(position);
     });
     activate.addEventListener('click', () => energize({ x: 955, y: 318 }));
-    reducedMotion.addEventListener('change', refreshAnimation);
+    if (motionToggle) {
+        motionToggle.setAttribute('aria-pressed', 'false');
+        motionToggle.hidden = reducedMotion.matches;
+        motionToggle.addEventListener('click', () => {
+            userPaused = !userPaused;
+            motionToggle.setAttribute('aria-pressed', String(userPaused));
+            motionToggle.title = userPaused ? 'Retomar movimento' : 'Pausar movimento';
+            refreshAnimation();
+        });
+    }
+    listenForMediaChange(reducedMotion, refreshAnimation);
     document.addEventListener('visibilitychange', refreshAnimation);
     if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver(entries => {
