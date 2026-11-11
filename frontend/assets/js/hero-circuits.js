@@ -213,7 +213,7 @@
             frameHandle = null;
         }
         if (shouldAnimate && frameHandle === null) {
-            previousFrame = performance.now();
+            previousFrame = performance.now() - (touch.matches ? 1000 / 30 : 1000 / 60);
             frameHandle = window.requestAnimationFrame(frame);
         }
         if (motionToggle) motionToggle.hidden = reducedMotion.matches;
