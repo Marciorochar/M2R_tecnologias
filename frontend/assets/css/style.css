@@ -1617,6 +1617,72 @@ form textarea {
     }
 }
 
+/* Home hero: subtle ambient motion that adds a technical pulse without
+   competing with the headline or calls to action. */
+.home-hero {
+    position: relative;
+    isolation: isolate;
+}
+
+.home-hero::before,
+.home-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.home-hero::before {
+    background:
+        radial-gradient(ellipse at 82% 48%, rgba(200, 154, 99, 0.2), transparent 36%),
+        radial-gradient(ellipse at 12% 100%, rgba(135, 86, 47, 0.2), transparent 48%);
+    opacity: 0.82;
+    transform: translate3d(0, 0, 0) scale(1);
+    animation: homeHeroGlow 18s ease-in-out infinite alternate;
+}
+
+.home-hero::after {
+    inset: -30% 0;
+    background: linear-gradient(
+        108deg,
+        transparent 43%,
+        rgba(228, 178, 125, 0.015) 47%,
+        rgba(228, 178, 125, 0.12) 50%,
+        rgba(228, 178, 125, 0.015) 53%,
+        transparent 57%
+    );
+    opacity: 0.6;
+    transform: translate3d(-70%, 0, 0);
+    animation: homeHeroSignal 14s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.home-hero > .container {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes homeHeroGlow {
+    from { transform: translate3d(-1.5%, 0, 0) scale(1); }
+    to { transform: translate3d(1.5%, -1%, 0) scale(1.035); }
+}
+
+@keyframes homeHeroSignal {
+    0%, 18% { transform: translate3d(-70%, 0, 0); }
+    62%, 100% { transform: translate3d(70%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-hero::before,
+    .home-hero::after {
+        animation: none;
+        transform: none;
+    }
+
+    .home-hero::before { opacity: 0.55; }
+    .home-hero::after { opacity: 0; }
+}
+
 @keyframes slideDown {
     from {
         opacity: 0;
