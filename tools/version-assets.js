@@ -7,6 +7,7 @@ const ROOT = path.resolve(__dirname, '..');
 const ASSETS = [
     ['style.css', path.join(ROOT, 'frontend', 'assets', 'css', 'style.css')],
     ['script.js', path.join(ROOT, 'frontend', 'assets', 'js', 'script.js')],
+    ['hero-circuits.js', path.join(ROOT, 'frontend', 'assets', 'js', 'hero-circuits.js')],
 ];
 
 const walkHtml = (directory) => fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

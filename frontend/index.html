@@ -22,7 +22,7 @@
     <meta name="twitter:image" content="https://m2rtecnologias.vercel.app/assets/img/og-image.png">
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://m2rtecnologias.vercel.app/#organization","name":"M2R Tecnologias","url":"https://m2rtecnologias.vercel.app/","logo":"https://m2rtecnologias.vercel.app/assets/img/logo.png","email":"marciinhofla@gmail.com","telephone":"+55 22 99827-0026"},{"@type":"WebSite","@id":"https://m2rtecnologias.vercel.app/#website","name":"M2R Tecnologias","url":"https://m2rtecnologias.vercel.app/","publisher":{"@id":"https://m2rtecnologias.vercel.app/#organization"},"inLanguage":"pt-BR"}]}</script>
     <title>M2R Tecnologias | Soluções Digitais e Desenvolvimento Web</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=185114013e">
+    <link rel="stylesheet" href="assets/css/style.css?v=9c062f451b">
     <link rel="icon" href="assets/img/logo.png" type="image/png">
 </head>
 <body class="home-page">
@@ -42,7 +42,44 @@
     </nav>
 
     <main id="conteudo-principal">
-        <section class="page-hero home-hero">
+        <section class="page-hero home-hero home-hero--circuits" id="m2r-hero" aria-label="Destaque tecnológico da M2R">
+            <video class="home-hero-motion-video" src="assets/video/m2r-circuitos.webm" muted autoplay loop playsinline preload="metadata" aria-hidden="true"></video>
+            <div class="home-hero-motion-film" aria-hidden="true"></div>
+            <svg class="home-hero-circuits" id="m2r-circuits" viewBox="0 0 1200 610" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                <defs>
+                    <filter id="m2r-gold-glow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="3.2" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <filter id="m2r-node-glow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="m2r-cursor-light"><stop offset="0%" stop-color="#ffe0a8" stop-opacity=".5"/><stop offset="23%" stop-color="#f4ba74" stop-opacity=".12"/><stop offset="100%" stop-color="#f4ba74" stop-opacity="0"/></radialGradient>
+                    <linearGradient id="m2r-line-gold" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#b98247"/><stop offset=".5" stop-color="#ffd18c"/><stop offset="1" stop-color="#ae733d"/></linearGradient>
+                </defs>
+                <g id="m2r-circuit-paths">
+                    <path id="m2r-path-0" d="M 590 400 L 726 400 L 771 355 L 831 355 L 878 302 L 951 302 L 1017 246 L 1205 246"/>
+                    <path id="m2r-path-1" d="M 624 440 L 752 440 L 799 389 L 871 389 L 919 339 L 986 339 L 1048 285 L 1210 285"/>
+                    <path id="m2r-path-2" d="M 689 480 L 800 480 L 851 427 L 909 427 L 955 376 L 1013 376 L 1089 320 L 1203 320"/>
+                    <path id="m2r-path-3" d="M 737 119 L 839 119 L 883 164 L 952 164 L 1004 209 L 1207 209"/>
+                    <path id="m2r-path-4" d="M 750 175 L 849 175 L 895 222 L 954 222 L 998 270 L 1180 270"/>
+                    <path id="m2r-path-5" d="M 779 524 L 881 524 L 937 466 L 1000 466 L 1060 403 L 1207 403"/>
+                    <path id="m2r-path-6" d="M 863 90 L 917 142 L 1000 142 L 1056 188 L 1200 188"/>
+                    <path id="m2r-path-7" d="M 896 550 L 962 494 L 1044 494 L 1097 442 L 1207 442"/>
+                    <path id="m2r-path-8" d="M 773 146 L 816 146 L 857 188 L 922 188 L 968 232 L 1015 232 L 1067 259 L 1200 259"/>
+                    <path id="m2r-path-9" d="M 891 75 L 940 120 L 1015 120 L 1060 160 L 1207 160"/>
+                    <path id="m2r-path-10" d="M 664 380 L 734 380 L 781 336 L 849 336 L 895 291 L 960 291 L 1069 227 L 1210 227"/>
+                    <path id="m2r-path-11" d="M 658 461 L 764 461 L 817 414 L 882 414 L 930 364 L 997 364 L 1054 308 L 1207 308"/>
+                    <path id="m2r-path-12" d="M 749 505 L 815 505 L 867 452 L 929 452 L 974 405 L 1041 405 L 1091 358 L 1207 358"/>
+                    <path id="m2r-path-13" d="M 844 569 L 916 569 L 965 515 L 1033 515 L 1081 470 L 1200 470"/>
+                </g>
+                <g id="m2r-trace-render"></g>
+                <g id="m2r-node-render"></g>
+                <circle id="m2r-cursor-halo" class="m2r-cursor-halo" r="119" cx="950" cy="285"/>
+                <g id="m2r-pulse-render"></g>
+                <g id="m2r-ripple-render"></g>
+            </svg>
             <div class="container hero-layout">
                 <div class="home-hero-copy">
                     <span class="section-tag section-tag--dark">Tecnologia aplicada</span>
@@ -59,10 +96,11 @@
                         <li>Dados e dashboards</li>
                     </ul>
                 </div>
-                <div class="home-hero-visual" aria-hidden="true">
-                    <img src="assets/img/m2r.png" width="372" height="122" alt="" class="home-hero-logo" loading="eager" decoding="async">
-                </div>
             </div>
+            <button class="home-hero-circuit-trigger" id="m2r-circuit-activate" type="button" aria-labelledby="m2r-circuit-status-text m2r-circuit-tip">
+                <span class="home-hero-circuit-status" id="m2r-circuit-status"><span class="home-hero-status-dot" aria-hidden="true"></span> <span id="m2r-circuit-status-text">Sistema em atividade</span></span>
+                <span class="home-hero-circuit-tip" id="m2r-circuit-tip">Mova o mouse sobre os circuitos e clique para ativar</span>
+            </button>
         </section>
 
         <section class="section-block home-about">
@@ -170,5 +208,6 @@
 
     <a class="mobile-whatsapp-cta" href="https://wa.me/5522998270026?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20M2R%20Tecnologias%20e%20gostaria%20de%20conversar%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital." target="_blank" rel="noopener" aria-label="Chamar a M2R Tecnologias no WhatsApp (abre em nova aba ou aplicativo)">WhatsApp</a>
     <script src="assets/js/script.js?v=b5833ab847"></script>
+    <script src="assets/js/hero-circuits.js?v=3e0e64907f"></script>
 </body>
 </html>
