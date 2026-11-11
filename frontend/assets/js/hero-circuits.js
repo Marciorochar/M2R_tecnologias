@@ -54,7 +54,7 @@
     }
 
     function defaultTip() {
-        return touch.matches ? 'Toque nos circuitos para ativar' : 'Mova o mouse sobre os circuitos e clique para ativar';
+        return touch.matches ? 'Toque nos circuitos para ativar' : 'Passe o cursor ou toque nos circuitos para ativar';
     }
 
     // Keep source geometry in the markup for a deterministic, testable design.

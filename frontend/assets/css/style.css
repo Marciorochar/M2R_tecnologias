@@ -1361,6 +1361,8 @@ form textarea {
     position: relative;
     z-index: 1;
     width: min(72%, 260px);
+    height: auto;
+    aspect-ratio: 372 / 122;
     filter: drop-shadow(0 14px 20px rgba(90, 59, 32, 0.18));
 }
 
@@ -2078,7 +2080,9 @@ form textarea {
 
 /* Home only: approved golden-circuit motion preview, with the existing copy and CTAs. */
 .home-hero.home-hero--circuits {
-    min-height: 610px;
+    min-height: 0;
+    padding-top: clamp(88px, 10vh, 112px);
+    padding-bottom: 64px;
     isolation: isolate;
     background: radial-gradient(ellipse at 83% 48%, #4d3021 0%, #302016 40%, #23160f 73%, #1c120d 100%);
 }
@@ -2115,12 +2119,12 @@ form textarea {
     z-index: 0;
     object-fit: cover;
     object-position: center;
-    opacity: 0.84;
+    opacity: 0.58;
 }
 
 .home-hero-motion-film {
     z-index: 1;
-    background: linear-gradient(90deg, #2a190e 0%, rgba(38, 22, 14, 0.92) 20%, transparent 72%), linear-gradient(180deg, rgba(22, 13, 10, 0.08), rgba(19, 12, 9, 0.13));
+    background: linear-gradient(90deg, rgba(30, 18, 12, 0.99) 0%, rgba(38, 22, 14, 0.96) 33%, rgba(38, 22, 14, 0.75) 55%, rgba(30, 18, 12, 0.18) 82%), linear-gradient(180deg, rgba(22, 13, 10, 0.16), rgba(19, 12, 9, 0.28));
 }
 
 .home-hero-circuits {
@@ -2187,7 +2191,7 @@ form textarea {
 
 .home-hero--circuits .home-hero-copy {
     max-width: 650px;
-    text-shadow: 0 2px 12px rgba(28, 17, 12, 0.11);
+    text-shadow: 0 2px 12px rgba(28, 17, 12, 0.28);
 }
 
 .home-hero--circuits h1 {
@@ -2326,14 +2330,14 @@ form textarea {
     .home-hero .hero-layout { grid-template-columns: minmax(0, 1fr); }
     .home-hero--circuits .hero-layout { grid-template-columns: minmax(0, 1fr); }
     .home-hero--circuits .home-hero-copy { max-width: 680px; }
-    .home-hero.home-hero--circuits { padding-bottom: 145px; }
+    .home-hero.home-hero--circuits { padding-top: 88px; padding-bottom: 112px; }
     .home-hero.home-hero--circuits::before { background: linear-gradient(90deg, rgba(26, 15, 11, 0.98), rgba(32, 18, 13, 0.91) 45%, rgba(35, 20, 14, 0.3)); }
 }
 
 @media (max-width: 640px) {
-    .home-hero.home-hero--circuits { padding-bottom: 125px; }
+    .home-hero.home-hero--circuits { padding-top: 76px; padding-bottom: 100px; }
     .home-hero--circuits h1 { font-size: clamp(2.55rem, 10vw, 3.8rem); }
-    .home-hero--circuits .home-hero-motion-video { object-position: 61% center; opacity: 0.62; }
+    .home-hero--circuits .home-hero-motion-video { object-position: 61% center; opacity: 0.48; }
     .home-hero--circuits .home-hero-motion-film { background: linear-gradient(180deg, rgba(26, 16, 11, 0.80), rgba(34, 20, 13, 0.85) 52%, rgba(26, 16, 11, 0.42)); }
     .home-hero.home-hero--circuits::before { background: linear-gradient(180deg, rgba(36, 21, 15, 0.8), rgba(41, 24, 16, 0.72) 55%, rgba(40, 22, 12, 0.33)); }
     .home-hero-circuit-trigger { right: 16px; bottom: 18px; max-width: calc(100% - 32px); }
