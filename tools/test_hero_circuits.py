@@ -37,6 +37,7 @@ class HeroCircuitsTest(unittest.TestCase):
         html = HOME.read_text(encoding="utf-8")
         self.assertIn('src="assets/js/hero-circuits.js', html)
         self.assertIn('id="m2r-circuit-activate"', html)
+        self.assertIn('aria-labelledby="m2r-circuit-status-text m2r-circuit-tip"', html)
         self.assertIn('type="button"', html)
         self.assertTrue(HERO_JS.is_file())
         script = HERO_JS.read_text(encoding="utf-8")
