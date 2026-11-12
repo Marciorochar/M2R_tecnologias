@@ -1,0 +1,461 @@
+{
+  "communities": {
+    "0": [
+      "tools_site_tools_document",
+      "tools_site_tools_document_handle_data",
+      "tools_site_tools_document_handle_endtag",
+      "tools_site_tools_document_handle_starttag",
+      "tools_site_tools_document_init",
+      "tools_site_tools_py_htmlparser",
+      "tools_site_tools_site",
+      "tools_site_tools_site_check",
+      "tools_site_tools_site_check_link",
+      "tools_site_tools_site_file",
+      "tools_site_tools_site_init",
+      "tools_site_tools_site_match",
+      "tools_site_tools_site_redirect",
+      "tools_site_tools_site_resolve",
+      "tools_site_tools_site_security",
+      "tools_test_site_tools_sitetests",
+      "tools_test_site_tools_sitetests_setup",
+      "tools_test_site_tools_sitetests_test_all_links",
+      "tools_test_site_tools_sitetests_test_asset_references_use_current_content_hashes",
+      "tools_test_site_tools_sitetests_test_blog_titles_fit_search_result_target",
+      "tools_test_site_tools_sitetests_test_brand_palette_and_primary_button_have_adequate_contrast",
+      "tools_test_site_tools_sitetests_test_brand_palette_and_primary_button_have_adequate_contrast_luminance",
+      "tools_test_site_tools_sitetests_test_contact_has_copy_fallback_and_no_floating_duplicate",
+      "tools_test_site_tools_sitetests_test_csp_retains_secure_transport_and_email_fallback",
+      "tools_test_site_tools_sitetests_test_form_focus_keeps_a_visible_outline",
+      "tools_test_site_tools_sitetests_test_founder_image_has_responsive_webp_variants",
+      "tools_test_site_tools_sitetests_test_founder_social_image_is_optimized_and_complete",
+      "tools_test_site_tools_sitetests_test_frontend_transport_and_static_cache_headers",
+      "tools_test_site_tools_sitetests_test_generic_internal_link_labels_are_removed",
+      "tools_test_site_tools_sitetests_test_home_hero_mobile_grid_explicitly_stacks_columns",
+      "tools_test_site_tools_sitetests_test_html_entities_and_ids",
+      "tools_test_site_tools_sitetests_test_missing_rewrite_and_redirect_destinations",
+      "tools_test_site_tools_sitetests_test_mobile_whatsapp_cta_compacts_at_360px",
+      "tools_test_site_tools_sitetests_test_new_window_links_announce_the_context_change",
+      "tools_test_site_tools_sitetests_test_page_specific_structured_data_and_breadcrumbs",
+      "tools_test_site_tools_sitetests_test_path_traversal",
+      "tools_test_site_tools_sitetests_test_physical_html_paths_redirect_to_canonical_routes",
+      "tools_test_site_tools_sitetests_test_project_mockups_have_semantics_for_accessible_names",
+      "tools_test_site_tools_sitetests_test_public_relative_links_queries_and_fragments",
+      "tools_test_site_tools_sitetests_test_redirect_cycle",
+      "tools_test_site_tools_sitetests_test_scroll_listener_is_passive_and_avoids_redundant_class_updates",
+      "tools_test_site_tools_sitetests_test_security_policy",
+      "tools_test_site_tools_sitetests_test_unknown_routes_fail",
+      "tools_test_site_tools_sitetests_test_vercel_blocks_internal_paths_with_http_404",
+      "tools_test_site_tools_sitetests_test_vercel_deployment_uses_a_strict_allowlist"
+    ],
+    "1": [
+      "backend_app_clean_field",
+      "backend_app_validate_app_environment",
+      "backend_app_validate_frontend_origin",
+      "backend_app_validate_proxy_hops",
+      "backend_app_validate_rate_limit_storage",
+      "backend_test_app",
+      "backend_test_app_client",
+      "backend_test_app_test_api_status_returns_service_status",
+      "backend_test_app_test_app_environment_rejects_unknown_values",
+      "backend_test_app_test_contact_accepts_valid_payload",
+      "backend_test_app_test_contact_exact_and_exceeded_limits",
+      "backend_test_app_test_contact_rejects_field_types",
+      "backend_test_app_test_contact_rejects_incompatible_content_type",
+      "backend_test_app_test_contact_rejects_invalid_email",
+      "backend_test_app_test_contact_rejects_large_payload",
+      "backend_test_app_test_contact_rejects_missing_email",
+      "backend_test_app_test_contact_rejects_non_object_or_invalid_json",
+      "backend_test_app_test_contact_rejects_unexpected_fields",
+      "backend_test_app_test_cors_allows_only_the_configured_origin",
+      "backend_test_app_test_cors_preflight_is_limited_by_route",
+      "backend_test_app_test_frontend_origin_rejects_unsafe_values",
+      "backend_test_app_test_frontend_origin_requires_https_in_production",
+      "backend_test_app_test_header_breaks_are_rejected",
+      "backend_test_app_test_healthz_returns_ok",
+      "backend_test_app_test_hsts_is_applied_in_production",
+      "backend_test_app_test_memory_rate_limit_storage_is_rejected_in_production",
+      "backend_test_app_test_multiline_message_is_preserved_and_only_validated",
+      "backend_test_app_test_non_redis_rate_limit_storage_is_rejected_in_production",
+      "backend_test_app_test_proxy_hops_accepts_non_negative_integers",
+      "backend_test_app_test_proxy_hops_rejects_invalid_values",
+      "backend_test_app_test_rate_limit_returns_json",
+      "backend_test_app_test_script_debug_respects_environment",
+      "backend_test_app_test_security_headers_are_applied",
+      "backend_test_app_test_shared_rate_limit_storage_is_accepted_in_production",
+      "parametrize",
+      "pytest",
+      "runpy"
+    ],
+    "2": [
+      "argparse",
+      "base64",
+      "hashlib",
+      "html_parser",
+      "http_client",
+      "http_server",
+      "json",
+      "mimetypes",
+      "os",
+      "re",
+      "shutil",
+      "subprocess",
+      "tempfile",
+      "threading",
+      "tools_browser_check",
+      "tools_browser_check_check_layout",
+      "tools_browser_check_check_menu",
+      "tools_browser_check_check_site",
+      "tools_browser_check_chromium_launch_options",
+      "tools_browser_check_main",
+      "tools_browser_check_rationale_1",
+      "tools_browser_check_rationale_48",
+      "tools_lighthouse_check",
+      "tools_lighthouse_check_find_chrome",
+      "tools_lighthouse_check_main",
+      "tools_lighthouse_check_rationale_1",
+      "tools_site_tools",
+      "tools_site_tools_handler_for",
+      "tools_site_tools_handler_for_do_get",
+      "tools_site_tools_handler_for_do_head",
+      "tools_site_tools_handler_for_respond",
+      "tools_site_tools_rationale_1",
+      "tools_test_site_tools",
+      "tools_test_site_tools_sitetests_test_http_routes",
+      "tools_test_sitemap",
+      "xml_etree_elementtree"
+    ],
+    "3": [
+      "github_workflows_validate_site",
+      "github_workflows_validate_site_jobs",
+      "github_workflows_validate_site_jobs_validate",
+      "github_workflows_validate_site_name",
+      "github_workflows_validate_site_on",
+      "github_workflows_validate_site_on_pull_request",
+      "github_workflows_validate_site_on_push",
+      "github_workflows_validate_site_permissions",
+      "github_workflows_validate_site_permissions_contents",
+      "github_workflows_validate_site_pull_request_branches",
+      "github_workflows_validate_site_push_branches",
+      "github_workflows_validate_site_steps_if",
+      "github_workflows_validate_site_steps_name",
+      "github_workflows_validate_site_steps_run",
+      "github_workflows_validate_site_steps_uses",
+      "github_workflows_validate_site_steps_with",
+      "github_workflows_validate_site_validate_name",
+      "github_workflows_validate_site_validate_runs_on",
+      "github_workflows_validate_site_validate_steps",
+      "github_workflows_validate_site_with_fetch_depth",
+      "github_workflows_validate_site_with_if_no_files_found",
+      "github_workflows_validate_site_with_name",
+      "github_workflows_validate_site_with_node_version",
+      "github_workflows_validate_site_with_path",
+      "github_workflows_validate_site_with_python_version",
+      "github_workflows_validate_site_with_retention_days"
+    ],
+    "4": [
+      "after_request",
+      "backend_app",
+      "backend_app_add_security_headers",
+      "backend_app_assign_request_id",
+      "backend_app_has_header_break",
+      "backend_app_healthz",
+      "backend_app_home",
+      "backend_app_ratelimit_handler",
+      "backend_app_request_too_large_handler",
+      "backend_app_status",
+      "backend_app_validate_contact",
+      "before_request",
+      "dotenv",
+      "errorhandler",
+      "flask",
+      "flask_cors",
+      "flask_limiter",
+      "flask_limiter_util",
+      "get",
+      "limit",
+      "post",
+      "urllib_parse",
+      "uuid",
+      "werkzeug_exceptions",
+      "werkzeug_middleware_proxy_fix"
+    ],
+    "5": [
+      "ref_node_crypto",
+      "ref_node_fs",
+      "ref_node_path",
+      "tools_generate_sitemap",
+      "tools_generate_sitemap_buildsitemap",
+      "tools_generate_sitemap_check_mode",
+      "tools_generate_sitemap_dates",
+      "tools_generate_sitemap_destinationtofile",
+      "tools_generate_sitemap_formatpath",
+      "tools_generate_sitemap_fs",
+      "tools_generate_sitemap_generated",
+      "tools_generate_sitemap_path",
+      "tools_generate_sitemap_sitemap_path",
+      "tools_version_assets",
+      "tools_version_assets_assets",
+      "tools_version_assets_check_mode",
+      "tools_version_assets_crypto",
+      "tools_version_assets_fs",
+      "tools_version_assets_htmlfiles",
+      "tools_version_assets_path",
+      "tools_version_assets_root",
+      "tools_version_assets_walkhtml"
+    ],
+    "6": [
+      "contextlib",
+      "io",
+      "pathlib",
+      "tools_browser_check_check_accessibility",
+      "tools_browser_check_check_accessibility_describe",
+      "tools_browser_check_rationale_17",
+      "tools_browser_check_rationale_22",
+      "tools_browser_check_serious_axe_violations",
+      "tools_test_accessibility_check",
+      "tools_test_accessibility_check_accessibilitychecktests",
+      "tools_test_accessibility_check_accessibilitychecktests_test_empty_report_passes",
+      "tools_test_accessibility_check_accessibilitychecktests_test_missing_axe_dependency_is_an_explicit_error",
+      "tools_test_accessibility_check_accessibilitychecktests_test_nonblocking_findings_are_reported_with_route_and_selector",
+      "tools_test_accessibility_check_accessibilitychecktests_test_only_serious_and_critical_violations_block",
+      "tools_test_accessibility_check_accessibilitychecktests_test_serious_finding_fails_with_page_and_selector",
+      "tools_test_accessibility_check_fakepage",
+      "tools_test_accessibility_check_fakepage_evaluate",
+      "tools_test_accessibility_check_fakepage_init",
+      "tools_test_accessibility_check_rationale_1",
+      "unittest_mock"
+    ],
+    "7": [
+      "github_dependabot",
+      "github_dependabot_commit_message_prefix",
+      "github_dependabot_schedule_day",
+      "github_dependabot_schedule_interval",
+      "github_dependabot_schedule_time",
+      "github_dependabot_schedule_timezone",
+      "github_dependabot_updates",
+      "github_dependabot_updates_commit_message",
+      "github_dependabot_updates_directory",
+      "github_dependabot_updates_labels",
+      "github_dependabot_updates_open_pull_requests_limit",
+      "github_dependabot_updates_package_ecosystem",
+      "github_dependabot_updates_schedule",
+      "github_dependabot_version"
+    ],
+    "8": [
+      "frontend_assets_js_hero_circuits",
+      "frontend_assets_js_hero_circuits_defaulttip",
+      "frontend_assets_js_hero_circuits_draw",
+      "frontend_assets_js_hero_circuits_energize",
+      "frontend_assets_js_hero_circuits_frame",
+      "frontend_assets_js_hero_circuits_listenformediachange",
+      "frontend_assets_js_hero_circuits_nearestonpath",
+      "frontend_assets_js_hero_circuits_onpointerleave",
+      "frontend_assets_js_hero_circuits_onpointermove",
+      "frontend_assets_js_hero_circuits_refreshanimation",
+      "frontend_assets_js_hero_circuits_svgpoint",
+      "frontend_assets_js_hero_circuits_updatepointer"
+    ],
+    "9": [
+      "tools_lighthouse_check_rationale_25",
+      "tools_lighthouse_check_summarize_lighthouse",
+      "tools_test_lighthouse_check",
+      "tools_test_lighthouse_check_lighthousechecktests",
+      "tools_test_lighthouse_check_lighthousechecktests_test_all_four_scores_are_reported",
+      "tools_test_lighthouse_check_lighthousechecktests_test_invalid_score_fails_explicitly",
+      "tools_test_lighthouse_check_lighthousechecktests_test_missing_category_fails_explicitly",
+      "tools_test_lighthouse_check_rationale_1",
+      "unittest"
+    ],
+    "10": [
+      "tools_test_sitemap_py_htmlparser",
+      "tools_test_sitemap_robotsparser",
+      "tools_test_sitemap_robotsparser_handle_starttag",
+      "tools_test_sitemap_robotsparser_init",
+      "tools_test_sitemap_sitemaptests",
+      "tools_test_sitemap_sitemaptests_test_recent_editorial_dates_are_recorded",
+      "tools_test_sitemap_sitemaptests_test_unrelated_commit_does_not_change_dates",
+      "tools_test_sitemap_sitemaptests_test_unrelated_commit_does_not_change_dates_run"
+    ],
+    "11": [
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_axe_core",
+      "package_devdependencies_lighthouse",
+      "ref_axe_core",
+      "ref_lighthouse"
+    ],
+    "12": [
+      "vercel",
+      "vercel_headers",
+      "vercel_redirects",
+      "vercel_rewrites",
+      "vercel_routes"
+    ],
+    "13": [
+      "frontend_assets_js_script",
+      "frontend_assets_js_script_initapp"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06464646464646465,
+    "1": 0.11561561561561562,
+    "2": 0.10952380952380952,
+    "3": 0.07692307692307693,
+    "4": 0.09666666666666666,
+    "5": 0.1038961038961039,
+    "6": 0.1368421052631579,
+    "7": 0.14285714285714285,
+    "8": 0.3181818181818182,
+    "9": 0.3055555555555556,
+    "10": 0.25,
+    "11": 0.4666666666666667,
+    "12": 0.4,
+    "13": 1.0
+  },
+  "gods": [
+    {
+      "id": "tools_test_site_tools_sitetests",
+      "label": "SiteTests",
+      "degree": 32
+    },
+    {
+      "id": "tools_site_tools_site",
+      "label": "Site",
+      "degree": 18
+    },
+    {
+      "id": "backend_test_app_client",
+      "label": "client()",
+      "degree": 18
+    },
+    {
+      "id": "tools_site_tools_document",
+      "label": "Document",
+      "degree": 12
+    },
+    {
+      "id": "tools_site_tools_handler_for",
+      "label": "handler_for()",
+      "degree": 10
+    },
+    {
+      "id": "tools_lighthouse_check_main",
+      "label": "main()",
+      "degree": 8
+    },
+    {
+      "id": "tools_browser_check_check_accessibility",
+      "label": "check_accessibility()",
+      "degree": 8
+    },
+    {
+      "id": "github_workflows_validate_site_steps_with",
+      "label": "with",
+      "degree": 8
+    },
+    {
+      "id": "tools_browser_check_check_site",
+      "label": "check_site()",
+      "degree": 7
+    },
+    {
+      "id": "tools_lighthouse_check_summarize_lighthouse",
+      "label": "summarize_lighthouse()",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "SiteTests",
+      "target": "Document",
+      "source_files": [
+        "tools/test_site_tools.py",
+        "tools/site_tools.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source"
+    },
+    {
+      "source": "check_site()",
+      "target": "Site",
+      "source_files": [
+        "tools/browser_check.py",
+        "tools/site_tools.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "main()",
+      "target": "Site",
+      "source_files": [
+        "tools/browser_check.py",
+        "tools/site_tools.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "main()",
+      "target": "Site",
+      "source_files": [
+        "tools/lighthouse_check.py",
+        "tools/site_tools.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "SiteTests",
+      "target": "Site",
+      "source_files": [
+        "tools/test_site_tools.py",
+        "tools/site_tools.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `SiteTests` connect `Community 0` to `Community 2`?",
+      "why": "High betweenness centrality (0.117) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `SiteTests` (e.g. with `Document` and `Site`) actually correct?",
+      "why": "`SiteTests` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.06464646464646465 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Site` connect `Community 0` to `Community 2`?",
+      "why": "High betweenness centrality (0.089) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.11561561561561562 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Document` connect `Community 0` to `Community 2`?",
+      "why": "High betweenness centrality (0.039) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.10952380952380952 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

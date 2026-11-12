@@ -1,0 +1,320 @@
+{
+  ".github/dependabot.yml": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794438687.438638,
+    "ast_hash": "24a9238424d9527f5e8b13ef4c1c8a01",
+    "semantic_hash": ""
+  },
+  ".github/workflows/validate-site.yml": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794438687.4386532,
+    "ast_hash": "f2795b24431b27ac39c67e688eda5658",
+    "semantic_hash": ""
+  },
+  "backend/app.py": {
+    "mtime": 1793838509.33994,
+    "seen": 1794142906.2257113,
+    "ast_hash": "931306313625c82b3952f82b1efa5dbf",
+    "semantic_hash": "931306313625c82b3952f82b1efa5dbf"
+  },
+  "backend/test_app.py": {
+    "mtime": 1793838509.33994,
+    "seen": 1794142906.2257125,
+    "ast_hash": "91e337bcf8045de755ae10a6ac50f222",
+    "semantic_hash": "91e337bcf8045de755ae10a6ac50f222"
+  },
+  "frontend/assets/js/script.js": {
+    "mtime": 1794410311.5164814,
+    "seen": 1794438687.4386775,
+    "ast_hash": "d7431204547133630cfd3a13ad7f9e2b",
+    "semantic_hash": ""
+  },
+  "tools/browser_check.py": {
+    "mtime": 1794353349.429961,
+    "seen": 1794438687.4386845,
+    "ast_hash": "52648e874f557e6070ffdae50c599f23",
+    "semantic_hash": ""
+  },
+  "tools/generate-sitemap.js": {
+    "mtime": 1792276351.2829819,
+    "seen": 1794142906.225716,
+    "ast_hash": "4390eecabb34d407d0d553202dec5d89",
+    "semantic_hash": "4390eecabb34d407d0d553202dec5d89"
+  },
+  "tools/site_tools.py": {
+    "mtime": 1789318781.8271706,
+    "seen": 1794142906.225717,
+    "ast_hash": "d39b6cc9b26658458ba505b7c57e70fe",
+    "semantic_hash": "d39b6cc9b26658458ba505b7c57e70fe"
+  },
+  "tools/sitemap-dates.json": {
+    "mtime": 1794098279.0298612,
+    "seen": 1794142906.225718,
+    "ast_hash": "53b29d50bb546e49aa33bf549023d169",
+    "semantic_hash": "53b29d50bb546e49aa33bf549023d169"
+  },
+  "tools/test_site_tools.py": {
+    "mtime": 1794353731.7277808,
+    "seen": 1794438687.438706,
+    "ast_hash": "b4e56e65dbf1af6842cdc17e69d79a3a",
+    "semantic_hash": ""
+  },
+  "tools/test_sitemap.py": {
+    "mtime": 1794098158.2181811,
+    "seen": 1794142906.2257202,
+    "ast_hash": "7132afac53d02fda562f9a47203808b4",
+    "semantic_hash": "7132afac53d02fda562f9a47203808b4"
+  },
+  "tools/version-assets.js": {
+    "mtime": 1794410316.4971247,
+    "seen": 1794438687.438711,
+    "ast_hash": "758c0b2ed71956ab78b254c9f010e43b",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1794347405.9063377,
+    "seen": 1794349500.9907362,
+    "ast_hash": "ec5b4a3845ee2397932df09f78430d14",
+    "semantic_hash": "ec5b4a3845ee2397932df09f78430d14"
+  },
+  "404.html": {
+    "mtime": 1794419659.3925855,
+    "seen": 1794438687.4387164,
+    "ast_hash": "7d79d6fa248ad3ccd1c779cc0bc4b1cb",
+    "semantic_hash": ""
+  },
+  "CHANGELOG.md": {
+    "mtime": 1794094206.2512913,
+    "seen": 1794142906.225724,
+    "ast_hash": "5268367cd17e805c1adf7db029b0328f",
+    "semantic_hash": "5268367cd17e805c1adf7db029b0328f"
+  },
+  "README.md": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794438687.4387224,
+    "ast_hash": "8851a4dff6d8e147ad4e47c25efe40aa",
+    "semantic_hash": ""
+  },
+  "backend/requirements.txt": {
+    "mtime": 1793838509.33994,
+    "seen": 1794142906.2257257,
+    "ast_hash": "ce6cb783571fa616b82620001ffbfef3",
+    "semantic_hash": "ce6cb783571fa616b82620001ffbfef3"
+  },
+  "docs/auditoria-2026-10-17.md": {
+    "mtime": 1792276351.1666143,
+    "seen": 1794142906.2257266,
+    "ast_hash": "4adc7e80e5c27a0ca5d68df619ecc0ce",
+    "semantic_hash": "4adc7e80e5c27a0ca5d68df619ecc0ce"
+  },
+  "docs/auditoria-seguranca-2026-11-04.md": {
+    "mtime": 1794094206.2775245,
+    "seen": 1794142906.2257276,
+    "ast_hash": "8cee42a19bc4c93f38ab925545af929c",
+    "semantic_hash": "8cee42a19bc4c93f38ab925545af929c"
+  },
+  "frontend/404.html": {
+    "mtime": 1794419659.3444674,
+    "seen": 1794438687.4387436,
+    "ast_hash": "7d79d6fa248ad3ccd1c779cc0bc4b1cb",
+    "semantic_hash": ""
+  },
+  "frontend/index.html": {
+    "mtime": 1794419659.4167497,
+    "seen": 1794438687.4387455,
+    "ast_hash": "01e6de2f9b51f19bb3cdff24ca4e223a",
+    "semantic_hash": ""
+  },
+  "frontend/pages/blog.html": {
+    "mtime": 1794419659.3725617,
+    "seen": 1794438687.438748,
+    "ast_hash": "510de1cf24f1227bf7cec7211eeae3dc",
+    "semantic_hash": ""
+  },
+  "frontend/pages/blog/automacao-para-pequenos-negocios.html": {
+    "mtime": 1794419659.3444674,
+    "seen": 1794438687.4387505,
+    "ast_hash": "f85bb426c12bccfcff75f2c970d8f8dd",
+    "semantic_hash": ""
+  },
+  "frontend/pages/blog/organizacao-de-processos-digitais.html": {
+    "mtime": 1794419659.3589053,
+    "seen": 1794438687.4387524,
+    "ast_hash": "21cef1458203445244d2fc3f00e6e996",
+    "semantic_hash": ""
+  },
+  "frontend/pages/blog/site-profissional-fortalece-marca.html": {
+    "mtime": 1794419659.3589053,
+    "seen": 1794438687.4387548,
+    "ast_hash": "b6d389c784c6ec7362f6548bf147918b",
+    "semantic_hash": ""
+  },
+  "frontend/pages/contato.html": {
+    "mtime": 1794419659.3772383,
+    "seen": 1794438687.4387572,
+    "ast_hash": "98ddd6182c874bf59720549683ade3a4",
+    "semantic_hash": ""
+  },
+  "frontend/pages/fundador.html": {
+    "mtime": 1794419659.3772383,
+    "seen": 1794438687.4387593,
+    "ast_hash": "bacfd1a183fb3dc694d1a71cf6ca1e28",
+    "semantic_hash": ""
+  },
+  "frontend/pages/projetos.html": {
+    "mtime": 1794419659.3772383,
+    "seen": 1794438687.4387615,
+    "ast_hash": "019ac59e192a332c3a352c8f8ee5e020",
+    "semantic_hash": ""
+  },
+  "frontend/pages/projetos/m2r-server.html": {
+    "mtime": 1794419659.3772383,
+    "seen": 1794438687.438764,
+    "ast_hash": "c9dae690a3bd091cadeea7e363501fc3",
+    "semantic_hash": ""
+  },
+  "frontend/pages/servicos.html": {
+    "mtime": 1794419659.3772383,
+    "seen": 1794438687.4387662,
+    "ast_hash": "19b634b5ea44be7e522e6e380d32b3cf",
+    "semantic_hash": ""
+  },
+  "frontend/pages/sobre.html": {
+    "mtime": 1794419659.3772383,
+    "seen": 1794438687.4387689,
+    "ast_hash": "a095bfe29373849c084ffce1cb905a5f",
+    "semantic_hash": ""
+  },
+  "frontend/robots.txt": {
+    "mtime": 1787431088.4763815,
+    "seen": 1794142906.2257404,
+    "ast_hash": "e7b1b616c2ee3b70477d961bffe1897a",
+    "semantic_hash": "e7b1b616c2ee3b70477d961bffe1897a"
+  },
+  "requirements-dev.txt": {
+    "mtime": 1794094206.7044225,
+    "seen": 1794142906.2257416,
+    "ast_hash": "82d2cfd641b1de76c7e863ab089f8999",
+    "semantic_hash": "82d2cfd641b1de76c7e863ab089f8999"
+  },
+  "docs/screenshots/blog.png": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794438687.4387767,
+    "ast_hash": "64b7ec227be557822f0cd4dcdb3e7c25",
+    "semantic_hash": ""
+  },
+  "docs/screenshots/home.png": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794438687.438779,
+    "ast_hash": "9f0abcee174a66147c7e737334a6635b",
+    "semantic_hash": ""
+  },
+  "docs/screenshots/projetos.png": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794438687.4387815,
+    "ast_hash": "665eda5b938b9b46c2cecfb54bf48724",
+    "semantic_hash": ""
+  },
+  "frontend/assets/img/Eu_fundador-400.webp": {
+    "mtime": 1794094208.1263103,
+    "seen": 1794142906.2257452,
+    "ast_hash": "3b13893f377391ffdf48b652965d011d",
+    "semantic_hash": "3b13893f377391ffdf48b652965d011d"
+  },
+  "frontend/assets/img/Eu_fundador-640.webp": {
+    "mtime": 1794094208.1432533,
+    "seen": 1794142906.2257462,
+    "ast_hash": "2e29f3abc4c8d226dda921c3b9afb60d",
+    "semantic_hash": "2e29f3abc4c8d226dda921c3b9afb60d"
+  },
+  "frontend/assets/img/Eu_fundador-900.webp": {
+    "mtime": 1794094208.1530824,
+    "seen": 1794142906.225747,
+    "ast_hash": "e404c4633dfa018119ab6e27eb1883bb",
+    "semantic_hash": "e404c4633dfa018119ab6e27eb1883bb"
+  },
+  "frontend/assets/img/Eu_fundador-social.jpg": {
+    "mtime": 1794099133.3760023,
+    "seen": 1794142906.225748,
+    "ast_hash": "849041afefd0c2091bdacd91147b4563",
+    "semantic_hash": "849041afefd0c2091bdacd91147b4563"
+  },
+  "frontend/assets/img/logo.png": {
+    "mtime": 1787440117.9005342,
+    "seen": 1794142906.225749,
+    "ast_hash": "c4dba105d117d97e093690a816c8fe9c",
+    "semantic_hash": "c4dba105d117d97e093690a816c8fe9c"
+  },
+  "frontend/assets/img/m2r.png": {
+    "mtime": 1787440117.9276645,
+    "seen": 1794142906.22575,
+    "ast_hash": "c42583a7ac15b883f66f77f2b192529d",
+    "semantic_hash": "c42583a7ac15b883f66f77f2b192529d"
+  },
+  "frontend/assets/img/og-image.png": {
+    "mtime": 1787433688.430554,
+    "seen": 1794142906.2257507,
+    "ast_hash": "3ba38c67655ef7d5669b65d2c0ab0b20",
+    "semantic_hash": "3ba38c67655ef7d5669b65d2c0ab0b20"
+  },
+  "docs/superpowers/plans/2026-11-08-pr21-remediation.md": {
+    "mtime": 1794347405.8688846,
+    "seen": 1794349500.9907408,
+    "ast_hash": "9ca80560066759b717cd7ec4631d6876",
+    "semantic_hash": "9ca80560066759b717cd7ec4631d6876"
+  },
+  "docs/superpowers/specs/2026-11-08-pr21-remediation-design.md": {
+    "mtime": 1794347405.8711603,
+    "seen": 1794349500.990744,
+    "ast_hash": "d1ba9641c9a65e987d00ea36602da35a",
+    "semantic_hash": "d1ba9641c9a65e987d00ea36602da35a"
+  },
+  "frontend/assets/js/hero-circuits.js": {
+    "mtime": 1794419623.4570792,
+    "seen": 1794438687.4386735,
+    "ast_hash": "d38b0d3d9352c40988b831899c5f9865",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1794352982.7587008,
+    "seen": 1794438687.438681,
+    "ast_hash": "d6b4c002742e4668e628940949a2e88c",
+    "semantic_hash": ""
+  },
+  "tools/lighthouse_check.py": {
+    "mtime": 1794352982.7607143,
+    "seen": 1794438687.4386916,
+    "ast_hash": "9dd286984f4f137eec1c658f70f1cfd2",
+    "semantic_hash": ""
+  },
+  "tools/test_accessibility_check.py": {
+    "mtime": 1794352982.7607143,
+    "seen": 1794438687.4387012,
+    "ast_hash": "a5c02a9867c7d83ae96debf3573966f3",
+    "semantic_hash": ""
+  },
+  "tools/test_lighthouse_check.py": {
+    "mtime": 1794352982.761726,
+    "seen": 1794438687.4387035,
+    "ast_hash": "fa5cd3438a3e9a33407bc4cdb64ffbc8",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-11-08-quality-gates.md": {
+    "mtime": 1794352982.7442205,
+    "seen": 1794438687.438736,
+    "ast_hash": "911d04d95c5a928c7d80042bb4982a63",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/specs/2026-11-08-quality-gates-design.md": {
+    "mtime": 1794352982.7452676,
+    "seen": 1794438687.4387412,
+    "ast_hash": "9e1552e689c31feae05a97b194285ea4",
+    "semantic_hash": ""
+  },
+  "package-lock.json": {
+    "mtime": 1794352982.7587008,
+    "seen": 1794438687.4388037,
+    "ast_hash": "9f065f644e69432f8af4f7d49ac75feb",
+    "semantic_hash": ""
+  }
+}

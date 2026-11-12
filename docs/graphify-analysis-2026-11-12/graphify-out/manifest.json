@@ -1,0 +1,111 @@
+{
+  ".github/dependabot.yml": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794501519.3847847,
+    "ast_hash": "24a9238424d9527f5e8b13ef4c1c8a01",
+    "semantic_hash": "24a9238424d9527f5e8b13ef4c1c8a01"
+  },
+  ".github/workflows/validate-site.yml": {
+    "mtime": 1794352982.7290502,
+    "seen": 1794501519.385797,
+    "ast_hash": "f2795b24431b27ac39c67e688eda5658",
+    "semantic_hash": "f2795b24431b27ac39c67e688eda5658"
+  },
+  "backend/app.py": {
+    "mtime": 1793838509.33994,
+    "seen": 1794501519.3867083,
+    "ast_hash": "931306313625c82b3952f82b1efa5dbf",
+    "semantic_hash": "931306313625c82b3952f82b1efa5dbf"
+  },
+  "backend/test_app.py": {
+    "mtime": 1793838509.33994,
+    "seen": 1794501519.3875082,
+    "ast_hash": "91e337bcf8045de755ae10a6ac50f222",
+    "semantic_hash": "91e337bcf8045de755ae10a6ac50f222"
+  },
+  "frontend/assets/js/hero-circuits.js": {
+    "mtime": 1794446373.686198,
+    "seen": 1794501519.38841,
+    "ast_hash": "495c0070b2f0b370fa165116a61b112c",
+    "semantic_hash": "495c0070b2f0b370fa165116a61b112c"
+  },
+  "frontend/assets/js/script.js": {
+    "mtime": 1794410311.5164814,
+    "seen": 1794501519.3892393,
+    "ast_hash": "d7431204547133630cfd3a13ad7f9e2b",
+    "semantic_hash": "d7431204547133630cfd3a13ad7f9e2b"
+  },
+  "package.json": {
+    "mtime": 1794352982.7587008,
+    "seen": 1794501519.3900678,
+    "ast_hash": "d6b4c002742e4668e628940949a2e88c",
+    "semantic_hash": "d6b4c002742e4668e628940949a2e88c"
+  },
+  "tools/browser_check.py": {
+    "mtime": 1794353349.429961,
+    "seen": 1794501519.3908265,
+    "ast_hash": "52648e874f557e6070ffdae50c599f23",
+    "semantic_hash": "52648e874f557e6070ffdae50c599f23"
+  },
+  "tools/generate-sitemap.js": {
+    "mtime": 1792276351.2829819,
+    "seen": 1794501519.3915663,
+    "ast_hash": "4390eecabb34d407d0d553202dec5d89",
+    "semantic_hash": "4390eecabb34d407d0d553202dec5d89"
+  },
+  "tools/lighthouse_check.py": {
+    "mtime": 1794352982.7607143,
+    "seen": 1794501519.3923461,
+    "ast_hash": "9dd286984f4f137eec1c658f70f1cfd2",
+    "semantic_hash": "9dd286984f4f137eec1c658f70f1cfd2"
+  },
+  "tools/site_tools.py": {
+    "mtime": 1789318781.8271706,
+    "seen": 1794501519.3930743,
+    "ast_hash": "d39b6cc9b26658458ba505b7c57e70fe",
+    "semantic_hash": "d39b6cc9b26658458ba505b7c57e70fe"
+  },
+  "tools/sitemap-dates.json": {
+    "mtime": 1794098279.0298612,
+    "seen": 1794501519.3938024,
+    "ast_hash": "53b29d50bb546e49aa33bf549023d169",
+    "semantic_hash": "53b29d50bb546e49aa33bf549023d169",
+    "ast_empty": true
+  },
+  "tools/test_accessibility_check.py": {
+    "mtime": 1794352982.7607143,
+    "seen": 1794501519.3938162,
+    "ast_hash": "a5c02a9867c7d83ae96debf3573966f3",
+    "semantic_hash": "a5c02a9867c7d83ae96debf3573966f3"
+  },
+  "tools/test_lighthouse_check.py": {
+    "mtime": 1794352982.761726,
+    "seen": 1794501519.3945985,
+    "ast_hash": "fa5cd3438a3e9a33407bc4cdb64ffbc8",
+    "semantic_hash": "fa5cd3438a3e9a33407bc4cdb64ffbc8"
+  },
+  "tools/test_site_tools.py": {
+    "mtime": 1794353731.7277808,
+    "seen": 1794501519.3953135,
+    "ast_hash": "b4e56e65dbf1af6842cdc17e69d79a3a",
+    "semantic_hash": "b4e56e65dbf1af6842cdc17e69d79a3a"
+  },
+  "tools/test_sitemap.py": {
+    "mtime": 1794098158.2181811,
+    "seen": 1794501519.3960674,
+    "ast_hash": "7132afac53d02fda562f9a47203808b4",
+    "semantic_hash": "7132afac53d02fda562f9a47203808b4"
+  },
+  "tools/version-assets.js": {
+    "mtime": 1794410316.4971247,
+    "seen": 1794501519.3968754,
+    "ast_hash": "758c0b2ed71956ab78b254c9f010e43b",
+    "semantic_hash": "758c0b2ed71956ab78b254c9f010e43b"
+  },
+  "vercel.json": {
+    "mtime": 1794347405.9063377,
+    "seen": 1794501519.3976746,
+    "ast_hash": "ec5b4a3845ee2397932df09f78430d14",
+    "semantic_hash": "ec5b4a3845ee2397932df09f78430d14"
+  }
+}
