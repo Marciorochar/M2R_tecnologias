@@ -22,7 +22,7 @@
     <meta name="twitter:image" content="https://m2rtecnologias.vercel.app/assets/img/og-image.png">
     <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://m2rtecnologias.vercel.app/#organization","name":"M2R Tecnologias","url":"https://m2rtecnologias.vercel.app/","logo":"https://m2rtecnologias.vercel.app/assets/img/logo.png","email":"marciinhofla@gmail.com","telephone":"+55 22 99827-0026"},{"@type":"WebSite","@id":"https://m2rtecnologias.vercel.app/#website","name":"M2R Tecnologias","url":"https://m2rtecnologias.vercel.app/","publisher":{"@id":"https://m2rtecnologias.vercel.app/#organization"},"inLanguage":"pt-BR"}]}</script>
     <title>M2R Tecnologias | Soluções Digitais e Desenvolvimento Web</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=cf60a0d29c">
+    <link rel="stylesheet" href="assets/css/style.css?v=2633f644e7">
     <link rel="icon" href="assets/img/logo.png" type="image/png">
 </head>
 <body class="home-page">
@@ -42,27 +42,68 @@
     </nav>
 
     <main id="conteudo-principal">
-        <section class="page-hero home-hero">
+        <section class="page-hero home-hero home-hero--circuits" id="m2r-hero" aria-label="Destaque tecnológico da M2R">
+            <div class="home-hero-motion-film" aria-hidden="true"></div>
+            <svg class="home-hero-circuits" id="m2r-circuits" viewBox="0 0 1200 610" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                <defs>
+                    <filter id="m2r-gold-glow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="3.2" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <filter id="m2r-node-glow" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="m2r-cursor-light"><stop offset="0%" stop-color="#ffe0a8" stop-opacity=".5"/><stop offset="23%" stop-color="#f4ba74" stop-opacity=".12"/><stop offset="100%" stop-color="#f4ba74" stop-opacity="0"/></radialGradient>
+                    <linearGradient id="m2r-line-gold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1200" y2="0"><stop stop-color="#c58d52" stop-opacity=".32"/><stop offset=".5" stop-color="#f3bf78" stop-opacity=".7"/><stop offset="1" stop-color="#ffd18c" stop-opacity=".88"/></linearGradient>
+                </defs>
+                <g id="m2r-circuit-paths">
+                    <path id="m2r-path-0" d="M -24 68 H 137 L 167 38 H 482 L 516 72 H 868"/>
+                    <path id="m2r-path-1" d="M -24 112 H 285 L 316 83 H 623 L 656 105 H 1224"/>
+                    <path id="m2r-path-2" d="M 30 164 H 190 L 226 200 H 455 L 488 171 H 804 L 835 145 H 1224"/>
+                    <path id="m2r-path-3" d="M -24 246 H 81 L 114 216 H 355 L 390 253 H 718 L 750 227 H 1224"/>
+                    <path id="m2r-path-4" d="M -24 297 H 235 L 271 265 H 578 L 611 304 H 984 L 1020 273 H 1224"/>
+                    <path id="m2r-path-5" d="M 86 353 H 301 L 339 321 H 523 L 560 360 H 802 L 836 330 H 1224"/>
+                    <path id="m2r-path-6" d="M -24 405 H 138 L 174 375 H 453 L 490 412 H 738 L 769 386 H 1090"/>
+                    <path id="m2r-path-7" d="M -24 459 H 266 L 299 429 H 553 L 591 465 H 902 L 937 439 H 1224"/>
+                    <path id="m2r-path-8" d="M 48 507 H 167 L 205 479 H 384 L 421 514 H 680 L 713 486 H 1224"/>
+                    <path id="m2r-path-9" d="M -24 564 H 289 L 324 533 H 577 L 614 568 H 890 L 927 539 H 1224"/>
+                    <path id="m2r-path-10" d="M 300 600 H 488 L 520 574 H 756 L 791 605 H 1224"/>
+                    <path id="m2r-path-11" d="M 620 24 H 900 L 930 55 H 1224"/>
+                </g>
+                <g id="m2r-trace-render"></g>
+                <g id="m2r-node-render"></g>
+                <circle id="m2r-cursor-halo" class="m2r-cursor-halo" r="119" cx="950" cy="285"/>
+                <g id="m2r-pulse-render"></g>
+                <g id="m2r-ripple-render"></g>
+            </svg>
             <div class="container hero-layout">
                 <div class="home-hero-copy">
-                    <span class="section-tag section-tag--dark">Tecnologia aplicada</span>
-                    <h1>M2R Tecnologias</h1>
-                    <p class="hero-description">Soluções digitais, desenvolvimento web e projetos tecnológicos sob medida.</p>
-                    <p class="hero-support">Criamos estruturas digitais modernas para apresentar marcas, organizar processos e desenvolver projetos com tecnologia, automação e inovação.</p>
+                    <span class="section-tag section-tag--dark">M2R Tecnologias <span aria-hidden="true">/</span> Tecnologia aplicada</span>
+                    <h1>Ideias conectadas. Negócios em movimento.</h1>
+                    <p class="hero-description">Sites, automação e dados para dar forma ao próximo passo do seu negócio.</p>
+                    <p class="hero-support">Da presença digital à organização de processos, desenvolvemos soluções que unem clareza visual e funcionamento confiável.</p>
                     <div class="hero-actions">
                         <a class="btn btn-primary" href="/servicos">Conheça os serviços</a>
                         <a class="btn btn-secondary" href="/contato">Fale conosco</a>
                     </div>
-                    <ul class="hero-highlights" aria-label="Diferenciais da M2R Tecnologias">
-                        <li>Sites institucionais</li>
-                        <li>Automação</li>
-                        <li>Dados e dashboards</li>
+                </div>
+                <section class="home-hero-panel" aria-label="Áreas de atuação da M2R">
+                    <div class="home-hero-panel__header"><span class="home-hero-panel__signal" aria-hidden="true"></span><span>O que conectamos</span></div>
+                    <ul class="home-hero-panel__list">
+                        <li><span><strong>Presença digital</strong><small>Sites que apresentam sua marca com clareza.</small></span></li>
+                        <li><span><strong>Processos</strong><small>Automação para organizar o trabalho.</small></span></li>
+                        <li><span><strong>Informação</strong><small>Dados e dashboards para acompanhar resultados.</small></span></li>
                     </ul>
-                </div>
-                <div class="home-hero-visual" aria-hidden="true">
-                    <img src="assets/img/m2r.png" width="372" height="122" alt="" class="home-hero-logo" loading="eager" decoding="async">
-                </div>
+                </section>
             </div>
+            <button class="home-hero-circuit-trigger" id="m2r-circuit-activate" type="button" aria-label="Enviar pulso pelos circuitos">
+                <span class="home-hero-circuit-tip" id="m2r-circuit-tip" aria-live="polite" aria-atomic="true">Ativar circuitos</span>
+            </button>
+            <button class="home-hero-motion-toggle" id="m2r-motion-toggle" type="button" aria-label="Animações do destaque" aria-pressed="false" title="Pausar movimento" hidden>
+                <svg class="home-hero-motion-toggle__pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5v14M16 5v14"/></svg>
+                <svg class="home-hero-motion-toggle__play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m8 5 11 7-11 7z"/></svg>
+            </button>
         </section>
 
         <section class="section-block home-about">
@@ -170,5 +211,6 @@
 
     <a class="mobile-whatsapp-cta" href="https://wa.me/5522998270026?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20M2R%20Tecnologias%20e%20gostaria%20de%20conversar%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital." target="_blank" rel="noopener" aria-label="Chamar a M2R Tecnologias no WhatsApp (abre em nova aba ou aplicativo)">WhatsApp</a>
     <script src="assets/js/script.js?v=b5833ab847"></script>
+    <script src="assets/js/hero-circuits.js?v=99df0efb02"></script>
 </body>
 </html>

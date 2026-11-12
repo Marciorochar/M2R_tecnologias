@@ -134,6 +134,10 @@ M2R/
   vercel.json
 ```
 
+## Análise técnica e arquitetura
+
+O inventário de componentes, fluxos, responsabilidades, riscos e comparação com Graphify está em [docs/architecture/README.md](docs/architecture/README.md). A documentação registra o limite entre o frontend estático e o backend Flask opcional, descreve a evidência e suas limitações e propõe melhorias futuras para tornar as execuções do Graphify reproduzíveis.
+
 ## Como rodar o frontend localmente
 
 Pre-requisitos: Python 3.10 ou superior e Node.js 22 ou superior (para o sitemap). Na raiz do repositorio, inicie o servidor local, sem dependencias extras:
