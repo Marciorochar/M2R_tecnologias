@@ -2231,7 +2231,7 @@ form textarea {
 .home-hero-motion-toggle {
     position: absolute;
     z-index: 6;
-    top: 20px;
+    top: 76px;
     right: clamp(21px, 5vw, 98px);
     display: grid;
     width: 46px;
@@ -2290,7 +2290,9 @@ form textarea {
     right: clamp(21px, 5vw, 98px);
     bottom: 23px;
     display: flex;
-    min-height: 44px;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 62px;
     padding: 11px 16px;
     border: 1px solid rgba(238, 190, 123, 0.28);
     border-radius: 10px;
@@ -2308,6 +2310,21 @@ form textarea {
     outline-offset: 4px;
 }
 
+.home-hero-circuit-status {
+    color: #ffe0aa;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.home-hero-circuit-tip {
+    color: #d5b38a;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
 .home-hero--circuits.motion-paused .home-hero-status-dot {
     animation-play-state: paused;
 }
@@ -2321,6 +2338,9 @@ form textarea {
     background: #ffd18b;
     box-shadow: 0 0 9px #ffc779;
     vertical-align: middle;
+}
+
+.home-hero--circuits.motion-ready:not(.motion-paused) .home-hero-status-dot {
     animation: m2r-status-pulse var(--motion-status-pulse-duration) ease-in-out infinite;
 }
 

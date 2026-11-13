@@ -4,6 +4,7 @@ Install: python -m pip install -r requirements-dev.txt && python -m playwright i
 Run from repository root: python tools/browser_check.py
 """
 import os
+import json
 import shutil
 import threading
 from http.server import ThreadingHTTPServer
@@ -11,6 +12,33 @@ from site_tools import ROOT, Site, handler_for
 
 AXE_SOURCE = ROOT / 'node_modules' / 'axe-core' / 'axe.min.js'
 AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
+EVIDENCE_ROUTES = ('/', '/servicos', '/contato')
+RESPONSIVE_WIDTHS = (320, 390, 768, 1024, 1440)
+ROUTE_SLUGS = {'/': 'home', '/servicos': 'servicos', '/contato': 'contato'}
+PRIMARY_CTA_COLORS = ('rgb(135, 86, 47)', 'rgb(112, 67, 33)', 'rgb(146, 85, 45)')
+
+
+def responsive_targets():
+    """Return the canonical route/width pairs used by responsive evidence."""
+    return [(route, width) for route in EVIDENCE_ROUTES for width in RESPONSIVE_WIDTHS]
+
+
+def responsive_capture_name(route, width):
+    """Create a stable, filesystem-safe name for a route viewport capture."""
+    slug = ROUTE_SLUGS.get(route)
+    return f'{slug}-{width}.png' if slug else None
+
+
+def boxes_overlap(first, second):
+    """Return whether two Playwright bounding boxes overlap by positive area."""
+    if not first or not second:
+        return False
+    return (
+        first['x'] < second['x'] + second['width']
+        and first['x'] + first['width'] > second['x']
+        and first['y'] < second['y'] + second['height']
+        and first['y'] + first['height'] > second['y']
+    )
 
 
 def serious_axe_violations(report):
@@ -18,7 +46,7 @@ def serious_axe_violations(report):
     return [item for item in report['violations'] if item.get('impact') in ('serious', 'critical')]
 
 
-def check_accessibility(page):
+def check_accessibility(page, evidence_path=None, viewport_width=None):
     """Audit the rendered DOM without changing the site's production CSP."""
     report = page.evaluate("""async tags => {
         if (!window.axe) throw new Error('axe-core nao foi carregado');
@@ -42,6 +70,16 @@ def check_accessibility(page):
         )
     if serious:
         raise AssertionError(f'Falha axe em {page.url}: ' + '; '.join(describe(item) for item in serious))
+    if evidence_path:
+        report['audit'] = {
+            'url': page.url,
+            'viewportWidth': viewport_width,
+            'axeVersion': page.evaluate('window.axe.version'),
+            'runOnlyTags': AXE_TAGS,
+            'scope': 'WCAG 2.0 and WCAG 2.1 A/AA tags supported by axe-core; not a WCAG 2.2 conformance claim',
+        }
+        evidence_path.parent.mkdir(parents=True, exist_ok=True)
+        evidence_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
 def chromium_launch_options(playwright):
@@ -55,12 +93,28 @@ def chromium_launch_options(playwright):
 
 
 def check_layout(page):
-    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (page.url, page.evaluate("() => [...document.querySelectorAll('body *')].filter(el => el.getBoundingClientRect().right > innerWidth + 1).map(el => ({tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80), width: el.getBoundingClientRect().width}))"))
+    metrics = page.evaluate("""() => {
+        const viewportWidth = window.innerWidth;
+        const documentElement = document.documentElement;
+        const offenders = [...document.querySelectorAll('body *')].filter(el => {
+            if (el.closest('[aria-hidden="true"]')) return false;
+            const rect = el.getBoundingClientRect();
+            return rect.width > 0 && (rect.right > viewportWidth + 1 || rect.left < -1);
+        }).map(el => {
+            const rect = el.getBoundingClientRect();
+            return {tag: el.tagName.toLowerCase(), id: el.id, className: typeof el.className === 'string' ? el.className : '',
+                text: (el.textContent || '').trim().slice(0, 80), left: Math.round(rect.left), right: Math.round(rect.right),
+                width: Math.round(rect.width)};
+        }).slice(0, 30);
+        return {viewportWidth, clientWidth: documentElement.clientWidth, documentScrollWidth: documentElement.scrollWidth,
+            bodyScrollWidth: document.body.scrollWidth, offenders};
+    }""")
+    assert metrics['documentScrollWidth'] <= metrics['viewportWidth'], (page.url, metrics)
     assert page.locator('h1').count() == 1
     # Verifica a identidade visual e a legibilidade do CTA em todas as rotas e larguras.
     for button in page.locator('.btn-primary:visible').all():
         colors = button.evaluate('(el) => { const style = getComputedStyle(el); return [style.backgroundColor, style.color]; }')
-        assert colors[0] in ('rgb(135, 86, 47)', 'rgb(112, 67, 33)') and colors[1] == 'rgb(255, 255, 255)', (page.url, colors)
+        assert colors[0] in PRIMARY_CTA_COLORS and colors[1] == 'rgb(255, 255, 255)', (page.url, colors)
     if page.viewport_size['width'] <= 900 and page.locator('body.home-page').count():
         hero = page.locator('.home-hero .hero-layout').bounding_box()
         copy = page.locator('.home-hero-copy').bounding_box()
@@ -73,9 +127,11 @@ def check_layout(page):
         image.scroll_into_view_if_needed()
         page.wait_for_function('(el) => el.complete && el.naturalWidth > 0', arg=image.element_handle())
         assert image.get_attribute('width') and image.get_attribute('height')
-    for section in page.locator('.fade-in-section:not([hidden])').all():
-        section.scroll_into_view_if_needed()
-        page.wait_for_function('(el) => getComputedStyle(el).opacity === "1"', arg=section.element_handle())
+    for section_handle in page.locator('.fade-in-section:not([hidden])').element_handles():
+        if not section_handle.evaluate('(el) => el.isConnected && !el.hidden'):
+            continue
+        section_handle.scroll_into_view_if_needed()
+        page.wait_for_function('(el) => !el.isConnected || getComputedStyle(el).opacity === "1"', arg=section_handle)
     form = page.locator('#contact-form')
     if form.count():
         assert form.get_attribute('aria-describedby') == 'form-intro'
@@ -87,6 +143,114 @@ def check_layout(page):
     if founder_picture.count():
         box = founder_picture.bounding_box()
         assert box and box['height'] > box['width']
+    return metrics
+
+
+def check_first_tab_is_skip_link(page, base):
+    page.goto(base + '/')
+    page.keyboard.press('Tab')
+    assert page.locator('.skip-link').evaluate('(el) => el === document.activeElement'), 'first Tab should focus skip link'
+
+
+def check_service_fragments(page, base):
+    for service_id in ('servico-web', 'servico-automacao', 'servico-dados'):
+        page.goto(base + '/')
+        link = page.locator(f'.home-service-link[href="/servicos#{service_id}"]')
+        link.scroll_into_view_if_needed()
+        link.click()
+        page.wait_for_function('(id) => location.pathname === "/servicos" && location.hash === `#${id}`', arg=service_id)
+        target = page.locator(f'#{service_id}')
+        page.wait_for_function('(el) => el === document.activeElement', arg=target.element_handle())
+        box = target.bounding_box()
+        nav_box = page.locator('.navbar').bounding_box()
+        assert box and nav_box and box['y'] >= nav_box['y'] + nav_box['height'], (
+            f'{service_id} should be visible below the sticky navigation: {box}, {nav_box}'
+        )
+
+
+def check_fixed_control_overlaps(page, base):
+    page.set_viewport_size({'width': 320, 'height': 600})
+    page.goto(base + '/')
+    wa = page.locator('.mobile-whatsapp-cta')
+    hero_cta = page.locator('.home-hero .btn-primary')
+    assert not boxes_overlap(wa.bounding_box(), hero_cta.bounding_box()), 'WhatsApp CTA should not cover the home primary CTA'
+    page.goto(base + '/servicos#servico-automacao')
+    service_card = page.locator('#servico-automacao')
+    page.wait_for_function('el => el === document.activeElement', arg=service_card.element_handle())
+    assert not boxes_overlap(wa.bounding_box(), service_card.bounding_box()), 'WhatsApp CTA should not cover the service anchor'
+    page.goto(base + '/contato')
+    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+    contact_action = page.locator('#copy-message')
+    assert not boxes_overlap(wa.bounding_box(), contact_action.bounding_box()), 'WhatsApp CTA should not cover contact actions'
+
+
+def check_hero_motion(page, base):
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.goto(base + '/')
+    toggle = page.locator('#m2r-motion-toggle')
+    page.wait_for_function("() => { const el = document.querySelector('#m2r-motion-toggle'); return el && !el.hidden; }")
+    toggle_box = toggle.bounding_box()
+    nav_box = page.locator('.navbar').bounding_box()
+    status_box = page.locator('#m2r-circuit-status').bounding_box()
+    tip_box = page.locator('#m2r-circuit-tip').bounding_box()
+    assert toggle_box and nav_box and toggle_box['y'] >= nav_box['y'] + nav_box['height'], (
+        f'motion toggle should remain clickable below the sticky navigation: {toggle_box}, {nav_box}'
+    )
+    assert status_box and tip_box and status_box['y'] + status_box['height'] <= tip_box['y'] + 1, (
+        f'circuit status and helper text should have separate lines: {status_box}, {tip_box}'
+    )
+    toggle.click()
+    page.wait_for_function("() => document.querySelector('#m2r-motion-toggle').getAttribute('aria-pressed') === 'true'")
+    paused = page.evaluate("""() => {
+        const hero = document.querySelector('#m2r-hero');
+        const video = hero.querySelector('.home-hero-motion-video');
+        const dot = hero.querySelector('.home-hero-status-dot');
+        return {classPaused: hero.classList.contains('motion-paused'), videoPaused: video.paused,
+            dotState: getComputedStyle(dot).animationPlayState, pulses: document.querySelector('#m2r-pulse-render').innerHTML};
+    }""")
+    assert paused['classPaused'] and paused['videoPaused'] and paused['dotState'] == 'paused', paused
+    page.wait_for_timeout(200)
+    assert page.locator('#m2r-pulse-render').inner_html() == paused['pulses'], 'SVG circuit pulses should remain still while paused'
+    toggle.click()
+    page.wait_for_function("() => document.querySelector('#m2r-motion-toggle').getAttribute('aria-pressed') === 'false'")
+    resumed = page.evaluate("""() => ({
+        classPaused: document.querySelector('#m2r-hero').classList.contains('motion-paused'),
+        videoPaused: document.querySelector('.home-hero-motion-video').paused,
+        dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState
+    })""")
+    assert not resumed['classPaused'] and not resumed['videoPaused'] and resumed['dotState'] == 'running', resumed
+    page.wait_for_timeout(200)
+    assert page.locator('#m2r-pulse-render').inner_html() != paused['pulses'], 'SVG circuit pulses should resume'
+
+    # The Hero controller also pauses when its tab is hidden or it leaves the viewport.
+    # Exercise both lifecycle transitions and verify every visible motion state agrees.
+    page.evaluate("Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' }); Object.defineProperty(document, 'hidden', { configurable: true, value: true }); document.dispatchEvent(new Event('visibilitychange'))")
+    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    hidden = page.evaluate("""() => ({
+        videoPaused: document.querySelector('.home-hero-motion-video').paused,
+        dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState,
+        pulses: document.querySelector('#m2r-pulse-render').innerHTML
+    })""")
+    assert hidden['videoPaused'] and hidden['dotState'] == 'paused', hidden
+    page.evaluate("Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'visible' }); Object.defineProperty(document, 'hidden', { configurable: true, value: false }); document.dispatchEvent(new Event('visibilitychange'))")
+    page.wait_for_function("() => !document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    offscreen = page.evaluate("""() => ({
+        videoPaused: document.querySelector('.home-hero-motion-video').paused,
+        dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState,
+        pulses: document.querySelector('#m2r-pulse-render').innerHTML
+    })""")
+    assert offscreen['videoPaused'] and offscreen['dotState'] == 'paused', offscreen
+    page.evaluate('window.scrollTo(0, 0)')
+    page.wait_for_function("() => !document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    returned = page.evaluate("""() => ({
+        videoPaused: document.querySelector('.home-hero-motion-video').paused,
+        dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState
+    })""")
+    assert not returned['videoPaused'] and returned['dotState'] == 'running', returned
+    page.wait_for_timeout(200)
+    assert page.locator('#m2r-pulse-render').inner_html() != offscreen['pulses'], 'SVG circuit pulses should resume after returning to the Hero'
 
 
 def check_menu(page, mobile):
@@ -144,19 +308,39 @@ def check_site(browser, base):
         page.goto(base + route)
         page.evaluate("window.scrollTo({top: 0, behavior: 'instant'})")
         page.screenshot(path=str(preview / f'{name}.png'), full_page=False)
-    for width in (320, 390, 640, 768, 1024, 1440):
+    evidence_dir = ROOT / 'docs' / 'auditoria' / 'evidencias' / 'responsivo'
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    axe_dir = ROOT / 'docs' / 'auditoria' / 'evidencias' / 'axe'
+    axe_dir.mkdir(parents=True, exist_ok=True)
+    manifest = {'routes': list(EVIDENCE_ROUTES), 'widths': list(RESPONSIVE_WIDTHS), 'captures': []}
+    for width in RESPONSIVE_WIDTHS:
         page.set_viewport_size({'width': width, 'height': 900})
         for route in routes:
             response = page.goto(base + route)
             assert response.status == 200
             check_menu(page, width <= 768)
-            check_layout(page)
+            layout = check_layout(page)
             if width in (390, 1024):
-                check_accessibility(page)
+                check_accessibility(page, axe_dir / f'{ROUTE_SLUGS.get(route, route.strip("/").replace("/", "-"))}-{width}.json', width)
+            if route in EVIDENCE_ROUTES:
+                page.evaluate('window.scrollTo({top: 0, behavior: "instant"})')
+                name = responsive_capture_name(route, width)
+                screenshot = evidence_dir / name
+                page.screenshot(path=str(screenshot), full_page=False)
+                manifest['captures'].append({**layout, 'route': route, 'width': width,
+                    'screenshot': screenshot.relative_to(ROOT).as_posix()})
+                (evidence_dir / 'manifest.json').write_text(
+                    json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8'
+                )
             if route in ('/sobre', '/fundador'):
                 page.evaluate('document.activeElement.blur(); window.scrollTo({top: 0, behavior: "instant"})')
                 page.screenshot(path=str(results / f'{route[1:]}-{width}.png'), full_page=True)
         print(f'PASS Chromium: {len(routes)} routes at {width}px', flush=True)
+    page.set_viewport_size({'width': 390, 'height': 844})
+    check_first_tab_is_skip_link(page, base)
+    check_service_fragments(page, base)
+    check_fixed_control_overlaps(page, base)
+    check_hero_motion(page, base)
     for disabled in (True, False):
         fallback = browser.new_context(java_script_enabled=not disabled, reduced_motion='reduce', viewport={'width': 390, 'height': 844})
         fp = fallback.new_page()
@@ -169,7 +353,35 @@ def check_site(browser, base):
                 assert fp.evaluate("document.querySelector('main').getBoundingClientRect().top >= document.querySelector('.navbar').getBoundingClientRect().bottom")
         fp.goto(base + '/contato')
         assert fp.locator('#contact-form').is_visible() == (not disabled)
+        assert fp.locator('.contact-email-disclosure').is_visible()
+        assert fp.locator('.contact-direct a').count() == 3
+        if disabled:
+            fp.goto(base + '/')
+            fallback_motion = fp.evaluate("""() => ({
+                animation: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationName,
+                toggleHidden: document.querySelector('#m2r-motion-toggle').hidden
+            })""")
+            assert fallback_motion['animation'] == 'none' and fallback_motion['toggleHidden'], fallback_motion
+        if not disabled:
+            fp.goto(base + '/')
+            motion_state = fp.evaluate("""() => ({
+                status: document.querySelector('#m2r-circuit-status-text').textContent,
+                toggleHidden: document.querySelector('#m2r-motion-toggle').hidden,
+                animation: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationName,
+                videoPaused: document.querySelector('.home-hero-motion-video').paused
+            })""")
+            assert motion_state['status'] == 'Circuitos em repouso' and motion_state['toggleHidden']
+            assert motion_state['animation'] == 'none' and motion_state['videoPaused'], motion_state
         fallback.close()
+    no_preference = browser.new_context(java_script_enabled=False, reduced_motion='no-preference', viewport={'width': 390, 'height': 844})
+    no_preference_page = no_preference.new_page()
+    no_preference_page.goto(base + '/')
+    no_js_motion = no_preference_page.evaluate("""() => ({
+        animation: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationName,
+        toggleHidden: document.querySelector('#m2r-motion-toggle').hidden
+    })""")
+    assert no_js_motion['animation'] == 'none' and no_js_motion['toggleHidden'], no_js_motion
+    no_preference.close()
     for setup in (
         'delete window.IntersectionObserver',
         "window.IntersectionObserver = class { constructor() { throw Error('test'); } }",

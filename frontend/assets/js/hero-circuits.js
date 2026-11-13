@@ -264,5 +264,6 @@
         }, { threshold: 0 });
         observer.observe(hero);
     }
+    hero.classList.add('motion-ready');
     refreshAnimation();
 })();
