@@ -19,7 +19,7 @@
             control.setAttribute('aria-pressed', String(manualPause));
             control.textContent = manualPause ? 'Retomar movimento' : 'Pausar movimento';
             control.setAttribute('aria-label', `${control.textContent} do destaque`);
-            if (preference.matches) hero.classList.remove('internal-hero-pointer');
+            if (paused) hero.classList.remove('internal-hero-pointer');
         };
         control.addEventListener('click', () => { manualPause = !manualPause; sync(); });
         preference.addEventListener('change', sync);

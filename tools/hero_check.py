@@ -51,6 +51,44 @@ def assert_static_usable(page, route, image_expected=True):
         assert hero.locator('img.internal-hero-art').evaluate('el => el.complete && el.naturalWidth > 0'), route
 
 
+def breadcrumb_checks(page, route, check_focus=False):
+    nav = page.locator('#conteudo-principal > .breadcrumbs')
+    if not nav.count():
+        return None
+    metrics = nav.evaluate("""el => {
+        const box = node => {const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
+        return {nav:box(el),navbar:box(document.querySelector('.navbar')),
+            copy:box(document.querySelector('.page-hero--circuits > .container')),
+            items:[...el.querySelectorAll('li')].map(box),
+            links:[...el.querySelectorAll('a')].map(link => ({...box(link),text:link.textContent,
+                unobscured:document.elementFromPoint(link.getBoundingClientRect().x+link.getBoundingClientRect().width/2,
+                    link.getBoundingClientRect().y+link.getBoundingClientRect().height/2)?.closest('a')===link}))};
+    }""")
+    assert all(item['y'] >= metrics['navbar']['bottom'] - 1 for item in metrics['items']), (route, 'breadcrumbs behind navbar', metrics)
+    assert abs(metrics['nav']['x'] - metrics['copy']['x']) <= 1, (route, metrics)
+    assert abs(metrics['nav']['right'] - metrics['copy']['right']) <= 1, (route, metrics)
+    for link in metrics['links']:
+        assert link['width'] >= 44 and link['height'] >= 44, (route, 'breadcrumb target below 44px', metrics)
+        assert link['unobscured'], (route, 'breadcrumb obscured', metrics)
+    if check_focus:
+        for link in nav.locator('a').all():
+            link.focus()
+            page.keyboard.press('Shift')
+            focus = link.evaluate("el => ({active:document.activeElement===el,outline:getComputedStyle(el).outlineStyle,width:parseFloat(getComputedStyle(el).outlineWidth)})")
+            assert focus['active'] and focus['outline'] != 'none' and focus['width'] >= 2, (route, focus)
+        page.locator('h1').evaluate('el => document.activeElement.blur()')
+    return metrics
+
+
+def fixed_overlay_check(page, route):
+    control, whatsapp = page.locator('[data-internal-hero-motion]'), page.locator('.mobile-whatsapp-cta')
+    if not control.count() or not control.is_visible() or not whatsapp.is_visible():
+        return None
+    result = {'motion': control.bounding_box(), 'whatsapp': whatsapp.bounding_box()}
+    assert not boxes_overlap(result['motion'], result['whatsapp']), (route, 'motion control covered by WhatsApp', result)
+    return result
+
+
 def layout_metrics(page, route):
     metrics = page.evaluate("""() => {
         const box = el => {const r=el.getBoundingClientRect(); return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
@@ -79,6 +117,8 @@ def layout_metrics(page, route):
         if metrics['panel']:
             assert not boxes_overlap(metrics['title'], metrics['panel']), (route, 'panel/title collision', metrics)
             assert not boxes_overlap(metrics['cta'], metrics['panel']), (route, 'panel/CTA collision', metrics)
+        metrics['fixedOverlay'] = fixed_overlay_check(page, route)
+        metrics['breadcrumbs'] = breadcrumb_checks(page, route, check_focus=metrics['viewport'] in (320, 390, 1440))
     return metrics
 
 
@@ -89,11 +129,15 @@ def behavior_checks(page, base, route):
     control.wait_for(state='visible')
     assert control.get_attribute('aria-label') and control.get_attribute('aria-pressed') == 'false'
     assert not hero.evaluate("el => el.classList.contains('internal-hero-paused')")
+    title = hero.locator('h1').bounding_box()
+    page.mouse.move(title['x'] + 10, title['y'] + 10)
+    assert hero.evaluate("el => el.classList.contains('internal-hero-pointer')"), 'pointer should enhance the active hero'
     control.focus()
     page.keyboard.press('Enter')
     assert control.get_attribute('aria-pressed') == 'true'
     states = hero.locator('.internal-hero-pulse').evaluate_all("els => els.map(el => getComputedStyle(el).animationPlayState)")
     assert states == ['paused'] * 14
+    assert not hero.evaluate("el => el.classList.contains('internal-hero-pointer')"), 'paused pointer halo must clear'
     control.click()
     assert control.get_attribute('aria-pressed') == 'false'
     assert hero.locator('.internal-hero-pulse').first.evaluate("el => getComputedStyle(el).animationPlayState") == 'running'
@@ -126,6 +170,22 @@ def behavior_checks(page, base, route):
     assert hero.locator('.internal-hero-live').count() == 1
     return {'route': route, 'toggleKeyboard': True, 'hiddenTab': True, 'intersection': True,
             'reducedMotionChange': True, 'manualPreferencePreserved': True, 'idempotent': True}
+
+
+def mobile_overlay_checks(page, base, routes):
+    results = []
+    for width in (320, 390):
+        page.set_viewport_size({'width': width, 'height': 900})
+        for route in routes:
+            page.goto(base + route)
+            control = page.locator('[data-internal-hero-motion]')
+            control.wait_for(state='visible')
+            control.evaluate("el => el.scrollIntoView({block:'end',behavior:'instant'})")
+            results.append({'route': route, 'width': width, 'afterScroll': fixed_overlay_check(page, route)})
+            # Both hit testing and keyboard activation remain usable after scroll.
+            control.click()
+            assert control.get_attribute('aria-pressed') == 'true'
+    return results
 
 
 def run(output, axe_source, screenshots=True):
@@ -182,13 +242,15 @@ def run(output, axe_source, screenshots=True):
                         const supported = new Set(axe.getRules().flatMap(rule => rule.tags));
                         const tags=['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22a','wcag22aa'].filter(tag=>supported.has(tag));
                         const result=await axe.run(document,{runOnly:{type:'tag',values:tags},resultTypes:['violations']});
-                        const inHero = node => node.target.some(selector => typeof selector === 'string' && document.querySelector(selector)?.closest('.page-hero'));
-                        const scoped = inside => result.violations.map(finding => ({...finding,nodes:finding.nodes.filter(node=>Boolean(inHero(node))===inside)})).filter(finding=>finding.nodes.length);
-                        return {violations:result.violations,heroViolations:scoped(true),outsideHeroViolations:scoped(false),
-                            axeVersion:axe.version,tags,scope:'Full document A/AA report; changed hero nodes gate this task. Outside-hero findings are retained, not certified or silently waived.'};
+                        const within = (node, scope) => node.target.some(selector => typeof selector === 'string' && document.querySelector(selector)?.closest(scope));
+                        const scoped = (scope, inside=true) => result.violations.map(finding => ({...finding,nodes:finding.nodes.filter(node=>Boolean(within(node,scope))===inside)})).filter(finding=>finding.nodes.length);
+                        return {violations:result.violations,heroViolations:scoped('.page-hero'),breadcrumbViolations:scoped('.breadcrumbs'),
+                            outsideHeroViolations:scoped('.page-hero,.breadcrumbs',false),
+                            axeVersion:axe.version,tags,scope:'Full document A/AA report; changed Hero and breadcrumb presentation gate this task. Other findings retained without a conformance claim.'};
                     }""")
                     save(output / f'axe-{slug(route)}-{width}.json', audit)
                     assert not serious_axe_violations({'violations': audit['heroViolations']}), (route, width, audit['heroViolations'])
+                    assert not serious_axe_violations({'violations': audit['breadcrumbViolations']}), (route, width, audit['breadcrumbViolations'])
                     if audit['outsideHeroViolations']:
                         print(f"INFO axe outside hero {route} at {width}: " + ', '.join(item['id'] for item in audit['outsideHeroViolations']), flush=True)
                 page.emulate_media(reduced_motion='no-preference')
@@ -203,6 +265,7 @@ def run(output, axe_source, screenshots=True):
                     page.mouse.move(0, 0)
                     behavior.append(result)
             internal = [route for route in routes if route != '/']
+            mobile_overlays = mobile_overlay_checks(page, base, internal)
             for mode in ('no-js', 'svg-failure', 'reduced-initial'):
                 fallback = browser.new_context(viewport={'width': 320, 'height': 900}, java_script_enabled=mode != 'no-js', reduced_motion='reduce' if mode == 'reduced-initial' else 'no-preference')
                 if mode == 'svg-failure':
@@ -213,6 +276,7 @@ def run(output, axe_source, screenshots=True):
                     assert_static_usable(sample, route, image_expected=mode != 'svg-failure')
                     assert sample.locator('h1').count() == 1
                     assert sample.evaluate('document.documentElement.scrollWidth <= innerWidth')
+                    breadcrumb_checks(sample, route, check_focus=True)
                     if route == '/contato':
                         assert sample.locator('#contato-mensagem').count() == 1
                     if screenshots:
@@ -221,6 +285,7 @@ def run(output, axe_source, screenshots=True):
             assert not errors, errors
             browser.close()
         save(output / 'metrics.json', {'routes': routes, 'widths': WIDTHS, 'captures': results, 'behavior': behavior,
+                                     'mobileOverlays': mobile_overlays,
                                      'fallbacks': ['no-js', 'svg-failure', 'reduced-initial'], 'pageErrors': errors})
         pngs = len(results) + len(internal) * 3 if screenshots else 0
         print(f'Hero checks OK: {len(routes)} routes, {len(results)} responsive cases, {len(behavior)} behavior checks, {len(internal)*3} fallback checks, {len(routes)*2} axe reports, {pngs} PNGs written')

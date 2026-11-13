@@ -107,3 +107,51 @@
     .page-hero--circuits .internal-hero-live { display: none; }
     .page-hero--circuits [data-internal-hero-motion] { display: none; }
 }
+
+/* Existing breadcrumb content stays in normal flow below the fixed navbar.
+   This stylesheet is loaded only by internal pages, never by Home. */
+#conteudo-principal > .breadcrumbs {
+    width: min(1200px, calc(100% - clamp(40px, 8vw, 128px)));
+    margin: 0 auto;
+    padding: 88px 0 12px;
+    color: var(--color-text-secondary);
+}
+#conteudo-principal > .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#conteudo-principal > .breadcrumbs li {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+}
+#conteudo-principal > .breadcrumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 0;
+    color: var(--color-primary);
+    text-underline-offset: 4px;
+}
+#conteudo-principal > .breadcrumbs a:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+}
+#conteudo-principal > .breadcrumbs + .page-hero--circuits { padding-top: 32px; }
+@media (max-width: 768px) {
+    #conteudo-principal > .breadcrumbs { padding-top: 76px; }
+    html:not(.menu-js-enabled) #conteudo-principal > .breadcrumbs { padding-top: 12px; }
+    .page-hero--circuits .internal-hero-controls {
+        justify-content: flex-start;
+        padding-right: 72px;
+    }
+}
