@@ -177,6 +177,7 @@ def check_fixed_control_overlaps(page, base):
     page.goto(base + '/servicos#servico-automacao')
     service_card = page.locator('#servico-automacao')
     page.wait_for_function('el => el === document.activeElement', arg=service_card.element_handle())
+    page.wait_for_function('(el) => Math.abs(el.getBoundingClientRect().top - 112) <= 2', arg=service_card.element_handle())
     assert not boxes_overlap(wa.bounding_box(), service_card.bounding_box()), 'WhatsApp CTA should not cover the service anchor'
     page.goto(base + '/contato')
     page.evaluate('window.scrollTo(0, document.body.scrollHeight)')

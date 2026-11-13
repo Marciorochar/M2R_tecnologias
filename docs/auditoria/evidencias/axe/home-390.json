@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-11-13T16:50:26.691Z",
-  "url": "http://127.0.0.1:64584/",
+  "timestamp": "2026-11-13T17:17:11.304Z",
+  "url": "http://127.0.0.1:54852/",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -1341,7 +1341,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled reveal-animations-enabled\">",
+          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled\">",
           "target": [
             "html"
           ]
@@ -1429,7 +1429,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled reveal-animations-enabled\">",
+          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled\">",
           "target": [
             "html"
           ]
@@ -1504,7 +1504,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled reveal-animations-enabled\">",
+          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled\">",
           "target": [
             "html"
           ]
@@ -1543,7 +1543,7 @@
             }
           ],
           "impact": null,
-          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled reveal-animations-enabled\">",
+          "html": "<html lang=\"pt-BR\" class=\"menu-js-enabled\">",
           "target": [
             "html"
           ]
@@ -1918,7 +1918,7 @@
   ],
   "violations": [],
   "audit": {
-    "url": "http://127.0.0.1:64584/",
+    "url": "http://127.0.0.1:54852/",
     "viewportWidth": 390,
     "axeVersion": "4.14.0",
     "runOnlyTags": [

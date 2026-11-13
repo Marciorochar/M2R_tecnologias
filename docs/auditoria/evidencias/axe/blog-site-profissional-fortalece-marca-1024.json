@@ -13,8 +13,8 @@
     "orientationAngle": 0,
     "orientationType": "landscape-primary"
   },
-  "timestamp": "2026-11-13T16:51:42.487Z",
-  "url": "http://127.0.0.1:64584/blog/site-profissional-fortalece-marca",
+  "timestamp": "2026-11-13T17:18:57.978Z",
+  "url": "http://127.0.0.1:54852/blog/site-profissional-fortalece-marca",
   "toolOptions": {
     "runOnly": {
       "type": "tag",
@@ -954,7 +954,7 @@
             }
           ],
           "impact": null,
-          "html": "<nav class=\"navbar\" aria-label=\"Navegação principal\">",
+          "html": "<nav class=\"navbar scrolled\" aria-label=\"Navegação principal\">",
           "target": [
             ".navbar"
           ]
@@ -990,7 +990,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<nav class=\"navbar\" aria-label=\"Navegação principal\">",
+          "html": "<nav class=\"navbar scrolled\" aria-label=\"Navegação principal\">",
           "target": [
             ".navbar"
           ]
@@ -1064,7 +1064,7 @@
             }
           ],
           "impact": null,
-          "html": "<nav class=\"navbar\" aria-label=\"Navegação principal\">",
+          "html": "<nav class=\"navbar scrolled\" aria-label=\"Navegação principal\">",
           "target": [
             ".navbar"
           ]
@@ -1114,7 +1114,7 @@
           ],
           "none": [],
           "impact": null,
-          "html": "<nav class=\"navbar\" aria-label=\"Navegação principal\">",
+          "html": "<nav class=\"navbar scrolled\" aria-label=\"Navegação principal\">",
           "target": [
             ".navbar"
           ]
@@ -1150,7 +1150,7 @@
           "all": [],
           "none": [],
           "impact": null,
-          "html": "<nav class=\"navbar\" aria-label=\"Navegação principal\">",
+          "html": "<nav class=\"navbar scrolled\" aria-label=\"Navegação principal\">",
           "target": [
             ".navbar"
           ]
@@ -1715,7 +1715,7 @@
   "incomplete": [],
   "violations": [],
   "audit": {
-    "url": "http://127.0.0.1:64584/blog/site-profissional-fortalece-marca",
+    "url": "http://127.0.0.1:54852/blog/site-profissional-fortalece-marca",
     "viewportWidth": 1024,
     "axeVersion": "4.14.0",
     "runOnlyTags": [
