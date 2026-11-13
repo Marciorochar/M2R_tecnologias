@@ -434,6 +434,7 @@ select:focus:not(:focus-visible) {
 .service-card h2,
 .content-card h2,
 .blog-card h2,
+.service-card h3,
 .project-card h2 {
     font-size: 1.2rem;
 }
@@ -445,6 +446,14 @@ select:focus:not(:focus-visible) {
     margin: 0;
     color: var(--color-text-secondary);
     line-height: 1.65;
+}
+
+.service-group + .service-group {
+    margin-top: 64px;
+}
+
+.service-card[id] {
+    scroll-margin-top: 112px;
 }
 
 .blog-card {

@@ -16,8 +16,9 @@ class HeroCircuitsTest(unittest.TestCase):
         html = HOME.read_text(encoding="utf-8")
         for text in (
             "M2R Tecnologias",
-            "Conheça os serviços",
-            "Fale conosco",
+            "Sites, sistemas e automações para organizar processos",
+            "Converse sobre seu projeto",
+            "Ver serviços",
             'href="/servicos"',
             'href="/contato"',
             'class="section-block home-about"',
