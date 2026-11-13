@@ -204,6 +204,7 @@
 
     function refreshAnimation() {
         const shouldAnimate = !reducedMotion.matches && !document.hidden && inView && !userPaused;
+        hero.classList.toggle('motion-paused', !shouldAnimate);
         if (video) {
             if (shouldAnimate) video.play().catch(() => {});
             else video.pause();

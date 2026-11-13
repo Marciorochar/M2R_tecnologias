@@ -31,6 +31,7 @@
     --font-size-body: 1rem;
     --line-height-body: 1.65;
     --motion-circuit-parallax-duration: 400ms;
+    --motion-status-pulse-duration: 2s;
     --motion-control-transition: 160ms;
     --radius-control: 4px;
     --radius-surface: 4px;
@@ -2307,6 +2308,26 @@ form textarea {
     outline-offset: 4px;
 }
 
+.home-hero--circuits.motion-paused .home-hero-status-dot {
+    animation-play-state: paused;
+}
+
+.home-hero-status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #ffd18b;
+    box-shadow: 0 0 9px #ffc779;
+    vertical-align: middle;
+    animation: m2r-status-pulse var(--motion-status-pulse-duration) ease-in-out infinite;
+}
+
+@keyframes m2r-status-pulse {
+    50% { opacity: 0.4; box-shadow: 0 0 2px #ffc779; }
+}
+
 .home-hero-circuit-tip {
     color: #ffe0aa;
     font-size: 0.8rem;
@@ -2339,6 +2360,7 @@ form textarea {
 
 @media (prefers-reduced-motion: reduce) {
     .home-hero-circuits { transform: none; transition: none; }
+    .home-hero-status-dot { animation: none; }
     .home-hero-motion-toggle { display: none !important; }
 }
 
