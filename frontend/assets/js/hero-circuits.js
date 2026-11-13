@@ -54,7 +54,7 @@
     }
 
     function defaultTip() {
-        return touch.matches ? 'Toque nos circuitos para ativar' : 'Passe o cursor ou toque nos circuitos para ativar';
+        return touch.matches ? 'Toque nos circuitos para ativar' : 'Mova o mouse sobre os circuitos e clique para ativar';
     }
 
     // Keep source geometry in the markup for a deterministic, testable design.
@@ -204,6 +204,7 @@
 
     function refreshAnimation() {
         const shouldAnimate = !reducedMotion.matches && !document.hidden && inView && !userPaused;
+        hero.classList.toggle('motion-paused', !shouldAnimate);
         if (video) {
             if (shouldAnimate) video.play().catch(() => {});
             else video.pause();
@@ -263,5 +264,6 @@
         }, { threshold: 0 });
         observer.observe(hero);
     }
+    hero.classList.add('motion-ready');
     refreshAnimation();
 })();

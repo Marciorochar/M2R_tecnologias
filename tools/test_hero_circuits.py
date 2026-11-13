@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HOME = ROOT / "frontend/index.html"
 HERO_JS = ROOT / "frontend/assets/js/hero-circuits.js"
 VIDEO = ROOT / "frontend/assets/video/m2r-circuitos.webm"
+STYLE = ROOT / "frontend/assets/css/style.css"
 
 
 class HeroCircuitsTest(unittest.TestCase):
@@ -16,8 +17,9 @@ class HeroCircuitsTest(unittest.TestCase):
         html = HOME.read_text(encoding="utf-8")
         for text in (
             "M2R Tecnologias",
-            "Conheça os serviços",
-            "Fale conosco",
+            "Sites, sistemas e automações para organizar processos",
+            "Converse sobre seu projeto",
+            "Ver serviços",
             'href="/servicos"',
             'href="/contato"',
             'class="section-block home-about"',
@@ -43,6 +45,18 @@ class HeroCircuitsTest(unittest.TestCase):
         script = HERO_JS.read_text(encoding="utf-8")
         for feature in ("pointermove", "pointerleave", "click", "requestAnimationFrame", "prefers-reduced-motion"):
             self.assertIn(feature, script)
+
+    def test_paused_state_synchronizes_status_dot_with_hero_animation(self):
+        script = HERO_JS.read_text(encoding="utf-8")
+        style = STYLE.read_text(encoding="utf-8")
+        self.assertRegex(
+            script,
+            r"hero\.classList\.toggle\(['\"]motion-paused['\"],\s*!shouldAnimate\)",
+        )
+        self.assertRegex(
+            style,
+            r"\.home-hero--circuits\.motion-paused\s+\.home-hero-status-dot\s*\{[^}]*animation-play-state:\s*paused",
+        )
 
 
 if __name__ == "__main__":

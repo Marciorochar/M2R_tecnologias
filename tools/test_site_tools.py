@@ -221,7 +221,7 @@ class SiteTests(unittest.TestCase):
         pages = list((self.site.root / "frontend").rglob("*.html"))
         for page in pages:
             html = page.read_text(encoding="utf-8")
-            self.assertNotRegex(html, r">(?:Ver servi(?:ç|Ã§)os|Ver artigo)<", page.name)
+            self.assertNotRegex(html, r">Ver artigo<", page.name)
 
     def test_mobile_whatsapp_cta_compacts_at_360px(self):
         css = (self.site.root / "frontend/assets/css/style.css").read_text(encoding="utf-8")
