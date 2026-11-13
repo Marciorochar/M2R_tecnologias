@@ -43,6 +43,7 @@
 
     <main id="conteudo-principal">
         <section class="page-hero home-hero home-hero--circuits" id="m2r-hero" aria-label="Destaque tecnológico da M2R">
+            <video class="home-hero-motion-video" src="assets/video/m2r-circuitos.webm" muted loop playsinline preload="metadata" aria-hidden="true"></video>
             <div class="home-hero-motion-film" aria-hidden="true"></div>
             <svg class="home-hero-circuits" id="m2r-circuits" viewBox="0 0 1200 610" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
                 <defs>
@@ -70,6 +71,8 @@
                     <path id="m2r-path-9" d="M -24 564 H 289 L 324 533 H 577 L 614 568 H 890 L 927 539 H 1224"/>
                     <path id="m2r-path-10" d="M 300 600 H 488 L 520 574 H 756 L 791 605 H 1224"/>
                     <path id="m2r-path-11" d="M 620 24 H 900 L 930 55 H 1224"/>
+                    <path id="m2r-path-12" d="M 114 216 V 118 H 285"/>
+                    <path id="m2r-path-13" d="M 718 253 V 405 H 1090"/>
                 </g>
                 <g id="m2r-trace-render"></g>
                 <g id="m2r-node-render"></g>
@@ -97,8 +100,9 @@
                     </ul>
                 </section>
             </div>
-            <button class="home-hero-circuit-trigger" id="m2r-circuit-activate" type="button" aria-label="Enviar pulso pelos circuitos">
-                <span class="home-hero-circuit-tip" id="m2r-circuit-tip" aria-live="polite" aria-atomic="true">Ativar circuitos</span>
+            <button class="home-hero-circuit-trigger" id="m2r-circuit-activate" type="button" aria-labelledby="m2r-circuit-status-text m2r-circuit-tip">
+                <span class="home-hero-circuit-status" id="m2r-circuit-status"><span class="home-hero-status-dot" aria-hidden="true"></span> <span id="m2r-circuit-status-text">Sistema em atividade</span></span>
+                <span class="home-hero-circuit-tip" id="m2r-circuit-tip" aria-live="polite" aria-atomic="true">Mova o mouse sobre os circuitos e clique para ativar</span>
             </button>
             <button class="home-hero-motion-toggle" id="m2r-motion-toggle" type="button" aria-label="Animações do destaque" aria-pressed="false" title="Pausar movimento" hidden>
                 <svg class="home-hero-motion-toggle__pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5v14M16 5v14"/></svg>
@@ -211,6 +215,6 @@
 
     <a class="mobile-whatsapp-cta" href="https://wa.me/5522998270026?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20M2R%20Tecnologias%20e%20gostaria%20de%20conversar%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital." target="_blank" rel="noopener" aria-label="Chamar a M2R Tecnologias no WhatsApp (abre em nova aba ou aplicativo)">WhatsApp</a>
     <script src="assets/js/script.js?v=b5833ab847"></script>
-    <script src="assets/js/hero-circuits.js?v=99df0efb02"></script>
+    <script src="assets/js/hero-circuits.js?v=72f443c025"></script>
 </body>
 </html>
