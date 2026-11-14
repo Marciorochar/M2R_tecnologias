@@ -19,9 +19,9 @@ Leitura somente. Checkout C:/Users/marci/.codex/worktrees/m2r-hero-20261113, bra
 ## Conflitos, riscos e dependências
 1. CSS global tardio: style.css:2090-2518 tem seletor .home-hero.home-hero--circuits e breakpoints home-específicos, enquanto a base genérica é 280-301. Alterar a base diretamente pode mudar home por herança, inclusive alturas/contraste. Preferir classe aditiva interna como .page-hero--circuits e seletores ancorados nessa classe, sem editar regras home.
 2. Exceções estruturais: artigo e detalhe de projeto precisam preservar suas classes e conteúdo internos; alterar markup interno para um único container genérico pode quebrar o grid do terminal ou espaçamento/meta. Envolver conteúdo em wrapper comum ou estilizar os containers existentes com seletor de variante.
-3. 404 duplicado e tooling: 	ools/site_tools.py percorre HTML servido por rewrites e valida links/assets; para 404 valida 404.html na raiz. ercel.json:143+ roteia /404 para /frontend/404.html; fallback da plataforma usa raiz. Consistência exige ambos.
-4. CSP em ercel.json:4-28 define script-src 'self' e style-src 'self'; efeito decorativo deveria ser CSS/SVG inline estático na página/CSS externo, sem script/estilo inline novo. JS da home existente deve ficar home-only.
-5. Imagens de evidência existentes em docs/auditoria/evidencias/responsivo e checks axe (	ools/test_hero_circuits.py) são evidência antiga/testes limitados: teste atual afirma conteúdo e controles home, não a paridade de heros internos. Não foi executado teste, conforme escopo.
+3. 404 duplicado e tooling: tools/site_tools.py percorre HTML servido por rewrites e valida links/assets; para 404 valida 404.html na raiz. vercel.json:143+ roteia /404 para /frontend/404.html; fallback da plataforma usa raiz. Consistência exige ambos.
+4. CSP em vercel.json:4-28 define script-src 'self' e style-src 'self'; efeito decorativo deveria ser CSS/SVG inline estático na página/CSS externo, sem script/estilo inline novo. JS da home existente deve ficar home-only.
+5. Imagens de evidência existentes em docs/auditoria/evidencias/responsivo e checks axe (tools/test_hero_circuits.py) são evidência antiga/testes limitados: teste atual afirma conteúdo e controles home, não a paridade de heros internos. Não foi executado teste, conforme escopo.
 6. Imports de CSS usam caminhos relativos em documentos internos; a nova classe deve residir no style.css já linkado. Confirmar em browser as camadas decorativas não bloqueiam texto, links, foco, breadcrumbs ou leitura em viewport mobile.
 
 ## Arquitetura mínima recomendada

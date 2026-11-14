@@ -1,0 +1,22 @@
+[
+  {
+    "route": "/",
+    "profile": "mobile",
+    "timeoutSeconds": 240
+  },
+  {
+    "route": "/servicos",
+    "profile": "mobile",
+    "timeoutSeconds": 240
+  },
+  {
+    "route": "/contato",
+    "profile": "mobile",
+    "timeoutSeconds": 240
+  },
+  {
+    "route": "/sobre",
+    "profile": "desktop",
+    "timeoutSeconds": 240
+  }
+]

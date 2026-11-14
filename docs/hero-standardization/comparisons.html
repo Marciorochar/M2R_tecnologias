@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M2R — comparação dos Heroes</title>
+<style>
+body{margin:0;padding:24px;font:16px/1.5 system-ui,sans-serif;color:#26221e;background:#f7f4ef}h1{margin-top:0;font-size:1.5rem}label{display:inline-grid;gap:6px;margin:0 20px 20px 0}select{min-height:44px;max-width:100%;padding:8px;font:inherit}main{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}figure{margin:0;min-width:0}figcaption{font-weight:700;margin-bottom:8px}img{display:block;width:100%;height:auto;border:1px solid #c89a63}a{color:#704321}a:focus-visible,select:focus-visible{outline:3px solid #71451f;outline-offset:3px}@media(max-width:760px){main{grid-template-columns:1fr}}
+</style>
+<h1>M2R Tecnologias — comparação dos Heroes</h1>
+<p>Capturas do Chromium em 900px de altura. A Home mantém os arquivos originais; diferenças nos pulsos e no vídeo entre capturas decorrem do tempo da animação. Selecione a página e a largura para comparar. Abra a imagem para vê-la em tamanho original.</p>
+<label>Página <select id="page"><option value="sobre">Sobre</option><option value="servicos">Serviços</option><option value="contato">Contato</option><option value="fundador">Fundador</option><option value="projetos">Projetos</option><option value="projetos-m2r-server">M2R Server</option><option value="blog">Blog</option><option value="blog-automacao-para-pequenos-negocios">Artigo: automação</option><option value="blog-organizacao-de-processos-digitais">Artigo: processos</option><option value="blog-site-profissional-fortalece-marca">Artigo: site profissional</option><option value="404">Página 404</option><option value="home">Home preservada</option></select></label>
+<label>Largura <select id="width"><option>320</option><option>390</option><option>768</option><option>1024</option><option selected>1440</option><option>1920</option></select> px</label>
+<main>
+<figure><figcaption>Antes</figcaption><a id="before-link"><img id="before" alt="Hero antes da padronização"></a></figure>
+<figure><figcaption>Depois</figcaption><a id="after-link"><img id="after" alt="Hero depois da padronização"></a></figure>
+</main>
+<p><a href="README.md">Relatório e resultados dos testes</a></p>
+<script>
+const page=document.getElementById('page'),width=document.getElementById('width');
+function show(){for(const phase of ['before','after']){const path=`${phase}/${page.value}-${width.value}.png`;document.getElementById(phase).src=path;document.getElementById(`${phase}-link`).href=path;}}
+page.addEventListener('change',show);width.addEventListener('change',show);show();
+</script>
+</html>

@@ -1,0 +1,952 @@
+{
+ "start": "2026-11-13T18:17:18.697Z",
+ "round": 1,
+ "idle": 0,
+ "errors": 1,
+ "status": "fail",
+ "history": [
+  {
+   "at": "2026-11-13T18:22:40.976Z",
+   "mode": "manual",
+   "status": "fail",
+   "fails": 27,
+   "round": 1,
+   "reused": false,
+   "stopHookActive": false
+  }
+ ],
+ "max": 3,
+ "marker": {
+  "page": null,
+  "url": "http://127.0.0.1:5513/sobre",
+  "root": null,
+  "kind": "software",
+  "category": "Desenvolvimento web e automação",
+  "primary": "Converse sobre seu projeto",
+  "rounds": 3,
+  "start": "2026-11-13T18:17:18.697Z",
+  "by": "gate.mjs --start"
+ },
+ "manual": true,
+ "roundKey": "3350fb7f4238acff:da39a3ee",
+ "roundFree": false,
+ "idleFree": false,
+ "blockKey": null,
+ "fp": "3350fb7f4238acff",
+ "page": "http://127.0.0.1:5513/sobre",
+ "found": {
+  "fails": [
+   {
+    "check": "edge-left",
+    "where": "section.section-block p \"Unimos desenvolvimento web, auto\"",
+    "msg": "starts at x 694.8; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "section.section-block p \"Unimos desenvolvimento web, auto\""
+    ]
+   },
+   {
+    "check": "edge-left",
+    "where": "section.section-block.section-block--muted p \"Entendemos o contexto, definimos\"",
+    "msg": "starts at x 694.8; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted p \"Entendemos o contexto, definimos\""
+    ]
+   },
+   {
+    "check": "edge-right",
+    "where": "#fundador div.founder-photo",
+    "msg": "ends at x 652.8; the right line is 1280",
+    "fix": "end it on the .wrap right line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-right"
+    ],
+    "wheres": [
+     "#fundador div.founder-photo"
+    ]
+   },
+   {
+    "check": "edge-left",
+    "where": "#fundador div.founder-content \"Quem está por trás da M2RProximi\"",
+    "msg": "starts at x 652.8; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "#fundador div.founder-content \"Quem está por trás da M2RProximi\""
+    ]
+   },
+   {
+    "check": "edge-left",
+    "where": "#fundador h2 \"Proximidade e atenção a cada pro\"",
+    "msg": "starts at x 700.8; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "#fundador h2 \"Proximidade e atenção a cada pro\""
+    ]
+   },
+   {
+    "check": "edge-left",
+    "where": "#fundador p \"A M2R nasce da vontade de transf\"",
+    "msg": "starts at x 700.8; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "#fundador p \"A M2R nasce da vontade de transf\""
+    ]
+   },
+   {
+    "check": "edge-left",
+    "where": "#fundador p \"Essa proposta orienta o trabalho\"",
+    "msg": "starts at x 700.8; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "#fundador p \"Essa proposta orienta o trabalho\""
+    ]
+   },
+   {
+    "check": "edge-left",
+    "where": "footer.site-footer div.footer-links \"ServiçosProjetosBlogContato\"",
+    "msg": "starts at x 1019.7; the lines are 160 and the column starts",
+    "fix": "start it on the .wrap left line",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "edge-left"
+    ],
+    "wheres": [
+     "footer.site-footer div.footer-links \"ServiçosProjetosBlogContato\""
+    ]
+   },
+   {
+    "check": "screen-short",
+    "where": "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \"",
+    "msg": "511px tall; one screen under the nav is 900px",
+    "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-short"
+    ],
+    "wheres": [
+     "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \""
+    ]
+   },
+   {
+    "check": "neighbour",
+    "where": "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \"",
+    "msg": "framed, 150px of section.section-block section.section-block \"Quem somosSoluções digitais cone\" shows",
+    "fix": "keep the next section's heading and picture out of this screen",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour"
+    ],
+    "wheres": [
+     "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \""
+    ]
+   },
+   {
+    "check": "screen-short",
+    "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+    "msg": "357px tall; one screen under the nav is 900px",
+    "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-short"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+    ]
+   },
+   {
+    "check": "screen-height",
+    "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+    "msg": "357px, 0.40 screens; a section is exactly one or two (--h)",
+    "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-height"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+    ]
+   },
+   {
+    "check": "neighbour",
+    "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+    "msg": "framed, 150px of section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \" shows",
+    "fix": "keep the next section's heading and picture out of this screen",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+    ]
+   },
+   {
+    "check": "screen-short",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+    "msg": "359px tall; one screen under the nav is 900px",
+    "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-short"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+    ]
+   },
+   {
+    "check": "screen-height",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+    "msg": "359px, 0.40 screens; a section is exactly one or two (--h)",
+    "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-height"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+    ]
+   },
+   {
+    "check": "neighbour",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+    "msg": "framed, 53px of section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\" shows",
+    "fix": "keep the next section's heading and picture out of this screen",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+    ]
+   },
+   {
+    "check": "neighbour-ground",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+    "msg": "framed, 58px of #fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\"'s ground shows",
+    "fix": "end the ground with the section",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour-ground"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+    ]
+   },
+   {
+    "check": "screen-short",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\"",
+    "msg": "483px tall; one screen under the nav is 900px",
+    "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-short"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\""
+    ]
+   },
+   {
+    "check": "screen-height",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\"",
+    "msg": "483px, 0.54 screens; a section is exactly one or two (--h)",
+    "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-height"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\""
+    ]
+   },
+   {
+    "check": "neighbour",
+    "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\"",
+    "msg": "framed, 296px of #fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\" shows",
+    "fix": "keep the next section's heading and picture out of this screen",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour"
+    ],
+    "wheres": [
+     "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\""
+    ]
+   },
+   {
+    "check": "screen-short",
+    "where": "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\"",
+    "msg": "758px tall; one screen under the nav is 900px",
+    "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-short",
+     "screen-height"
+    ],
+    "wheres": [
+     "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\""
+    ]
+   },
+   {
+    "check": "neighbour",
+    "where": "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\"",
+    "msg": "framed, 35px of section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\" shows",
+    "fix": "keep the next section's heading and picture out of this screen",
+    "widths": [
+     1440
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour"
+    ],
+    "wheres": [
+     "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\""
+    ]
+   },
+   {
+    "check": "screen-short",
+    "where": "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\"",
+    "msg": "441px tall; one screen under the nav is 900px",
+    "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-short"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\""
+    ]
+   },
+   {
+    "check": "screen-height",
+    "where": "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\"",
+    "msg": "441px, 0.49 screens; a section is exactly one or two (--h)",
+    "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "screen-height"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\""
+    ]
+   },
+   {
+    "check": "neighbour",
+    "where": "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\"",
+    "msg": "framed, 222px of the footer shows",
+    "fix": "keep the next section's heading and picture out of this screen",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "neighbour"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\""
+    ]
+   },
+   {
+    "check": "hero-fold",
+    "where": "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \"",
+    "msg": "starts at y 74, not under the nav",
+    "fix": "the hero fills the first screen alone, its button inside it",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "hero-fold"
+    ],
+    "wheres": [
+     "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \""
+    ]
+   },
+   {
+    "check": "hero-fold",
+    "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+    "msg": "shows on the first screen from y 665",
+    "fix": "the hero fills the first screen alone, its button inside it",
+    "widths": [
+     1440,
+     390
+    ],
+    "from": "layout",
+    "ids": [
+     "hero-fold"
+    ],
+    "wheres": [
+     "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+    ]
+   }
+  ],
+  "warns": [],
+  "crashed": [
+   "consistency.mjs gave no report (exit 1: node:internal/assert/utils:77)"
+  ],
+  "seconds": {
+   "consistency": 14,
+   "layout": 18
+  }
+ },
+ "open": [
+  {
+   "check": "edge-left",
+   "where": "section.section-block p \"Unimos desenvolvimento web, auto\"",
+   "msg": "starts at x 694.8; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "section.section-block p \"Unimos desenvolvimento web, auto\""
+   ]
+  },
+  {
+   "check": "edge-left",
+   "where": "section.section-block.section-block--muted p \"Entendemos o contexto, definimos\"",
+   "msg": "starts at x 694.8; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted p \"Entendemos o contexto, definimos\""
+   ]
+  },
+  {
+   "check": "edge-right",
+   "where": "#fundador div.founder-photo",
+   "msg": "ends at x 652.8; the right line is 1280",
+   "fix": "end it on the .wrap right line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-right"
+   ],
+   "wheres": [
+    "#fundador div.founder-photo"
+   ]
+  },
+  {
+   "check": "edge-left",
+   "where": "#fundador div.founder-content \"Quem está por trás da M2RProximi\"",
+   "msg": "starts at x 652.8; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "#fundador div.founder-content \"Quem está por trás da M2RProximi\""
+   ]
+  },
+  {
+   "check": "edge-left",
+   "where": "#fundador h2 \"Proximidade e atenção a cada pro\"",
+   "msg": "starts at x 700.8; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "#fundador h2 \"Proximidade e atenção a cada pro\""
+   ]
+  },
+  {
+   "check": "edge-left",
+   "where": "#fundador p \"A M2R nasce da vontade de transf\"",
+   "msg": "starts at x 700.8; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "#fundador p \"A M2R nasce da vontade de transf\""
+   ]
+  },
+  {
+   "check": "edge-left",
+   "where": "#fundador p \"Essa proposta orienta o trabalho\"",
+   "msg": "starts at x 700.8; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "#fundador p \"Essa proposta orienta o trabalho\""
+   ]
+  },
+  {
+   "check": "edge-left",
+   "where": "footer.site-footer div.footer-links \"ServiçosProjetosBlogContato\"",
+   "msg": "starts at x 1019.7; the lines are 160 and the column starts",
+   "fix": "start it on the .wrap left line",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "edge-left"
+   ],
+   "wheres": [
+    "footer.site-footer div.footer-links \"ServiçosProjetosBlogContato\""
+   ]
+  },
+  {
+   "check": "screen-short",
+   "where": "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \"",
+   "msg": "511px tall; one screen under the nav is 900px",
+   "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-short"
+   ],
+   "wheres": [
+    "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \""
+   ]
+  },
+  {
+   "check": "neighbour",
+   "where": "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \"",
+   "msg": "framed, 150px of section.section-block section.section-block \"Quem somosSoluções digitais cone\" shows",
+   "fix": "keep the next section's heading and picture out of this screen",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour"
+   ],
+   "wheres": [
+    "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \""
+   ]
+  },
+  {
+   "check": "screen-short",
+   "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+   "msg": "357px tall; one screen under the nav is 900px",
+   "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-short"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+   ]
+  },
+  {
+   "check": "screen-height",
+   "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+   "msg": "357px, 0.40 screens; a section is exactly one or two (--h)",
+   "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-height"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+   ]
+  },
+  {
+   "check": "neighbour",
+   "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+   "msg": "framed, 150px of section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \" shows",
+   "fix": "keep the next section's heading and picture out of this screen",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+   ]
+  },
+  {
+   "check": "screen-short",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+   "msg": "359px tall; one screen under the nav is 900px",
+   "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-short"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+   ]
+  },
+  {
+   "check": "screen-height",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+   "msg": "359px, 0.40 screens; a section is exactly one or two (--h)",
+   "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-height"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+   ]
+  },
+  {
+   "check": "neighbour",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+   "msg": "framed, 53px of section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\" shows",
+   "fix": "keep the next section's heading and picture out of this screen",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+   ]
+  },
+  {
+   "check": "neighbour-ground",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \"",
+   "msg": "framed, 58px of #fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\"'s ground shows",
+   "fix": "end the ground with the section",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour-ground"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"Forma de atuaçãoDo entendimento \""
+   ]
+  },
+  {
+   "check": "screen-short",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\"",
+   "msg": "483px tall; one screen under the nav is 900px",
+   "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-short"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\""
+   ]
+  },
+  {
+   "check": "screen-height",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\"",
+   "msg": "483px, 0.54 screens; a section is exactly one or two (--h)",
+   "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-height"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\""
+   ]
+  },
+  {
+   "check": "neighbour",
+   "where": "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\"",
+   "msg": "framed, 296px of #fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\" shows",
+   "fix": "keep the next section's heading and picture out of this screen",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour"
+   ],
+   "wheres": [
+    "section.section-block.section-block--muted section.section-block.section-block--muted \"MissãoTransformar desafios opera\""
+   ]
+  },
+  {
+   "check": "screen-short",
+   "where": "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\"",
+   "msg": "758px tall; one screen under the nav is 900px",
+   "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-short",
+    "screen-height"
+   ],
+   "wheres": [
+    "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\""
+   ]
+  },
+  {
+   "check": "neighbour",
+   "where": "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\"",
+   "msg": "framed, 35px of section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\" shows",
+   "fix": "keep the next section's heading and picture out of this screen",
+   "widths": [
+    1440
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour"
+   ],
+   "wheres": [
+    "#fundador section.section-block.section-block--muted \"Quem está por trás da M2RProximi\""
+   ]
+  },
+  {
+   "check": "screen-short",
+   "where": "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\"",
+   "msg": "441px tall; one screen under the nav is 900px",
+   "fix": "make the section one full screen (--h: 1, layout-v4.md section 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-short"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\""
+   ]
+  },
+  {
+   "check": "screen-height",
+   "where": "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\"",
+   "msg": "441px, 0.49 screens; a section is exactly one or two (--h)",
+   "fix": "make the section exactly one or two screens (--h: 1 or 2)",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "screen-height"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\""
+   ]
+  },
+  {
+   "check": "neighbour",
+   "where": "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\"",
+   "msg": "framed, 222px of the footer shows",
+   "fix": "keep the next section's heading and picture out of this screen",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "neighbour"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Inovação aplicadaDa ideia ao amb\""
+   ]
+  },
+  {
+   "check": "hero-fold",
+   "where": "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \"",
+   "msg": "starts at y 74, not under the nav",
+   "fix": "the hero fills the first screen alone, its button inside it",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "hero-fold"
+   ],
+   "wheres": [
+    "section.page-hero section.page-hero \"Sobre a M2RDesenvolvimento web, \""
+   ]
+  },
+  {
+   "check": "hero-fold",
+   "where": "section.section-block section.section-block \"Quem somosSoluções digitais cone\"",
+   "msg": "shows on the first screen from y 665",
+   "fix": "the hero fills the first screen alone, its button inside it",
+   "widths": [
+    1440,
+    390
+   ],
+   "from": "layout",
+   "ids": [
+    "hero-fold"
+   ],
+   "wheres": [
+    "section.section-block section.section-block \"Quem somosSoluções digitais cone\""
+   ]
+  }
+ ],
+ "waived": [],
+ "warnCount": 0,
+ "at": "2026-11-13T18:22:40.983Z"
+}
