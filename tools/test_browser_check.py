@@ -34,6 +34,13 @@ class BrowserEvidenceTargetTests(unittest.TestCase):
             self.assertRegex(button.group(0), r'aria-label="Pausar movimento do destaque"')
             self.assertEqual(re.sub(r'\s+', ' ', button.group(1)).strip(), 'Pausar movimento', path)
             self.assertEqual(source.count('data-hero-motion'), 1, path)
+            self.assertEqual(source.count('hero-system.js'), 1, path)
+            self.assertNotIn('internal-hero.js', source, path)
+        home_script = (root / 'frontend/assets/js/hero-circuits.js').read_text(encoding='utf-8')
+        self.assertIn('m2rhero:ready', home_script)
+        self.assertIn('event.detail.svg', home_script)
+        self.assertIn('event.detail.paths', home_script)
+        self.assertIn("hero.classList.contains('hero-system--paused')", home_script)
 
     def test_capture_names_are_stable_and_route_safe(self):
         name_builder = getattr(browser_check, "responsive_capture_name", lambda *_: None)

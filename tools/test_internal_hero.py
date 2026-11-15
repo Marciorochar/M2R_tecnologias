@@ -28,6 +28,9 @@ class Tokens(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        for name in ('href', 'src'):
+            if attrs.get(name):
+                attrs[name] = re.sub(r'\?v=[A-Za-z0-9._-]+$', '?v=<content-hash>', attrs[name])
         if self.hero_depth:
             if tag == 'section':
                 self.hero_depth += 1
@@ -81,8 +84,10 @@ def test_all_hero_routes_use_shared_system_contract():
         assert 'hero-system' in opening.group(), path
         assert 'data-hero-system' in opening.group(), path
         assert 'hero-system.css' in source and source.count('hero-system.css') == 1, path
+        assert 'hero-system.js' in source and source.count('hero-system.js') == 1, path
         assert re.search(r'<img\b(?=[^>]*class="[^"]*hero-system__art")(?=[^>]*src="/assets/img/hero-circuits\.svg")', source), path
         assert re.search(r'<button\b(?=[^>]*data-hero-motion)(?=[^>]*aria-pressed="false")(?=[^>]*\bhidden(?:[ >]))', source), path
+        assert 'internal-hero.js' not in source, path
         is_home = path == ROOT / 'frontend/index.html'
         assert ('hero-circuits.js' in source) is is_home, path
 
