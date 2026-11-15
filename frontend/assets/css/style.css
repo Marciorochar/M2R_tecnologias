@@ -1881,6 +1881,11 @@ form textarea {
 }
 
 @media (max-width: 360px) {
+    .home-hero .hero-actions .btn-primary {
+        width: calc(100% - 64px);
+        align-self: flex-start;
+    }
+
     .mobile-whatsapp-cta {
         width: 48px;
         min-width: 48px;
