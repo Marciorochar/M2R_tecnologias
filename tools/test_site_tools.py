@@ -192,7 +192,7 @@ class SiteTests(unittest.TestCase):
                          "og:image:alt", "twitter:card", "twitter:image"):
             self.assertIn(expected, html)
 
-    def test_page_specific_structured_data_and_breadcrumbs(self):
+    def test_page_specific_structured_data_without_visible_breadcrumbs(self):
         expectations = {
             "index.html": '"@type":"WebSite"',
             "pages/servicos.html": '"@type":"Service"',
@@ -205,8 +205,8 @@ class SiteTests(unittest.TestCase):
         internal_pages = list((self.site.root / "frontend/pages").rglob("*.html"))
         for page in internal_pages:
             html = page.read_text(encoding="utf-8")
+            self.assertNotIn('class="breadcrumbs"', html, page.name)
             if page.name != "fundador.html":
-                self.assertIn('class="breadcrumbs"', html, page.name)
                 self.assertIn('"@type":"BreadcrumbList"', html, page.name)
 
     def test_contact_has_copy_fallback_and_no_floating_duplicate(self):
