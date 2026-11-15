@@ -1,0 +1,725 @@
+{
+  "captures": [
+    {
+      "route": "/",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": null,
+      "livePaths": 0,
+      "videoCount": 1,
+      "heroHeight": 1069.703125
+    },
+    {
+      "route": "/sobre",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 537.890625
+    },
+    {
+      "route": "/servicos",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 558.890625
+    },
+    {
+      "route": "/contato",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 482.296875
+    },
+    {
+      "route": "/fundador",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 481.53125
+    },
+    {
+      "route": "/projetos",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 473.125
+    },
+    {
+      "route": "/projetos/m2r-server",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 894.875
+    },
+    {
+      "route": "/blog",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 463.953125
+    },
+    {
+      "route": "/blog/automacao-para-pequenos-negocios",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 683.859375
+    },
+    {
+      "route": "/blog/organizacao-de-processos-digitais",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 619.09375
+    },
+    {
+      "route": "/blog/site-profissional-fortalece-marca",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 656.0625
+    },
+    {
+      "route": "/404",
+      "width": 320,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 884.125
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": null,
+      "livePaths": 0,
+      "videoCount": 1,
+      "heroHeight": 925.171875
+    },
+    {
+      "route": "/sobre",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 513.9375
+    },
+    {
+      "route": "/servicos",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 475.6875
+    },
+    {
+      "route": "/contato",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 458.34375
+    },
+    {
+      "route": "/fundador",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 484.09375
+    },
+    {
+      "route": "/projetos",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 447.890625
+    },
+    {
+      "route": "/projetos/m2r-server",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 772.296875
+    },
+    {
+      "route": "/blog",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 437.4375
+    },
+    {
+      "route": "/blog/automacao-para-pequenos-negocios",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 600.1875
+    },
+    {
+      "route": "/blog/organizacao-de-processos-digitais",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 572.390625
+    },
+    {
+      "route": "/blog/site-profissional-fortalece-marca",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 572.390625
+    },
+    {
+      "route": "/404",
+      "width": 390,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 886.6875
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": null,
+      "livePaths": 0,
+      "videoCount": 1,
+      "heroHeight": 875.890625
+    },
+    {
+      "route": "/sobre",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 395.6875
+    },
+    {
+      "route": "/servicos",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 395.6875
+    },
+    {
+      "route": "/contato",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 407.984375
+    },
+    {
+      "route": "/fundador",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 439.890625
+    },
+    {
+      "route": "/projetos",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 395.6875
+    },
+    {
+      "route": "/projetos/m2r-server",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 692.265625
+    },
+    {
+      "route": "/blog",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 395.6875
+    },
+    {
+      "route": "/blog/automacao-para-pequenos-negocios",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 499.28125
+    },
+    {
+      "route": "/blog/organizacao-de-processos-digitais",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 459.1875
+    },
+    {
+      "route": "/blog/site-profissional-fortalece-marca",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 499.28125
+    },
+    {
+      "route": "/404",
+      "width": 768,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 820.40625
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": null,
+      "livePaths": 0,
+      "videoCount": 1,
+      "heroHeight": 690
+    },
+    {
+      "route": "/sobre",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 474.890625
+    },
+    {
+      "route": "/servicos",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 447.09375
+    },
+    {
+      "route": "/contato",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 447.09375
+    },
+    {
+      "route": "/fundador",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 453.546875
+    },
+    {
+      "route": "/projetos",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 401.34375
+    },
+    {
+      "route": "/projetos/m2r-server",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 431.140625
+    },
+    {
+      "route": "/blog",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 429.140625
+    },
+    {
+      "route": "/blog/automacao-para-pequenos-negocios",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 538.390625
+    },
+    {
+      "route": "/blog/organizacao-de-processos-digitais",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 510.59375
+    },
+    {
+      "route": "/blog/site-profissional-fortalece-marca",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 510.59375
+    },
+    {
+      "route": "/404",
+      "width": 1024,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 540
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": null,
+      "livePaths": 0,
+      "videoCount": 1,
+      "heroHeight": 767.5
+    },
+    {
+      "route": "/sobre",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 484.3125
+    },
+    {
+      "route": "/servicos",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 484.3125
+    },
+    {
+      "route": "/contato",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 456.515625
+    },
+    {
+      "route": "/fundador",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 489.75
+    },
+    {
+      "route": "/projetos",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 484.3125
+    },
+    {
+      "route": "/projetos/m2r-server",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 449.75
+    },
+    {
+      "route": "/blog",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 419.953125
+    },
+    {
+      "route": "/blog/automacao-para-pequenos-negocios",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 547.8125
+    },
+    {
+      "route": "/blog/organizacao-de-processos-digitais",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 547.8125
+    },
+    {
+      "route": "/blog/site-profissional-fortalece-marca",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 547.8125
+    },
+    {
+      "route": "/404",
+      "width": 1440,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 557.59375
+    },
+    {
+      "route": "/",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": null,
+      "livePaths": 0,
+      "videoCount": 1,
+      "heroHeight": 816.453125
+    },
+    {
+      "route": "/sobre",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 502.09375
+    },
+    {
+      "route": "/servicos",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 502.09375
+    },
+    {
+      "route": "/contato",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 474.296875
+    },
+    {
+      "route": "/fundador",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 574.296875
+    },
+    {
+      "route": "/projetos",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 502.09375
+    },
+    {
+      "route": "/projetos/m2r-server",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 458.640625
+    },
+    {
+      "route": "/blog",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 428.84375
+    },
+    {
+      "route": "/blog/automacao-para-pequenos-negocios",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 565.59375
+    },
+    {
+      "route": "/blog/organizacao-de-processos-digitais",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 565.59375
+    },
+    {
+      "route": "/blog/site-profissional-fortalece-marca",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 638.84375
+    },
+    {
+      "route": "/404",
+      "width": 1920,
+      "h1Count": 1,
+      "overflow": false,
+      "art": 1200,
+      "livePaths": 14,
+      "videoCount": 0,
+      "heroHeight": 604.09375
+    }
+  ],
+  "pageErrors": []
+}

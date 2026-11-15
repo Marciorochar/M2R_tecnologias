@@ -1,0 +1,157 @@
+/* The Home's approved copper circuit identity, scoped to internal pages. */
+.page-hero--circuits {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 0;
+    padding: clamp(112px, 9vw, 132px) 0 36px;
+    background: radial-gradient(ellipse at 85% 44%, #644026 0%, #362218 35%, #211610 76%, #1b130f 100%);
+    color: #fff;
+}
+.page-hero--circuits::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, rgba(25, 16, 12, .96), rgba(31, 19, 13, .82) 40%, rgba(36, 22, 14, .12) 78%);
+    pointer-events: none;
+}
+.page-hero--circuits > .container {
+    position: relative;
+    width: min(1200px, calc(100% - clamp(40px, 8vw, 128px)));
+}
+.page-hero--circuits:not(.project-detail-hero):not(.error-page) > .container > :not(.hero-actions) { max-width: 62%; }
+.page-hero--circuits .section-tag--dark { color: #f1c994; }
+.page-hero--circuits h1 {
+    margin: 20px 0 16px;
+    font-size: clamp(2.3rem, 4.1vw, 4.2rem);
+    line-height: 1.09;
+    letter-spacing: -.045em;
+    text-wrap: balance;
+}
+.page-hero--circuits p { color: #e8d8c6; line-height: 1.58; }
+.page-hero--circuits .article-meta { margin-top: 18px; font-size: .9rem; }
+.page-hero--circuits .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.page-hero--circuits .btn-primary { background: #92552d; color: #fff !important; }
+.page-hero--circuits .btn-primary:hover { background: var(--color-action-bronze-hover); }
+.page-hero--circuits .internal-hero-art,
+.page-hero--circuits .internal-hero-live {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .7;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, .22) 38%, #000 72%);
+    mask-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, .22) 38%, #000 72%);
+}
+.page-hero--circuits .internal-hero-live { opacity: .9; }
+.page-hero--circuits .internal-hero-pulse {
+    fill: none;
+    stroke: #ffd5a1;
+    stroke-width: 2.5;
+    stroke-dasharray: .035 .965;
+    stroke-dashoffset: 1;
+    animation: internal-hero-travel 7s linear infinite;
+}
+.page-hero--circuits .internal-hero-pulse:nth-child(3n) { animation-delay: -2s; animation-duration: 9s; }
+.page-hero--circuits .internal-hero-pulse:nth-child(3n + 1) { animation-delay: -5s; }
+.page-hero--circuits.internal-hero-paused .internal-hero-pulse { animation-play-state: paused; }
+.page-hero--circuits .internal-hero-halo { fill: #f1c994; opacity: 0; }
+.page-hero--circuits.internal-hero-pointer .internal-hero-halo { opacity: .09; }
+.page-hero--circuits .internal-hero-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+    min-height: 44px;
+}
+.page-hero--circuits [data-internal-hero-motion] {
+    min-height: 44px;
+    padding: 10px 15px;
+    border: 1px solid rgba(241, 201, 148, .55);
+    border-radius: 6px;
+    background: #211610;
+    color: #f1c994;
+    font: inherit;
+    font-size: .85rem;
+    cursor: pointer;
+}
+.page-hero--circuits [data-internal-hero-motion][hidden] { display: none; }
+.page-hero--circuits :focus-visible { outline: 3px solid #f1c994; outline-offset: 4px; }
+.page-hero--circuits .project-detail-hero-layout,
+.page-hero--circuits .error-page-layout { gap: clamp(24px, 4vw, 56px); }
+.page-hero--circuits .project-detail-terminal { min-width: 0; background: rgba(30, 19, 14, .88); border-color: rgba(241, 201, 148, .5); }
+.page-hero--circuits .project-detail-terminal p { color: #e8d8c6; overflow-wrap: anywhere; }
+.page-hero--circuits .error-page-panel { min-width: 0; }
+@keyframes internal-hero-travel { to { stroke-dashoffset: 0; } }
+@media (max-width: 900px) {
+    .page-hero--circuits { padding-top: 104px; }
+    .page-hero--circuits:not(.project-detail-hero):not(.error-page) > .container > :not(.hero-actions) { max-width: 100%; }
+    .page-hero--circuits .project-detail-hero-layout,
+    .page-hero--circuits .error-page-layout { grid-template-columns: minmax(0, 1fr); }
+    .page-hero--circuits .internal-hero-art,
+    .page-hero--circuits .internal-hero-live { opacity: .28; -webkit-mask-image: none; mask-image: none; }
+}
+@media (max-width: 640px) {
+    .page-hero--circuits { padding-top: 96px; padding-bottom: 24px; }
+    .page-hero--circuits h1 { font-size: clamp(2.12rem, 9vw, 3.6rem); overflow-wrap: normal; }
+    .page-hero--circuits .hero-actions { flex-direction: column; }
+    .page-hero--circuits .hero-actions .btn { width: 100%; min-width: 0; }
+    .page-hero--circuits .project-detail-terminal { padding: 20px; }
+    .page-hero--circuits .error-page-panel { min-height: 260px; padding: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .page-hero--circuits .internal-hero-pulse { animation: none; }
+    .page-hero--circuits .internal-hero-live { display: none; }
+    .page-hero--circuits [data-internal-hero-motion] { display: none; }
+}
+
+/* Existing breadcrumb content stays in normal flow below the fixed navbar.
+   This stylesheet is loaded only by internal pages, never by Home. */
+#conteudo-principal > .breadcrumbs {
+    width: min(1200px, calc(100% - clamp(40px, 8vw, 128px)));
+    margin: 0 auto;
+    padding: 88px 0 12px;
+    color: var(--color-text-secondary);
+}
+#conteudo-principal > .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#conteudo-principal > .breadcrumbs li {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    line-height: 1.45;
+}
+#conteudo-principal > .breadcrumbs a {
+    display: inline-flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 0;
+    color: var(--color-primary);
+    text-underline-offset: 4px;
+}
+#conteudo-principal > .breadcrumbs a:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+}
+#conteudo-principal > .breadcrumbs + .page-hero--circuits { padding-top: 32px; }
+@media (max-width: 768px) {
+    #conteudo-principal > .breadcrumbs { padding-top: 76px; }
+    html:not(.menu-js-enabled) #conteudo-principal > .breadcrumbs { padding-top: 12px; }
+    .page-hero--circuits .internal-hero-controls {
+        justify-content: flex-start;
+        padding-right: 72px;
+    }
+}
