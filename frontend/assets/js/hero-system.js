@@ -19,6 +19,8 @@
 
         let manualPause = false;
         let enhanced = false;
+        let liveSvg = null;
+        let liveHalo = null;
         let inView = (() => {
             const bounds = root.getBoundingClientRect();
             return bounds.bottom > 0 && bounds.top < window.innerHeight;
@@ -27,6 +29,7 @@
         function sync() {
             const paused = manualPause || reducedMotion.matches || document.hidden || !inView;
             root.classList.toggle('hero-system--paused', paused);
+            if (paused) root.classList.remove('hero-system--pointer');
             if (!control) return;
             control.hidden = !enhanced || reducedMotion.matches;
             control.setAttribute('aria-pressed', String(manualPause));
@@ -40,6 +43,19 @@
                 sync();
             });
         }
+        root.addEventListener('pointermove', event => {
+            if (!enhanced || reducedMotion.matches || root.classList.contains('hero-system--paused') || event.pointerType === 'touch') return;
+            const point = liveSvg.createSVGPoint();
+            point.x = event.clientX;
+            point.y = event.clientY;
+            const matrix = liveSvg.getScreenCTM();
+            if (!matrix) return;
+            const local = point.matrixTransform(matrix.inverse());
+            liveHalo.setAttribute('cx', local.x);
+            liveHalo.setAttribute('cy', local.y);
+            root.classList.add('hero-system--pointer');
+        }, { passive: true });
+        root.addEventListener('pointerleave', () => root.classList.remove('hero-system--pointer'));
         listen(reducedMotion, 'change', sync);
         document.addEventListener('visibilitychange', sync);
 
@@ -94,6 +110,8 @@
                 halo.setAttribute('r', '110');
                 halo.classList.add('hero-system__halo');
                 svg.append(halo);
+                liveSvg = svg;
+                liveHalo = halo;
                 image.insertAdjacentElement('afterend', svg);
                 const paths = [...svg.querySelectorAll('.hero-system__pulse')];
                 enhanced = true;

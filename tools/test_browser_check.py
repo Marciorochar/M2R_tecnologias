@@ -49,6 +49,12 @@ class BrowserEvidenceTargetTests(unittest.TestCase):
         self.assertEqual(name_builder("/contato", 1440), "contato-1440.png")
         self.assertIsNone(name_builder("/outro", 390))
 
+    def test_common_runtime_handles_pointer_and_motion_lifecycle(self):
+        runtime = (browser_check.ROOT / 'frontend/assets/js/hero-system.js').read_text(encoding='utf-8')
+        for contract in ('pointermove', 'pointerleave', 'prefers-reduced-motion', 'visibilitychange',
+                         'IntersectionObserver', 'hero-system--paused', 'hero-system--pointer'):
+            self.assertIn(contract, runtime)
+
     def test_primary_cta_palette_includes_the_existing_circuit_hero_variant(self):
         self.assertIn("rgb(146, 85, 45)", getattr(browser_check, "PRIMARY_CTA_COLORS", ()))
 
