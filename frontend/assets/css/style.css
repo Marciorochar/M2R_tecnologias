@@ -1881,7 +1881,7 @@ form textarea {
 }
 
 @media (max-width: 360px) {
-    .home-hero .hero-actions .btn-primary {
+    .home-hero .hero-actions .btn.btn-primary {
         width: calc(100% - 64px);
         align-self: flex-start;
     }
