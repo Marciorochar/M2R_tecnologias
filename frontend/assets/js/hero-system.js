@@ -88,6 +88,16 @@
                 const parsed = new DOMParser().parseFromString(markup, 'image/svg+xml');
                 const sourcePaths = [...parsed.querySelectorAll('svg path')];
                 if (parsed.querySelector('parsererror') || sourcePaths.length !== 14) throw new Error('Circuit artwork invalid');
+                const invalidGeometry = sourcePaths.some(source => {
+                    const d = source.getAttribute('d');
+                    if (!d || !/^[MmLlHhVv\d\s.,+-]+$/.test(d)) return true;
+                    try {
+                        return source.getTotalLength() <= 0;
+                    } catch {
+                        return true;
+                    }
+                });
+                if (invalidGeometry) throw new Error('Circuit geometry invalid');
 
                 const svg = document.createElementNS(NS, 'svg');
                 svg.setAttribute('viewBox', '0 0 1200 610');
@@ -98,7 +108,6 @@
 
                 sourcePaths.forEach(source => {
                     const d = source.getAttribute('d');
-                    if (!d || !/^[MmLlHhVv\d\s.,+-]+$/.test(d)) throw new Error('Circuit geometry invalid');
                     const path = document.createElementNS(NS, 'path');
                     path.setAttribute('d', d);
                     path.setAttribute('pathLength', '1');

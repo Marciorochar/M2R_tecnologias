@@ -63,8 +63,8 @@ class HeroCircuitsTest(unittest.TestCase):
     def test_home_effects_subscribe_to_the_shared_hero_event(self):
         script = HERO_JS.read_text(encoding="utf-8")
         self.assertIn("m2rhero:ready", script)
-        self.assertIn("event.detail.svg", script)
-        self.assertIn("event.detail.paths", script)
+        self.assertIn("detail.svg", script)
+        self.assertIn("detail.paths", script)
         self.assertIn("hero-system--paused", script)
 
     def test_home_activation_control_stays_hidden_until_shared_art_is_ready(self):

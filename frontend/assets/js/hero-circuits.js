@@ -265,11 +265,12 @@
     }
 
     function onHeroReady(event) {
-        if (event.target !== hero || hero.dataset.homeEffectsReady) return;
-        if (!event.detail || !event.detail.svg || !event.detail.paths?.length) return;
+        if ((event.target && event.target !== hero) || hero.dataset.homeEffectsReady) return;
+        const detail = event.detail;
+        if (!detail || !detail.svg || !detail.paths?.length) return;
         hero.dataset.homeEffectsReady = 'true';
-        svg = event.detail.svg;
-        sourcePaths = event.detail.paths;
+        svg = detail.svg;
+        sourcePaths = detail.paths;
         createLayers();
         buildHomeEffects();
         activate.hidden = false;
@@ -289,4 +290,11 @@
 
     activate.hidden = true;
     hero.addEventListener('m2rhero:ready', onHeroReady);
+    const readySvg = hero.querySelector('.hero-system__live');
+    if (readySvg) {
+        onHeroReady({
+            target: hero,
+            detail: { svg: readySvg, paths: [...readySvg.querySelectorAll('.hero-system__pulse')] },
+        });
+    }
 })();

@@ -38,8 +38,8 @@ class BrowserEvidenceTargetTests(unittest.TestCase):
             self.assertNotIn('internal-hero.js', source, path)
         home_script = (root / 'frontend/assets/js/hero-circuits.js').read_text(encoding='utf-8')
         self.assertIn('m2rhero:ready', home_script)
-        self.assertIn('event.detail.svg', home_script)
-        self.assertIn('event.detail.paths', home_script)
+        self.assertIn('detail.svg', home_script)
+        self.assertIn('detail.paths', home_script)
         self.assertIn("hero.classList.contains('hero-system--paused')", home_script)
 
     def test_capture_names_are_stable_and_route_safe(self):
@@ -64,6 +64,11 @@ class BrowserEvidenceTargetTests(unittest.TestCase):
                                 {"x": 10, "y": 10, "width": 20, "height": 20}))
         self.assertFalse(overlap({"x": 0, "y": 0, "width": 10, "height": 10},
                                  {"x": 10, "y": 10, "width": 10, "height": 10}))
+
+    def test_browser_suite_runs_final_review_regressions(self):
+        for name in ('check_home_motion_brand_clearance', 'check_home_script_load_race',
+                     'check_invalid_hero_svg_payloads'):
+            self.assertTrue(callable(getattr(browser_check, name, None)), name)
 
 
 if __name__ == "__main__":

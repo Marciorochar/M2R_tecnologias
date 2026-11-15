@@ -7,6 +7,7 @@ import os
 import json
 import shutil
 import threading
+import time
 from http.server import ThreadingHTTPServer
 from site_tools import ROOT, Site, handler_for
 
@@ -164,6 +165,59 @@ def check_shared_hero(page, route):
     assert control.get_attribute('aria-pressed') == 'false', route
     assert control.get_attribute('aria-label') == 'Pausar movimento do destaque', route
     assert control.inner_text() == 'Pausar movimento', route
+
+
+def check_home_motion_brand_clearance(page, base):
+    page.set_viewport_size({'width': 320, 'height': 600})
+    page.goto(base + '/')
+    control = page.locator('#m2r-hero [data-hero-motion]')
+    control.wait_for(state='visible')
+    brand = page.locator('#m2r-hero .section-tag').bounding_box()
+    assert not boxes_overlap(brand, control.bounding_box()), {'brand': brand, 'control': control.bounding_box()}
+
+
+def check_home_script_load_race(browser, base):
+    context = browser.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='no-preference')
+
+    def delay_home_script(route):
+        time.sleep(1.5)
+        route.continue_()
+
+    context.route('**/assets/js/hero-circuits.js*', delay_home_script)
+    page = context.new_page()
+    page.goto(base + '/')
+    page.wait_for_function("() => document.querySelector('#m2r-hero')?.dataset.homeEffectsReady === 'true'", timeout=4000)
+    assert page.locator('#m2r-hero .home-hero-motion-video').evaluate('video => !video.paused')
+    assert page.locator('#m2r-circuit-activate').is_visible()
+    assert page.locator('#m2r-hero .m2r-trace-core').count() == 14
+    context.close()
+
+
+def check_invalid_hero_svg_payloads(browser, base):
+    payloads = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610">',
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610">' + '<path d="M0 0 H10"/>' * 13 + '</svg>',
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610">' + '<path d="M"/>' * 14 + '</svg>',
+    )
+    for payload in payloads:
+        context = browser.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='no-preference')
+
+        def replace_fetch(route):
+            if route.request.resource_type == 'fetch':
+                route.fulfill(status=200, content_type='image/svg+xml', body=payload)
+            else:
+                route.continue_()
+
+        context.route('**/assets/img/hero-circuits.svg', replace_fetch)
+        page = context.new_page()
+        page.goto(base + '/servicos')
+        control = page.locator('[data-hero-system] [data-hero-motion]')
+        page.wait_for_function("() => document.querySelector('[data-hero-system] .hero-system__art')?.complete")
+        page.wait_for_timeout(100)
+        assert control.evaluate('el => el.hidden')
+        assert page.locator('[data-hero-system] .hero-system__live').count() == 0
+        assert page.locator('[data-hero-system] .hero-system__art').evaluate('el => el.naturalWidth === 1200')
+        context.close()
 
 
 def check_progressive_hero_fallbacks(browser, base):
@@ -403,6 +457,9 @@ def check_site(browser, base):
                 page.screenshot(path=str(results / f'{route[1:]}-{width}.png'), full_page=True)
         print(f'PASS Chromium: {len(routes)} routes at {width}px', flush=True)
     page.set_viewport_size({'width': 390, 'height': 844})
+    check_home_motion_brand_clearance(page, base)
+    check_home_script_load_race(browser, base)
+    check_invalid_hero_svg_payloads(browser, base)
     check_first_tab_is_skip_link(page, base)
     check_service_fragments(page, base)
     check_fixed_control_overlaps(page, base)

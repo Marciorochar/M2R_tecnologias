@@ -2150,6 +2150,10 @@ form textarea {
     right: clamp(21px, 5vw, 98px);
 }
 
+@media (max-width: 768px) {
+    .home-hero--circuits .hero-layout { padding-top: 56px; }
+}
+
 .home-hero-circuit-trigger {
     position: absolute;
     z-index: 5;

@@ -13,7 +13,7 @@ A regressão do CI em `/` a 320×600 foi incorporada à checagem de colisão ent
 
 | Verificação | Resultado |
 |---|---|
-| `python -m pytest tools/test_internal_hero.py tools/test_hero_circuits.py tools/test_browser_check.py tools/test_site_tools.py -q` | 56 testes e 33 subtestes passaram |
+| `python -m pytest tools/test_internal_hero.py tools/test_hero_circuits.py tools/test_browser_check.py tools/test_site_tools.py tools/test_hero_runtime.py -q` | 62 testes e 33 subtestes passaram |
 | `python tools/site_tools.py check` | Links, assets, fragmentos e destinos corretos nas 12 páginas |
 | `python tools/browser_check.py` | 12 rotas passaram em 320, 390, 768, 1024, 1440 e 1920 px; sem erro de navegador |
 | `python tools/hero_check.py --output-dir test-results/hero-system/after` | 72 casos responsivos, 11 verificações de comportamento, 33 verificações de fallback e 24 relatórios Axe; 105 PNGs gerados |
@@ -22,6 +22,8 @@ A regressão do CI em `/` a 320×600 foi incorporada à checagem de colisão ent
 | `git diff --check` | Sem erros de whitespace |
 
 Os cenários de comportamento cobrem pausa e retomada pelo teclado, preferência de movimento reduzido alterada em runtime, aba oculta, Hero fora da viewport e idempotência do runtime. Os fallbacks cobrem JavaScript desabilitado, falha de `fetch` do SVG e preferência inicial por movimento reduzido. Axe foi executado a 390 e 1440 px em todas as rotas; não foram encontrados problemas graves dentro do Hero ou da navegação de breadcrumb.
+
+A revisão independente final encontrou e levou à correção de três regressões adicionais: sobreposição do controle de movimento com a identificação da Home em 320×600, perda das interações exclusivas quando `hero-circuits.js` carrega depois do SVG compartilhado e aceitação de SVG com 14 caminhos sem geometria utilizável. Os testes de navegador agora reproduzem esses três casos, incluindo atraso real de 1,5 segundo e payloads XML truncado, com quantidade incorreta e com caminhos de comprimento zero.
 
 ## Comparação visual
 
