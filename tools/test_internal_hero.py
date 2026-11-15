@@ -54,6 +54,7 @@ class Tokens(HTMLParser):
 
 
 def outside(source):
+    source = re.sub(r'\s*<nav\b[^>]*class="breadcrumbs"[^>]*>.*?</nav>', '', source, flags=re.S)
     source = re.sub(r'\s*<link\b(?=[^>]*(?:hero-system|internal-hero)\.css)[^>]*>', '', source)
     source = re.sub(r'\s*<script\b(?=[^>]*src="[^"]*(?:hero-system|internal-hero|hero-circuits)\.js)[^>]*>.*?</script>', '', source, flags=re.S)
     return Tokens(source).tokens
