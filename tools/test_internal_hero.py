@@ -81,8 +81,8 @@ def test_all_hero_routes_use_shared_system_contract():
         assert 'hero-system' in opening.group(), path
         assert 'data-hero-system' in opening.group(), path
         assert 'hero-system.css' in source and source.count('hero-system.css') == 1, path
-        assert re.search(r'<img\b(?=[^>]*class="[^"]*hero-system__art")(?=[^>]*src="/assets/img/hero-circuits\.svg")', section), path
-        assert re.search(r'<button\b(?=[^>]*data-hero-motion)(?=[^>]*aria-pressed="false")(?=[^>]*\bhidden(?:[ >]))', section), path
+        assert re.search(r'<img\b(?=[^>]*class="[^"]*hero-system__art")(?=[^>]*src="/assets/img/hero-circuits\.svg")', source), path
+        assert re.search(r'<button\b(?=[^>]*data-hero-motion)(?=[^>]*aria-pressed="false")(?=[^>]*\bhidden(?:[ >]))', source), path
         is_home = path == ROOT / 'frontend/index.html'
         assert ('hero-circuits.js' in source) is is_home, path
 
