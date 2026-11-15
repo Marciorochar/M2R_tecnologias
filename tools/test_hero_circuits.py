@@ -31,8 +31,9 @@ class HeroCircuitsTest(unittest.TestCase):
         html = HOME.read_text(encoding="utf-8")
         self.assertIn('class="home-hero-motion-video"', html)
         self.assertIn('src="assets/video/m2r-circuitos.webm"', html)
-        self.assertIn('id="m2r-circuit-paths"', html)
-        self.assertGreaterEqual(len(re.findall(r'id="m2r-path-\d+"', html)), 14)
+        self.assertIn('class="hero-system__art"', html)
+        self.assertIn('src="/assets/img/hero-circuits.svg"', html)
+        self.assertNotRegex(html, r'<path\b[^>]*id="m2r-path-\d+"')
         self.assertTrue(VIDEO.is_file() and VIDEO.stat().st_size > 10_000)
 
     def test_interactivity_is_external_and_keyboard_accessible(self):

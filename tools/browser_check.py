@@ -13,7 +13,7 @@ from site_tools import ROOT, Site, handler_for
 AXE_SOURCE = ROOT / 'node_modules' / 'axe-core' / 'axe.min.js'
 AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
 EVIDENCE_ROUTES = ('/', '/servicos', '/contato')
-RESPONSIVE_WIDTHS = (320, 390, 768, 1024, 1440)
+RESPONSIVE_WIDTHS = (320, 390, 768, 1024, 1440, 1920)
 ROUTE_SLUGS = {'/': 'home', '/servicos': 'servicos', '/contato': 'contato'}
 PRIMARY_CTA_COLORS = ('rgb(135, 86, 47)', 'rgb(112, 67, 33)', 'rgb(146, 85, 45)')
 

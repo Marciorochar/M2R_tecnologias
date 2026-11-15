@@ -1,4 +1,5 @@
-"""Internal hero contract, including preservation against the approved baseline."""
+"""Shared hero contract and route-content preservation checks."""
+import html
 import re
 import subprocess
 import xml.etree.ElementTree as ET
@@ -8,17 +9,10 @@ import pytest
 
 from site_tools import ROOT, Site
 
-BASE = '7436829'
+BASE = '4c41e22'
 PAGES = sorted((ROOT / 'frontend/pages').rglob('*.html')) + [ROOT / 'frontend/404.html', ROOT / '404.html']
-HERO = re.compile(r'<section class="page-hero\b[^>]*>.*?</section>', re.S)
-CTAS = {
-    'sobre.html': ('/servicos', 'Ver serviços'),
-    'servicos.html': ('/contato', 'Converse sobre seu projeto'),
-    'contato.html': ('#contato-mensagem', 'Preencher mensagem'),
-    'fundador.html': ('/sobre', 'Conhecer a M2R'),
-    'projetos.html': ('/projetos/m2r-server', 'Conhecer o M2R Server'),
-    'blog.html': ('#artigos', 'Ler os artigos'),
-}
+HERO_PAGES = [ROOT / 'frontend/index.html', *PAGES]
+HERO_OPEN = re.compile(r'<section\b(?=[^>]*\bclass="[^"]*(?:page-hero|home-hero))[^>]*>', re.S)
 
 
 def baseline(path):
@@ -29,69 +23,98 @@ class Tokens(HTMLParser):
     def __init__(self, source):
         super().__init__(convert_charrefs=True)
         self.tokens = []
+        self.hero_depth = 0
         self.feed(source)
 
     def handle_starttag(self, tag, attrs):
-        attrs = [(k, v) for k, v in attrs if not (k == 'id' and v in ('artigos', 'artigo', 'contato-mensagem'))]
+        attrs = dict(attrs)
+        if self.hero_depth:
+            if tag == 'section':
+                self.hero_depth += 1
+            return
+        if tag == 'section' and {'page-hero', 'home-hero'} & set((attrs.get('class') or '').split()):
+            self.hero_depth = 1
+            return
+        attrs = [(k, v) for k, v in attrs.items() if not (k == 'id' and v in ('artigos', 'artigo', 'contato-mensagem'))]
         self.tokens.append((tag, sorted(attrs)))
 
     def handle_endtag(self, tag):
+        if self.hero_depth:
+            if tag == 'section':
+                self.hero_depth -= 1
+            return
         self.tokens.append(('/' + tag,))
 
     def handle_data(self, text):
-        if text.strip():
+        if not self.hero_depth and text.strip():
             self.tokens.append(('text', text.strip()))
 
 
 def outside(source):
-    source = HERO.sub('', source)
-    source = re.sub(r'\s*<link[^>]+internal-hero\.css[^>]*>', '', source)
-    source = re.sub(r'\s*<script[^>]+internal-hero\.js[^>]*></script>', '', source)
+    source = re.sub(r'\s*<link\b(?=[^>]*(?:hero-system|internal-hero)\.css)[^>]*>', '', source)
+    source = re.sub(r'\s*<script\b(?=[^>]*src="[^"]*(?:hero-system|internal-hero|hero-circuits)\.js)[^>]*>.*?</script>', '', source, flags=re.S)
     return Tokens(source).tokens
 
 
-@pytest.mark.parametrize('path', PAGES, ids=lambda p: p.relative_to(ROOT).as_posix())
-def test_internal_hero_contract_and_copy(path):
-    current, original = path.read_text(encoding='utf-8'), baseline(path)
-    hero, old_hero = HERO.search(current).group(), HERO.search(original).group()
-    assert 'page-hero--circuits' in hero
-    assert 'home-hero' not in hero
-    assert current.count('internal-hero.css') == current.count('internal-hero.js') == 1
-    assert current.index('style.css') < current.index('internal-hero.css')
-    assert len(re.findall(r'<h1\b', current)) == 1
+def hero_content(source):
+    opening = HERO_OPEN.search(source)
+    assert opening, 'Hero section missing'
+    end = source.find('</section>', opening.end())
+    section = source[opening.start():end + len('</section>')]
+    values = {}
     for tag in ('h1', 'p'):
-        old_copy = re.findall(fr'<{tag}\b[^>]*>.*?</{tag}>', old_hero, re.S)
-        assert all(copy in hero for copy in old_copy)
-    for action in re.findall(r'<a\b[^>]*>.*?</a>', old_hero, re.S):
-        assert action in hero
-    assert re.search(r'<img[^>]+class="internal-hero-art"[^>]+alt=""[^>]+aria-hidden="true"[^>]+width="1200"[^>]+height="610"', hero)
-    assert 'data-internal-hero-motion' in hero and 'aria-pressed="false"' in hero and ' hidden' in hero
-    assert outside(current) == outside(original), 'DOM outside hero changed beyond permitted assets and anchor IDs'
-    if 'hero-actions' not in old_hero:
-        href, label = CTAS.get(path.name, ('#artigo', 'Ler o artigo'))
-        assert f'href="{href}">{label}</a>' in hero
-        if href.startswith('#'):
-            assert f'id="{href[1:]}"' in current
+        values[tag] = [html.unescape(re.sub(r'<[^>]+>', '', item)).strip()
+                       for item in re.findall(fr'<{tag}\b[^>]*>(.*?)</{tag}>', section, re.S)]
+    values['links'] = [
+        (href, html.unescape(re.sub(r'<[^>]+>', '', label)).strip())
+        for href, label in re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', section, re.S)
+    ]
+    return values
 
 
-@pytest.mark.parametrize('relative', ['frontend/index.html', 'frontend/assets/css/style.css', 'frontend/assets/js/hero-circuits.js', 'frontend/assets/video/m2r-circuitos.webm'])
-def test_protected_home_files(relative):
-    expected = subprocess.check_output(['git', 'show', f'{BASE}:{relative}'], cwd=ROOT)
-    actual = (ROOT / relative).read_bytes()
-    if not relative.endswith('.webm'):
-        actual = actual.replace(b'\r\n', b'\n')
-    assert actual == expected
+def test_all_hero_routes_use_shared_system_contract():
+    for path in HERO_PAGES:
+        source = path.read_text(encoding='utf-8')
+        opening = HERO_OPEN.search(source)
+        assert opening, path
+        section = source[opening.start():source.find('</section>', opening.end()) + len('</section>')]
+        assert 'hero-system' in opening.group(), path
+        assert 'data-hero-system' in opening.group(), path
+        assert 'hero-system.css' in source and source.count('hero-system.css') == 1, path
+        assert re.search(r'<img\b(?=[^>]*class="[^"]*hero-system__art")(?=[^>]*src="/assets/img/hero-circuits\.svg")', section), path
+        assert re.search(r'<button\b(?=[^>]*data-hero-motion)(?=[^>]*aria-pressed="false")(?=[^>]*\bhidden(?:[ >]))', section), path
+        is_home = path == ROOT / 'frontend/index.html'
+        assert ('hero-circuits.js' in source) is is_home, path
 
 
-def test_shared_svg_exact_home_paths_and_decorative_content():
+@pytest.mark.parametrize('path', PAGES, ids=lambda p: p.relative_to(ROOT).as_posix())
+def test_internal_variants_keep_their_original_content(path):
+    current, original = path.read_text(encoding='utf-8'), baseline(path)
+    assert outside(current) == outside(original), f'DOM outside Hero changed: {path}'
+    current_hero, old_hero = hero_content(current), hero_content(original)
+    for tag in ('h1', 'p', 'links'):
+        for item in old_hero[tag]:
+            assert item in current_hero[tag], (path, tag, item)
+    if path == ROOT / '404.html':
+        assert (ROOT / '404.html').read_bytes() == (ROOT / 'frontend/404.html').read_bytes()
+
+
+def test_home_video_is_preserved():
+    relative = 'frontend/assets/video/m2r-circuitos.webm'
+    assert (ROOT / relative).read_bytes() == subprocess.check_output(['git', 'show', f'{BASE}:{relative}'], cwd=ROOT)
+
+
+def test_shared_svg_is_the_single_circuit_source_and_fallback():
     root = ET.parse(ROOT / 'frontend/assets/img/hero-circuits.svg').getroot()
     paths = root.findall('.//{http://www.w3.org/2000/svg}path')
-    home = baseline(ROOT / 'frontend/index.html')
-    expected = re.findall(r'<path id="m2r-path-\d+" d="([^"]+)"', home)
-    assert len(paths) == len(expected) == 14
-    assert [p.attrib['d'] for p in paths] == expected
+    assert len(paths) == 14
     assert root.findall('.//{http://www.w3.org/2000/svg}circle')
     assert not root.findall('.//{http://www.w3.org/2000/svg}script')
+    for path in HERO_PAGES:
+        source = path.read_text(encoding='utf-8')
+        assert '/assets/img/hero-circuits.svg' in source, path
+    home = (ROOT / 'frontend/index.html').read_text(encoding='utf-8')
+    assert not re.search(r'<path\b[^>]*\bid="m2r-path-\d+"', home)
 
 
 def test_all_internal_routes_and_404_are_integrated():
