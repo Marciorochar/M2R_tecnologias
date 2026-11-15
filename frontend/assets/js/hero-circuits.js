@@ -1,42 +1,34 @@
-/* Interactive, brand-aligned golden circuits for the homepage hero only. */
+/* Home-only interaction layer. Shared geometry and motion state come from hero-system.js. */
 (() => {
     'use strict';
 
     const hero = document.getElementById('m2r-hero');
-    const svg = document.getElementById('m2r-circuits');
-    if (!hero || !svg) return;
+    if (!hero) return;
 
+    const svgNS = 'http://www.w3.org/2000/svg';
     const video = hero.querySelector('.home-hero-motion-video');
-    const motionToggle = document.getElementById('m2r-motion-toggle');
-    const sourcePaths = [...svg.querySelectorAll('#m2r-circuit-paths path')];
-    const traces = document.getElementById('m2r-trace-render');
-    const nodes = document.getElementById('m2r-node-render');
-    const pulses = document.getElementById('m2r-pulse-render');
-    const ripples = document.getElementById('m2r-ripple-render');
-    const halo = document.getElementById('m2r-cursor-halo');
+    const motionToggle = hero.querySelector('[data-hero-motion]');
     const activate = document.getElementById('m2r-circuit-activate');
     const statusText = document.getElementById('m2r-circuit-status-text');
     const tip = document.getElementById('m2r-circuit-tip');
-    if (!sourcePaths.length || !traces || !nodes || !pulses || !ripples || !halo || !activate || !statusText || !tip) return;
-
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const touch = window.matchMedia('(hover: none)');
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const paths = [];
-    const liveRipples = [];
+    let svg;
+    let sourcePaths = [];
+    let traces;
+    let nodes;
+    let pulses;
+    let ripples;
+    let halo;
+    let cursorNode;
     let pointer = null;
+    let pendingPointer = null;
     let activeUntil = 0;
     let elapsed = 0;
     let frameHandle = null;
     let previousFrame = performance.now();
-    let inView = true;
-    let userPaused = false;
-    let pendingPointer = null;
-
-    function listenForMediaChange(query, callback) {
-        if (typeof query.addEventListener === 'function') query.addEventListener('change', callback);
-        else if (typeof query.addListener === 'function') query.addListener(callback);
-    }
+    const paths = [];
+    const liveRipples = [];
 
     function draw(name, attributes, parent) {
         const element = document.createElementNS(svgNS, name);
@@ -57,28 +49,64 @@
         return touch.matches ? 'Toque nos circuitos para ativar' : 'Mova o mouse sobre os circuitos e clique para ativar';
     }
 
-    // Keep source geometry in the markup for a deterministic, testable design.
-    sourcePaths.forEach((source, index) => {
-        const d = source.getAttribute('d');
-        draw('path', { d, class: 'm2r-trace-under' }, traces);
-        const core = draw('path', { d, class: 'm2r-trace-core', stroke: 'url(#m2r-line-gold)' }, traces);
-        const near = draw('path', { d, class: 'm2r-trace-near' }, traces);
-        const length = source.getTotalLength();
-        const pulse = draw('circle', { class: 'm2r-light-pulse', cx: -100, cy: -100, r: index % 3 === 0 ? 3.5 : 2.6, opacity: 0.7 }, pulses);
-        for (const fraction of [0.23, 0.56, 0.79, 1]) {
-            const point = source.getPointAtLength(length * fraction);
-            draw('circle', { class: 'm2r-circuit-node', cx: point.x, cy: point.y, r: fraction === 1 ? 3.1 : 2 }, nodes);
-        }
-        paths.push({ source, core, near, length, pulse, phase: (index * 0.157) % 1, speed: 0.071 + index * 0.007, proximity: 0 });
-    });
+    function createLayers() {
+        const commonHalo = svg.querySelector('.hero-system__halo');
+        traces = document.createElementNS(svgNS, 'g');
+        traces.setAttribute('id', 'm2r-trace-render');
+        nodes = document.createElementNS(svgNS, 'g');
+        nodes.setAttribute('id', 'm2r-node-render');
+        pulses = document.createElementNS(svgNS, 'g');
+        pulses.setAttribute('id', 'm2r-pulse-render');
+        ripples = document.createElementNS(svgNS, 'g');
+        ripples.setAttribute('id', 'm2r-ripple-render');
+        [traces, nodes, pulses, ripples].forEach(layer => svg.insertBefore(layer, commonHalo));
 
-    const cursorNode = draw('circle', { class: 'm2r-node-active', r: 4.8, cx: -100, cy: -100, opacity: 0 }, nodes);
+        const defs = draw('defs', {}, svg);
+        const gradient = draw('radialGradient', { id: 'm2r-cursor-light' }, defs);
+        draw('stop', { offset: '0%', 'stop-color': '#ffe0a8', 'stop-opacity': '.42' }, gradient);
+        draw('stop', { offset: '35%', 'stop-color': '#f4ba74', 'stop-opacity': '.12' }, gradient);
+        draw('stop', { offset: '100%', 'stop-color': '#f4ba74', 'stop-opacity': '0' }, gradient);
+        const lineGradient = draw('linearGradient', {
+            id: 'm2r-line-gold', gradientUnits: 'userSpaceOnUse', x1: 0, y1: 0, x2: 1200, y2: 0,
+        }, defs);
+        draw('stop', { offset: '0%', 'stop-color': '#c58d52', 'stop-opacity': '.32' }, lineGradient);
+        draw('stop', { offset: '50%', 'stop-color': '#f3bf78', 'stop-opacity': '.7' }, lineGradient);
+        draw('stop', { offset: '100%', 'stop-color': '#ffd18c', 'stop-opacity': '.88' }, lineGradient);
+        const glow = draw('filter', { id: 'm2r-gold-glow', x: '-100%', y: '-100%', width: '300%', height: '300%' }, defs);
+        draw('feGaussianBlur', { stdDeviation: 3.2, result: 'blur' }, glow);
+        const glowMerge = draw('feMerge', {}, glow);
+        draw('feMergeNode', { in: 'blur' }, glowMerge);
+        draw('feMergeNode', { in: 'SourceGraphic' }, glowMerge);
+        const nodeGlow = draw('filter', { id: 'm2r-node-glow', x: '-100%', y: '-100%', width: '300%', height: '300%' }, defs);
+        draw('feGaussianBlur', { stdDeviation: 1.5, result: 'blur' }, nodeGlow);
+        const nodeMerge = draw('feMerge', {}, nodeGlow);
+        draw('feMergeNode', { in: 'blur' }, nodeMerge);
+        draw('feMergeNode', { in: 'SourceGraphic' }, nodeMerge);
+        halo = draw('circle', { id: 'm2r-cursor-halo', class: 'm2r-cursor-halo', r: 119, cx: 950, cy: 285 }, svg);
+    }
+
+    function buildHomeEffects() {
+        sourcePaths.forEach((source, index) => {
+            const d = source.getAttribute('d');
+            draw('path', { d, class: 'm2r-trace-under' }, traces);
+            const core = draw('path', { d, class: 'm2r-trace-core' }, traces);
+            const near = draw('path', { d, class: 'm2r-trace-near' }, traces);
+            const length = source.getTotalLength();
+            const pulse = draw('circle', { class: 'm2r-light-pulse', cx: -100, cy: -100, r: index % 3 === 0 ? 3.5 : 2.6, opacity: 0.7 }, pulses);
+            for (const fraction of [0.23, 0.56, 0.79, 1]) {
+                const point = source.getPointAtLength(length * fraction);
+                draw('circle', { class: 'm2r-circuit-node', cx: point.x, cy: point.y, r: fraction === 1 ? 3.1 : 2 }, nodes);
+            }
+            paths.push({ source, core, near, length, pulse, phase: (index * 0.157) % 1, speed: 0.071 + index * 0.007, proximity: 0 });
+        });
+        cursorNode = draw('circle', { class: 'm2r-node-active', r: 4.8, cx: -100, cy: -100, opacity: 0 }, nodes);
+    }
 
     function nearestOnPath(path, point) {
         let bestDistance = Infinity;
         let bestFraction = 0;
-        for (let i = 0; i <= 36; i++) {
-            const fraction = i / 36;
+        for (let index = 0; index <= 36; index++) {
+            const fraction = index / 36;
             const candidate = path.source.getPointAtLength(path.length * fraction);
             const distance = Math.hypot(candidate.x - point.x, candidate.y - point.y);
             if (distance < bestDistance) {
@@ -90,7 +118,7 @@
     }
 
     function onPointerMove(event) {
-        if (touch.matches || reducedMotion.matches || userPaused) return;
+        if (touch.matches || reducedMotion.matches || hero.classList.contains('hero-system--paused')) return;
         pendingPointer = { clientX: event.clientX, clientY: event.clientY };
     }
 
@@ -134,16 +162,16 @@
         pendingPointer = null;
         pointer = null;
         paths.forEach(path => { path.proximity = 0; });
-        cursorNode.setAttribute('opacity', '0');
+        if (cursorNode) cursorNode.setAttribute('opacity', '0');
         hero.style.setProperty('--cursor-glow', '.02');
         hero.style.setProperty('--parallax-x', '0px');
         hero.style.setProperty('--parallax-y', '0px');
-        halo.classList.remove('active');
-        if (!activeUntil) tip.textContent = defaultTip();
+        if (halo) halo.classList.remove('active');
+        if (!activeUntil && tip) tip.textContent = defaultTip();
     }
 
     function energize(position) {
-        if (reducedMotion.matches || userPaused) return;
+        if (reducedMotion.matches || hero.classList.contains('hero-system--paused')) return;
         const now = performance.now();
         activeUntil = now + 1750;
         statusText.textContent = 'Conexões ativadas';
@@ -155,7 +183,7 @@
 
     function frame(now) {
         frameHandle = null;
-        if (reducedMotion.matches || document.hidden || !inView) return;
+        if (hero.classList.contains('hero-system--paused')) return;
         const frameInterval = touch.matches ? 1000 / 30 : 1000 / 60;
         if (now - previousFrame < frameInterval) {
             frameHandle = window.requestAnimationFrame(frame);
@@ -188,12 +216,12 @@
             path.core.style.opacity = String(Math.min(1, 0.45 + path.proximity * 0.65 + (boosted ? 0.3 : 0)));
         });
 
-        for (let i = liveRipples.length - 1; i >= 0; i--) {
-            const ripple = liveRipples[i];
+        for (let index = liveRipples.length - 1; index >= 0; index--) {
+            const ripple = liveRipples[index];
             const progress = (now - ripple.born) / 1000;
             if (progress > 1.1) {
                 ripple.ring.remove();
-                liveRipples.splice(i, 1);
+                liveRipples.splice(index, 1);
                 continue;
             }
             ripple.ring.setAttribute('r', 5 + progress * 95);
@@ -203,67 +231,70 @@
     }
 
     function refreshAnimation() {
-        const shouldAnimate = !reducedMotion.matches && !document.hidden && inView && !userPaused;
-        hero.classList.toggle('motion-paused', !shouldAnimate);
+        const paused = hero.classList.contains('hero-system--paused');
+        const manuallyPaused = motionToggle?.getAttribute('aria-pressed') === 'true';
         if (video) {
-            if (shouldAnimate) video.play().catch(() => {});
+            if (!paused) video.play().catch(() => {});
             else video.pause();
         }
-        if (!shouldAnimate && frameHandle !== null) {
+        if (paused && frameHandle !== null) {
             window.cancelAnimationFrame(frameHandle);
             frameHandle = null;
         }
-        if (shouldAnimate && frameHandle === null) {
+        if (!paused && frameHandle === null) {
             previousFrame = performance.now() - (touch.matches ? 1000 / 30 : 1000 / 60);
             frameHandle = window.requestAnimationFrame(frame);
         }
-        if (motionToggle) motionToggle.hidden = reducedMotion.matches;
+        activate.disabled = paused;
         if (reducedMotion.matches) {
             onPointerLeave();
             statusText.textContent = 'Circuitos em repouso';
             tip.textContent = 'Movimento reduzido conforme sua preferência';
-            activate.disabled = true;
-        } else if (userPaused) {
+        } else if (manuallyPaused) {
             onPointerLeave();
             statusText.textContent = 'Animações pausadas';
             tip.textContent = 'Retome pelo controle de movimento no canto superior';
-            activate.disabled = true;
-        } else {
-            activate.disabled = false;
-            if (!activeUntil) {
-                statusText.textContent = 'Sistema em atividade';
-                tip.textContent = defaultTip();
-            }
+        } else if (paused) {
+            onPointerLeave();
+            statusText.textContent = 'Movimento suspenso';
+            tip.textContent = 'Os efeitos retomam quando o destaque estiver visível';
+        } else if (!activeUntil) {
+            statusText.textContent = 'Sistema em atividade';
+            tip.textContent = defaultTip();
         }
     }
 
-    hero.addEventListener('pointermove', onPointerMove, { passive: true });
-    hero.addEventListener('pointerleave', onPointerLeave);
-    hero.addEventListener('click', event => {
-        if (event.target.closest('a, button')) return;
-        const position = svgPoint(event);
-        if (position.x >= 535 || touch.matches) energize(position);
-    });
-    activate.addEventListener('click', () => energize({ x: 955, y: 318 }));
-    if (motionToggle) {
-        motionToggle.setAttribute('aria-pressed', 'false');
-        motionToggle.hidden = reducedMotion.matches;
-        motionToggle.addEventListener('click', () => {
-            userPaused = !userPaused;
-            motionToggle.setAttribute('aria-pressed', String(userPaused));
-            motionToggle.title = userPaused ? 'Retomar movimento' : 'Pausar movimento';
-            refreshAnimation();
+    function onHeroReady(event) {
+        if ((event.target && event.target !== hero) || hero.dataset.homeEffectsReady) return;
+        const detail = event.detail;
+        if (!detail || !detail.svg || !detail.paths?.length) return;
+        hero.dataset.homeEffectsReady = 'true';
+        svg = detail.svg;
+        sourcePaths = detail.paths;
+        createLayers();
+        buildHomeEffects();
+        activate.hidden = false;
+        hero.addEventListener('pointermove', onPointerMove, { passive: true });
+        hero.addEventListener('pointerleave', onPointerLeave);
+        hero.addEventListener('click', eventClick => {
+            if (eventClick.target.closest('a, button')) return;
+            const position = svgPoint(eventClick);
+            if (position.x >= 535 || touch.matches) energize(position);
+        });
+        activate.addEventListener('click', () => energize({ x: 955, y: 318 }));
+        const observer = new MutationObserver(refreshAnimation);
+        observer.observe(hero, { attributes: true, attributeFilter: ['class'] });
+        hero.classList.add('motion-ready');
+        refreshAnimation();
+    }
+
+    activate.hidden = true;
+    hero.addEventListener('m2rhero:ready', onHeroReady);
+    const readySvg = hero.querySelector('.hero-system__live');
+    if (readySvg) {
+        onHeroReady({
+            target: hero,
+            detail: { svg: readySvg, paths: [...readySvg.querySelectorAll('.hero-system__pulse')] },
         });
     }
-    listenForMediaChange(reducedMotion, refreshAnimation);
-    document.addEventListener('visibilitychange', refreshAnimation);
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(entries => {
-            inView = entries[0].isIntersecting;
-            refreshAnimation();
-        }, { threshold: 0 });
-        observer.observe(hero);
-    }
-    hero.classList.add('motion-ready');
-    refreshAnimation();
 })();

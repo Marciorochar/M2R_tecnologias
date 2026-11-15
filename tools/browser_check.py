@@ -7,13 +7,14 @@ import os
 import json
 import shutil
 import threading
+import time
 from http.server import ThreadingHTTPServer
 from site_tools import ROOT, Site, handler_for
 
 AXE_SOURCE = ROOT / 'node_modules' / 'axe-core' / 'axe.min.js'
 AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
 EVIDENCE_ROUTES = ('/', '/servicos', '/contato')
-RESPONSIVE_WIDTHS = (320, 390, 768, 1024, 1440)
+RESPONSIVE_WIDTHS = (320, 390, 768, 1024, 1440, 1920)
 ROUTE_SLUGS = {'/': 'home', '/servicos': 'servicos', '/contato': 'contato'}
 PRIMARY_CTA_COLORS = ('rgb(135, 86, 47)', 'rgb(112, 67, 33)', 'rgb(146, 85, 45)')
 
@@ -146,6 +147,104 @@ def check_layout(page):
     return metrics
 
 
+def check_shared_hero(page, route):
+    hero = page.locator('[data-hero-system]')
+    assert hero.count() == 1, (route, 'expected one shared hero root')
+    assert page.locator('link[href*="hero-system.css"]').count() == 1, route
+    assert page.locator('script[src*="hero-system.js"]').count() == 1, route
+    assert page.locator('script[src*="internal-hero.js"]').count() == 0, route
+    assert page.locator('script[src*="hero-circuits.js"]').count() == (1 if route == '/' else 0), route
+    page.wait_for_function("""() => {
+        const hero = document.querySelector('[data-hero-system]');
+        return hero?.querySelectorAll('.hero-system__live .hero-system__pulse').length === 14;
+    }""")
+    image = hero.locator('img.hero-system__art')
+    assert image.evaluate('el => el.complete && el.naturalWidth === 1200'), route
+    control = hero.locator('[data-hero-motion]')
+    assert control.count() == 1 and control.is_visible(), route
+    assert control.get_attribute('aria-pressed') == 'false', route
+    assert control.get_attribute('aria-label') == 'Pausar movimento do destaque', route
+    assert control.inner_text() == 'Pausar movimento', route
+
+
+def check_home_motion_brand_clearance(page, base):
+    page.set_viewport_size({'width': 320, 'height': 600})
+    page.goto(base + '/')
+    control = page.locator('#m2r-hero [data-hero-motion]')
+    control.wait_for(state='visible')
+    brand = page.locator('#m2r-hero .section-tag').bounding_box()
+    assert not boxes_overlap(brand, control.bounding_box()), {'brand': brand, 'control': control.bounding_box()}
+
+
+def check_home_script_load_race(browser, base):
+    context = browser.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='no-preference')
+
+    def delay_home_script(route):
+        time.sleep(1.5)
+        route.continue_()
+
+    context.route('**/assets/js/hero-circuits.js*', delay_home_script)
+    page = context.new_page()
+    page.goto(base + '/')
+    page.wait_for_function("() => document.querySelector('#m2r-hero')?.dataset.homeEffectsReady === 'true'", timeout=4000)
+    assert page.locator('#m2r-hero .home-hero-motion-video').evaluate('video => !video.paused')
+    assert page.locator('#m2r-circuit-activate').is_visible()
+    assert page.locator('#m2r-hero .m2r-trace-core').count() == 14
+    context.close()
+
+
+def check_invalid_hero_svg_payloads(browser, base):
+    payloads = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610">',
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610">' + '<path d="M0 0 H10"/>' * 13 + '</svg>',
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 610">' + '<path d="M"/>' * 14 + '</svg>',
+    )
+    for payload in payloads:
+        context = browser.new_context(viewport={'width': 390, 'height': 844}, reduced_motion='no-preference')
+
+        def replace_fetch(route):
+            if route.request.resource_type == 'fetch':
+                route.fulfill(status=200, content_type='image/svg+xml', body=payload)
+            else:
+                route.continue_()
+
+        context.route('**/assets/img/hero-circuits.svg', replace_fetch)
+        page = context.new_page()
+        page.goto(base + '/servicos')
+        control = page.locator('[data-hero-system] [data-hero-motion]')
+        page.wait_for_function("() => document.querySelector('[data-hero-system] .hero-system__art')?.complete")
+        page.wait_for_timeout(100)
+        assert control.evaluate('el => el.hidden')
+        assert page.locator('[data-hero-system] .hero-system__live').count() == 0
+        assert page.locator('[data-hero-system] .hero-system__art').evaluate('el => el.naturalWidth === 1200')
+        context.close()
+
+
+def check_progressive_hero_fallbacks(browser, base):
+    variants = ('/', '/servicos', '/blog/automacao-para-pequenos-negocios', '/projetos/m2r-server', '/404')
+    for failed_fetch in (False, True):
+        context = browser.new_context(java_script_enabled=failed_fetch, viewport={'width': 390, 'height': 844})
+        if failed_fetch:
+            def abort_svg_fetch(route):
+                if route.request.resource_type == 'fetch':
+                    route.abort()
+                else:
+                    route.continue_()
+            context.route('**/assets/img/hero-circuits.svg', abort_svg_fetch)
+        page = context.new_page()
+        for route in variants:
+            page.goto(base + route)
+            hero = page.locator('[data-hero-system]')
+            assert hero.locator('h1').is_visible() and hero.locator('.btn-primary').is_visible(), (route, failed_fetch)
+            image = hero.locator('img.hero-system__art')
+            page.wait_for_function('el => el.complete', arg=image.element_handle())
+            assert image.evaluate('el => el.naturalWidth === 1200'), (route, failed_fetch)
+            assert hero.locator('.hero-system__live').count() == 0, (route, failed_fetch)
+            assert hero.locator('[data-hero-motion]').evaluate('el => el.hidden'), (route, failed_fetch)
+            assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), (route, failed_fetch)
+        context.close()
+
+
 def check_first_tab_is_skip_link(page, base):
     page.goto(base + '/')
     page.keyboard.press('Tab')
@@ -169,11 +268,18 @@ def check_service_fragments(page, base):
 
 
 def check_fixed_control_overlaps(page, base):
+    for width, height in ((320, 600), (390, 844)):
+        page.set_viewport_size({'width': width, 'height': height})
+        page.goto(base + '/')
+        wa = page.locator('.mobile-whatsapp-cta')
+        hero_cta = page.locator('.home-hero .btn-primary')
+        assert not boxes_overlap(wa.bounding_box(), hero_cta.bounding_box()), f'WhatsApp CTA should not cover home CTA at {width}px'
+        motion = page.locator('#m2r-hero [data-hero-motion]')
+        motion.wait_for(state='visible')
+        assert not boxes_overlap(wa.bounding_box(), motion.bounding_box()), f'WhatsApp CTA should not cover motion control at {width}px'
     page.set_viewport_size({'width': 320, 'height': 600})
     page.goto(base + '/')
     wa = page.locator('.mobile-whatsapp-cta')
-    hero_cta = page.locator('.home-hero .btn-primary')
-    assert not boxes_overlap(wa.bounding_box(), hero_cta.bounding_box()), 'WhatsApp CTA should not cover the home primary CTA'
     page.goto(base + '/servicos#servico-automacao')
     service_card = page.locator('#servico-automacao')
     page.wait_for_function('el => el === document.activeElement', arg=service_card.element_handle())
@@ -188,8 +294,9 @@ def check_fixed_control_overlaps(page, base):
 def check_hero_motion(page, base):
     page.set_viewport_size({'width': 1440, 'height': 900})
     page.goto(base + '/')
-    toggle = page.locator('#m2r-motion-toggle')
-    page.wait_for_function("() => { const el = document.querySelector('#m2r-motion-toggle'); return el && !el.hidden; }")
+    toggle = page.locator('[data-hero-motion]')
+    page.wait_for_function("() => { const el = document.querySelector('#m2r-hero [data-hero-motion]'); return el && !el.hidden; }")
+    page.wait_for_function("() => document.querySelector('#m2r-hero .hero-system__live')?.querySelectorAll('.hero-system__pulse').length === 14")
     toggle_box = toggle.bounding_box()
     nav_box = page.locator('.navbar').bounding_box()
     status_box = page.locator('#m2r-circuit-status').bounding_box()
@@ -201,21 +308,21 @@ def check_hero_motion(page, base):
         f'circuit status and helper text should have separate lines: {status_box}, {tip_box}'
     )
     toggle.click()
-    page.wait_for_function("() => document.querySelector('#m2r-motion-toggle').getAttribute('aria-pressed') === 'true'")
+    page.wait_for_function("() => document.querySelector('#m2r-hero [data-hero-motion]').getAttribute('aria-pressed') === 'true'")
     paused = page.evaluate("""() => {
         const hero = document.querySelector('#m2r-hero');
         const video = hero.querySelector('.home-hero-motion-video');
         const dot = hero.querySelector('.home-hero-status-dot');
-        return {classPaused: hero.classList.contains('motion-paused'), videoPaused: video.paused,
+        return {classPaused: hero.classList.contains('hero-system--paused'), videoPaused: video.paused,
             dotState: getComputedStyle(dot).animationPlayState, pulses: document.querySelector('#m2r-pulse-render').innerHTML};
     }""")
     assert paused['classPaused'] and paused['videoPaused'] and paused['dotState'] == 'paused', paused
     page.wait_for_timeout(200)
     assert page.locator('#m2r-pulse-render').inner_html() == paused['pulses'], 'SVG circuit pulses should remain still while paused'
     toggle.click()
-    page.wait_for_function("() => document.querySelector('#m2r-motion-toggle').getAttribute('aria-pressed') === 'false'")
+    page.wait_for_function("() => document.querySelector('#m2r-hero [data-hero-motion]').getAttribute('aria-pressed') === 'false'")
     resumed = page.evaluate("""() => ({
-        classPaused: document.querySelector('#m2r-hero').classList.contains('motion-paused'),
+        classPaused: document.querySelector('#m2r-hero').classList.contains('hero-system--paused'),
         videoPaused: document.querySelector('.home-hero-motion-video').paused,
         dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState
     })""")
@@ -223,10 +330,9 @@ def check_hero_motion(page, base):
     page.wait_for_timeout(200)
     assert page.locator('#m2r-pulse-render').inner_html() != paused['pulses'], 'SVG circuit pulses should resume'
 
-    # The Hero controller also pauses when its tab is hidden or it leaves the viewport.
-    # Exercise both lifecycle transitions and verify every visible motion state agrees.
+    # The common controller pauses when the tab is hidden or the Hero leaves the viewport.
     page.evaluate("Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' }); Object.defineProperty(document, 'hidden', { configurable: true, value: true }); document.dispatchEvent(new Event('visibilitychange'))")
-    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('hero-system--paused')")
     hidden = page.evaluate("""() => ({
         videoPaused: document.querySelector('.home-hero-motion-video').paused,
         dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState,
@@ -234,9 +340,9 @@ def check_hero_motion(page, base):
     })""")
     assert hidden['videoPaused'] and hidden['dotState'] == 'paused', hidden
     page.evaluate("Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'visible' }); Object.defineProperty(document, 'hidden', { configurable: true, value: false }); document.dispatchEvent(new Event('visibilitychange'))")
-    page.wait_for_function("() => !document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    page.wait_for_function("() => !document.querySelector('#m2r-hero').classList.contains('hero-system--paused')")
     page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('hero-system--paused')")
     offscreen = page.evaluate("""() => ({
         videoPaused: document.querySelector('.home-hero-motion-video').paused,
         dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState,
@@ -244,7 +350,7 @@ def check_hero_motion(page, base):
     })""")
     assert offscreen['videoPaused'] and offscreen['dotState'] == 'paused', offscreen
     page.evaluate('window.scrollTo(0, 0)')
-    page.wait_for_function("() => !document.querySelector('#m2r-hero').classList.contains('motion-paused')")
+    page.wait_for_function("() => !document.querySelector('#m2r-hero').classList.contains('hero-system--paused')")
     returned = page.evaluate("""() => ({
         videoPaused: document.querySelector('.home-hero-motion-video').paused,
         dotState: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationPlayState
@@ -252,6 +358,17 @@ def check_hero_motion(page, base):
     assert not returned['videoPaused'] and returned['dotState'] == 'running', returned
     page.wait_for_timeout(200)
     assert page.locator('#m2r-pulse-render').inner_html() != offscreen['pulses'], 'SVG circuit pulses should resume after returning to the Hero'
+
+    toggle.click()
+    page.wait_for_function("() => document.querySelector('#m2r-hero [data-hero-motion]').getAttribute('aria-pressed') === 'true'")
+    page.emulate_media(reduced_motion='reduce')
+    page.wait_for_function("() => document.querySelector('#m2r-hero').classList.contains('hero-system--paused') && document.querySelector('#m2r-hero [data-hero-motion]').hidden")
+    page.emulate_media(reduced_motion='no-preference')
+    page.wait_for_function("() => !document.querySelector('#m2r-hero [data-hero-motion]').hidden")
+    assert toggle.get_attribute('aria-pressed') == 'true', 'manual pause should survive a runtime preference change'
+    toggle.focus()
+    page.keyboard.press('Enter')
+    page.wait_for_function("() => document.querySelector('#m2r-hero [data-hero-motion]').getAttribute('aria-pressed') === 'false'")
 
 
 def check_menu(page, mobile):
@@ -299,19 +416,19 @@ def check_site(browser, base):
     page = context.new_page()
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
-    results = ROOT / 'test-results'
-    results.mkdir(exist_ok=True)
+    results = ROOT / 'test-results' / 'hero-system'
+    results.mkdir(parents=True, exist_ok=True)
     # Produz evidencias mesmo quando um teste posterior falhar.
-    preview = results / 'site-previews'
-    preview.mkdir(exist_ok=True)
+    preview = results / 'browser-check' / 'site-previews'
+    preview.mkdir(parents=True, exist_ok=True)
     page.set_viewport_size({'width': 1365, 'height': 768})
     for name, route in (('home', '/'), ('projetos', '/projetos'), ('blog', '/blog')):
         page.goto(base + route)
         page.evaluate("window.scrollTo({top: 0, behavior: 'instant'})")
         page.screenshot(path=str(preview / f'{name}.png'), full_page=False)
-    evidence_dir = ROOT / 'docs' / 'auditoria' / 'evidencias' / 'responsivo'
+    evidence_dir = results / 'browser-check' / 'responsivo'
     evidence_dir.mkdir(parents=True, exist_ok=True)
-    axe_dir = ROOT / 'docs' / 'auditoria' / 'evidencias' / 'axe'
+    axe_dir = results / 'browser-check' / 'axe'
     axe_dir.mkdir(parents=True, exist_ok=True)
     manifest = {'routes': list(EVIDENCE_ROUTES), 'widths': list(RESPONSIVE_WIDTHS), 'captures': []}
     for width in RESPONSIVE_WIDTHS:
@@ -319,6 +436,8 @@ def check_site(browser, base):
         for route in routes:
             response = page.goto(base + route)
             assert response.status == 200
+            if width == RESPONSIVE_WIDTHS[0]:
+                check_shared_hero(page, route)
             check_menu(page, width <= 768)
             layout = check_layout(page)
             if width in (390, 1024):
@@ -338,6 +457,9 @@ def check_site(browser, base):
                 page.screenshot(path=str(results / f'{route[1:]}-{width}.png'), full_page=True)
         print(f'PASS Chromium: {len(routes)} routes at {width}px', flush=True)
     page.set_viewport_size({'width': 390, 'height': 844})
+    check_home_motion_brand_clearance(page, base)
+    check_home_script_load_race(browser, base)
+    check_invalid_hero_svg_payloads(browser, base)
     check_first_tab_is_skip_link(page, base)
     check_service_fragments(page, base)
     check_fixed_control_overlaps(page, base)
@@ -360,28 +482,32 @@ def check_site(browser, base):
             fp.goto(base + '/')
             fallback_motion = fp.evaluate("""() => ({
                 animation: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationName,
-                toggleHidden: document.querySelector('#m2r-motion-toggle').hidden
+                toggleHidden: document.querySelector('#m2r-hero [data-hero-motion]').hidden,
+                artWidth: document.querySelector('#m2r-hero .hero-system__art').naturalWidth
             })""")
-            assert fallback_motion['animation'] == 'none' and fallback_motion['toggleHidden'], fallback_motion
+            assert fallback_motion['animation'] == 'none' and fallback_motion['toggleHidden'] and fallback_motion['artWidth'] == 1200, fallback_motion
         if not disabled:
             fp.goto(base + '/')
             motion_state = fp.evaluate("""() => ({
                 status: document.querySelector('#m2r-circuit-status-text').textContent,
-                toggleHidden: document.querySelector('#m2r-motion-toggle').hidden,
+                toggleHidden: document.querySelector('#m2r-hero [data-hero-motion]').hidden,
                 animation: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationName,
-                videoPaused: document.querySelector('.home-hero-motion-video').paused
+                videoPaused: document.querySelector('.home-hero-motion-video').paused,
+                systemPaused: document.querySelector('#m2r-hero').classList.contains('hero-system--paused')
             })""")
             assert motion_state['status'] == 'Circuitos em repouso' and motion_state['toggleHidden']
-            assert motion_state['animation'] == 'none' and motion_state['videoPaused'], motion_state
+            assert motion_state['animation'] == 'none' and motion_state['videoPaused'] and motion_state['systemPaused'], motion_state
         fallback.close()
+    check_progressive_hero_fallbacks(browser, base)
     no_preference = browser.new_context(java_script_enabled=False, reduced_motion='no-preference', viewport={'width': 390, 'height': 844})
     no_preference_page = no_preference.new_page()
     no_preference_page.goto(base + '/')
     no_js_motion = no_preference_page.evaluate("""() => ({
         animation: getComputedStyle(document.querySelector('.home-hero-status-dot')).animationName,
-        toggleHidden: document.querySelector('#m2r-motion-toggle').hidden
+        toggleHidden: document.querySelector('#m2r-hero [data-hero-motion]').hidden,
+        artWidth: document.querySelector('#m2r-hero .hero-system__art').naturalWidth
     })""")
-    assert no_js_motion['animation'] == 'none' and no_js_motion['toggleHidden'], no_js_motion
+    assert no_js_motion['animation'] == 'none' and no_js_motion['toggleHidden'] and no_js_motion['artWidth'] == 1200, no_js_motion
     no_preference.close()
     for setup in (
         'delete window.IntersectionObserver',

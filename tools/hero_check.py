@@ -42,13 +42,13 @@ def contrast_ratio(first, second):
 
 
 def assert_static_usable(page, route, image_expected=True):
-    hero = page.locator('.page-hero--circuits')
+    hero = page.locator('[data-hero-system]')
     assert hero.locator('h1').is_visible(), route
     assert hero.locator('.hero-actions .btn-primary').is_visible(), route
     assert hero.evaluate("el => getComputedStyle(el).backgroundImage.includes('radial-gradient')"), route
-    assert not hero.locator('[data-internal-hero-motion]').is_visible(), route
+    assert not hero.locator('[data-hero-motion]').is_visible(), route
     if image_expected:
-        assert hero.locator('img.internal-hero-art').evaluate('el => el.complete && el.naturalWidth > 0'), route
+        assert hero.locator('img.hero-system__art').evaluate('el => el.complete && el.naturalWidth > 0'), route
 
 
 def breadcrumb_checks(page, route, check_focus=False):
@@ -58,7 +58,7 @@ def breadcrumb_checks(page, route, check_focus=False):
     metrics = nav.evaluate("""el => {
         const box = node => {const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
         return {nav:box(el),navbar:box(document.querySelector('.navbar')),
-            copy:box(document.querySelector('.page-hero--circuits > .container')),
+            copy:box(document.querySelector('[data-hero-system] > .container')),
             items:[...el.querySelectorAll('li')].map(box),
             links:[...el.querySelectorAll('a')].map(link => ({...box(link),text:link.textContent,
                 unobscured:document.elementFromPoint(link.getBoundingClientRect().x+link.getBoundingClientRect().width/2,
@@ -81,7 +81,7 @@ def breadcrumb_checks(page, route, check_focus=False):
 
 
 def fixed_overlay_check(page, route):
-    control, whatsapp = page.locator('[data-internal-hero-motion]'), page.locator('.mobile-whatsapp-cta')
+    control, whatsapp = page.locator('[data-hero-motion]'), page.locator('.mobile-whatsapp-cta')
     if not control.count() or not control.is_visible() or not whatsapp.is_visible():
         return None
     result = {'motion': control.bounding_box(), 'whatsapp': whatsapp.bounding_box()}
@@ -96,9 +96,9 @@ def layout_metrics(page, route):
         return {viewport:innerWidth,clientWidth:document.documentElement.clientWidth,
             scrollWidth:document.documentElement.scrollWidth,h1Count:document.querySelectorAll('h1').length,
             hero:box(hero),title:box(hero.querySelector('h1')),navbar:box(document.querySelector('.navbar')),
-            cta:box(hero.querySelector('.btn-primary')),art:hero.querySelector('.internal-hero-art') ? box(hero.querySelector('.internal-hero-art')) : null,
-            traceCount:hero.querySelectorAll('.internal-hero-live path').length,
-            positiveTraces:[...hero.querySelectorAll('.internal-hero-live path')].filter(p=>p.getTotalLength()>0 && p.getBoundingClientRect().width>0).length,
+            cta:box(hero.querySelector('.btn-primary')),art:hero.querySelector('.hero-system__art') ? box(hero.querySelector('.hero-system__art')) : null,
+            pulseCount:hero.querySelectorAll('.hero-system__live .hero-system__pulse').length,
+            positivePulses:[...hero.querySelectorAll('.hero-system__live .hero-system__pulse')].filter(p=>p.getTotalLength()>0).length,
             controls:[...hero.querySelectorAll('a.btn,button:not([hidden])')].map(box),
             panel:hero.querySelector('.project-detail-terminal,.error-page-panel') ? box(hero.querySelector('.project-detail-terminal,.error-page-panel')) : null};
     }""")
@@ -110,7 +110,7 @@ def layout_metrics(page, route):
         assert item['y'] >= metrics['navbar']['bottom'] - 1 and item['bottom'] <= hero['bottom'] + 1, (route, name, metrics)
     if metrics['art']:
         assert metrics['art']['width'] > 0 and metrics['art']['height'] > 0, (route, metrics)
-        assert metrics['traceCount'] == metrics['positiveTraces'] == 14, (route, metrics)
+        assert metrics['pulseCount'] == metrics['positivePulses'] == 14, (route, metrics)
         for i, first in enumerate(metrics['controls']):
             for second in metrics['controls'][i + 1:]:
                 assert not boxes_overlap(first, second), (route, 'controls collide', metrics)
@@ -124,39 +124,39 @@ def layout_metrics(page, route):
 
 def behavior_checks(page, base, route):
     page.goto(base + route)
-    hero = page.locator('.page-hero--circuits')
-    control = hero.locator('[data-internal-hero-motion]')
+    hero = page.locator('[data-hero-system]')
+    control = hero.locator('[data-hero-motion]')
     control.wait_for(state='visible')
     assert control.get_attribute('aria-label') and control.get_attribute('aria-pressed') == 'false'
-    assert not hero.evaluate("el => el.classList.contains('internal-hero-paused')")
+    assert not hero.evaluate("el => el.classList.contains('hero-system--paused')")
     title = hero.locator('h1').bounding_box()
     page.mouse.move(title['x'] + 10, title['y'] + 10)
-    assert hero.evaluate("el => el.classList.contains('internal-hero-pointer')"), 'pointer should enhance the active hero'
+    assert hero.evaluate("el => el.classList.contains('hero-system--pointer')"), 'pointer should enhance the active hero'
     control.focus()
     page.keyboard.press('Enter')
     assert control.get_attribute('aria-pressed') == 'true'
-    states = hero.locator('.internal-hero-pulse').evaluate_all("els => els.map(el => getComputedStyle(el).animationPlayState)")
+    states = hero.locator('.hero-system__pulse').evaluate_all("els => els.map(el => getComputedStyle(el).animationPlayState)")
     assert states == ['paused'] * 14
-    assert not hero.evaluate("el => el.classList.contains('internal-hero-pointer')"), 'paused pointer halo must clear'
+    assert not hero.evaluate("el => el.classList.contains('hero-system--pointer')"), 'paused pointer halo must clear'
     control.click()
     assert control.get_attribute('aria-pressed') == 'false'
-    assert hero.locator('.internal-hero-pulse').first.evaluate("el => getComputedStyle(el).animationPlayState") == 'running'
+    assert hero.locator('.hero-system__pulse').first.evaluate("el => getComputedStyle(el).animationPlayState") == 'running'
     page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,value:true}); document.dispatchEvent(new Event('visibilitychange'))")
-    assert hero.evaluate("el => el.classList.contains('internal-hero-paused')")
+    assert hero.evaluate("el => el.classList.contains('hero-system--paused')")
     assert control.get_attribute('aria-pressed') == 'false'
     page.evaluate("Object.defineProperty(document,'hidden',{configurable:true,value:false}); document.dispatchEvent(new Event('visibilitychange'))")
-    assert not hero.evaluate("el => el.classList.contains('internal-hero-paused')")
-    can_scroll = page.evaluate("document.documentElement.scrollHeight - innerHeight > document.querySelector('.page-hero--circuits').getBoundingClientRect().bottom")
+    assert not hero.evaluate("el => el.classList.contains('hero-system--paused')")
+    can_scroll = page.evaluate("document.documentElement.scrollHeight - innerHeight > document.querySelector('[data-hero-system]').getBoundingClientRect().bottom")
     if can_scroll:
         page.evaluate("window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'})")
     else:
         # Short 404 pages cannot scroll their whole hero out of view.
         hero.evaluate("el => {el.style.transform='translateY(-300vh)'}")
-    page.wait_for_function("() => document.querySelector('.page-hero--circuits').classList.contains('internal-hero-paused')")
+    page.wait_for_function("() => document.querySelector('[data-hero-system]').classList.contains('hero-system--paused')")
     assert control.get_attribute('aria-pressed') == 'false'
     page.evaluate("window.scrollTo({top:0,behavior:'instant'})")
     hero.evaluate("el => {el.style.transform=''}")
-    page.wait_for_function("() => !document.querySelector('.page-hero--circuits').classList.contains('internal-hero-paused')")
+    page.wait_for_function("() => !document.querySelector('[data-hero-system]').classList.contains('hero-system--paused')")
     control.click()
     page.emulate_media(reduced_motion='reduce')
     assert_static_usable(page, route)
@@ -166,8 +166,8 @@ def behavior_checks(page, base, route):
     assert control.get_attribute('aria-pressed') == 'true', 'manual choice survives reduced-motion changes'
     control.click()
     # Repeated execution is safe and does not duplicate controllers or SVGs.
-    page.add_script_tag(url=base + '/assets/js/internal-hero.js')
-    assert hero.locator('.internal-hero-live').count() == 1
+    page.add_script_tag(url=base + '/assets/js/hero-system.js')
+    assert hero.locator('.hero-system__live').count() == 1
     return {'route': route, 'toggleKeyboard': True, 'hiddenTab': True, 'intersection': True,
             'reducedMotionChange': True, 'manualPreferencePreserved': True, 'idempotent': True}
 
@@ -178,7 +178,7 @@ def mobile_overlay_checks(page, base, routes):
         page.set_viewport_size({'width': width, 'height': 900})
         for route in routes:
             page.goto(base + route)
-            control = page.locator('[data-internal-hero-motion]')
+            control = page.locator('[data-hero-motion]')
             control.wait_for(state='visible')
             control.evaluate("el => el.scrollIntoView({block:'end',behavior:'instant'})")
             results.append({'route': route, 'width': width, 'afterScroll': fixed_overlay_check(page, route)})
@@ -218,7 +218,7 @@ def run(output, axe_source, screenshots=True):
                     if route == '/':
                         page.emulate_media(reduced_motion='reduce')
                     else:
-                        control = page.locator('[data-internal-hero-motion]')
+                        control = page.locator('[data-hero-motion]')
                         control.wait_for(state='visible')
                         control.click()
                     # Long mobile heroes place the motion control below the
@@ -256,7 +256,7 @@ def run(output, axe_source, screenshots=True):
                 page.emulate_media(reduced_motion='no-preference')
                 if route != '/':
                     result = behavior_checks(page, base, route)
-                    primary = page.locator('.page-hero--circuits .btn-primary')
+                    primary = page.locator('[data-hero-system] .btn-primary')
                     primary.hover()
                     page.wait_for_function("el => getComputedStyle(el).backgroundColor === 'rgb(112, 67, 33)'", arg=primary.element_handle())
                     colors = primary.evaluate('el => [getComputedStyle(el).backgroundColor,getComputedStyle(el).color]')
@@ -269,11 +269,16 @@ def run(output, axe_source, screenshots=True):
             for mode in ('no-js', 'svg-failure', 'reduced-initial'):
                 fallback = browser.new_context(viewport={'width': 320, 'height': 900}, java_script_enabled=mode != 'no-js', reduced_motion='reduce' if mode == 'reduced-initial' else 'no-preference')
                 if mode == 'svg-failure':
-                    fallback.route('**/hero-circuits.svg', lambda request: request.abort())
+                    def fail_svg_fetch(route):
+                        if route.request.resource_type == 'fetch':
+                            route.abort()
+                        else:
+                            route.continue_()
+                    fallback.route('**/hero-circuits.svg', fail_svg_fetch)
                 sample = fallback.new_page()
                 for route in internal:
                     sample.goto(base + route)
-                    assert_static_usable(sample, route, image_expected=mode != 'svg-failure')
+                    assert_static_usable(sample, route)
                     assert sample.locator('h1').count() == 1
                     assert sample.evaluate('document.documentElement.scrollWidth <= innerWidth')
                     breadcrumb_checks(sample, route, check_focus=True)
