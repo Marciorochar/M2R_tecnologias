@@ -49,7 +49,15 @@ jobs:
 
       - name: Testar navegacao, responsividade e acessibilidade no Chromium
         run: |
-          python -m playwright install --with-deps chromium
+          # Runners Ubuntu hospedados no GitHub ja incluem Chrome. Evita que a
+          # validacao dependa de downloads de pacotes apt durante cada PR.
+          if command -v google-chrome >/dev/null 2>&1; then
+            export CHROME_PATH="$(command -v google-chrome)"
+          elif command -v chromium >/dev/null 2>&1; then
+            export CHROME_PATH="$(command -v chromium)"
+          else
+            python -m playwright install chromium
+          fi
           python tools/browser_check.py
 
       - name: Auditar pagina inicial com Lighthouse

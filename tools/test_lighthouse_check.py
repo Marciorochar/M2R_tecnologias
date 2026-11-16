@@ -1,7 +1,10 @@
 """Tests for readable Lighthouse scores and incomplete report handling."""
+import sys
 import unittest
+from pathlib import Path
 
-from lighthouse_check import summarize_lighthouse
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lighthouse_check import extract_lab_metrics, lighthouse_output_name, summarize_lighthouse
 
 
 class LighthouseCheckTests(unittest.TestCase):
@@ -28,6 +31,23 @@ class LighthouseCheckTests(unittest.TestCase):
                 "best-practices": {"score": 0.5},
                 "seo": {"score": 0.5},
             }})
+
+    def test_lighthouse_output_name_encodes_route_and_device(self):
+        self.assertEqual(lighthouse_output_name("/", "mobile"), "lighthouse-home-mobile.json")
+        self.assertEqual(lighthouse_output_name("/servicos", "mobile"), "lighthouse-servicos-mobile.json")
+        self.assertEqual(lighthouse_output_name("/contato", "desktop"), "lighthouse-contato-desktop.json")
+
+    def test_extract_lab_metrics_reads_lcp_cls_and_marks_inp_unavailable_when_absent(self):
+        report = {
+            "audits": {
+                "largest-contentful-paint": {"numericValue": 1840.4, "displayValue": "1.8 s"},
+                "cumulative-layout-shift": {"numericValue": 0.012, "displayValue": "0.012"},
+            }
+        }
+        metrics = extract_lab_metrics(report)
+        self.assertEqual(metrics["lcp"], "1.8 s")
+        self.assertEqual(metrics["cls"], "0.012")
+        self.assertEqual(metrics["inp"], "indisponível (laboratório sem interação)")
 
 
 if __name__ == "__main__":

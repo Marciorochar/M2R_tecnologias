@@ -11,6 +11,26 @@ from site_tools import ROOT, Site, handler_for
 
 AXE_SOURCE = ROOT / 'node_modules' / 'axe-core' / 'axe.min.js'
 AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
+EVIDENCE_ROUTES = ('/', '/servicos', '/contato')
+EVIDENCE_WIDTHS = (320, 390, 768, 1024, 1440)
+
+
+def evidence_capture_name(route, width):
+    slug = 'home' if route == '/' else route.strip('/').replace('/', '-')
+    return f'{slug}-{int(width)}.png'
+
+
+def responsive_evidence_targets():
+    return [
+        {
+            'route': route,
+            'width': width,
+            'filename': evidence_capture_name(route, width),
+        }
+        for route in EVIDENCE_ROUTES
+        for width in EVIDENCE_WIDTHS
+    ]
+
 
 
 def serious_axe_violations(report):
