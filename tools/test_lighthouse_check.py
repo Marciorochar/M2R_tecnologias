@@ -1,10 +1,9 @@
 """Tests for readable Lighthouse scores and incomplete report handling."""
-import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lighthouse_check import extract_lab_metrics, lighthouse_output_name, summarize_lighthouse
+import lighthouse_check
+from lighthouse_check import summarize_lighthouse
 
 
 class LighthouseCheckTests(unittest.TestCase):
@@ -32,22 +31,43 @@ class LighthouseCheckTests(unittest.TestCase):
                 "seo": {"score": 0.5},
             }})
 
-    def test_lighthouse_output_name_encodes_route_and_device(self):
-        self.assertEqual(lighthouse_output_name("/", "mobile"), "lighthouse-home-mobile.json")
-        self.assertEqual(lighthouse_output_name("/servicos", "mobile"), "lighthouse-servicos-mobile.json")
-        self.assertEqual(lighthouse_output_name("/contato", "desktop"), "lighthouse-contato-desktop.json")
+    def test_route_device_output_names_are_stable(self):
+        name_builder = getattr(lighthouse_check, "lighthouse_output_path", lambda *_: None)
+        self.assertEqual(name_builder(Path("reports"), "/", "mobile"), Path("reports/home-mobile.json"))
+        self.assertEqual(name_builder(Path("reports"), "/servicos", "mobile"), Path("reports/servicos-mobile.json"))
 
-    def test_extract_lab_metrics_reads_lcp_cls_and_marks_inp_unavailable_when_absent(self):
-        report = {
-            "audits": {
-                "largest-contentful-paint": {"numericValue": 1840.4, "displayValue": "1.8 s"},
-                "cumulative-layout-shift": {"numericValue": 0.012, "displayValue": "0.012"},
-            }
-        }
-        metrics = extract_lab_metrics(report)
-        self.assertEqual(metrics["lcp"], "1.8 s")
-        self.assertEqual(metrics["cls"], "0.012")
-        self.assertEqual(metrics["inp"], "indisponível (laboratório sem interação)")
+    def test_lab_metrics_use_numeric_values_and_leave_missing_inp_unavailable(self):
+        extractor = getattr(lighthouse_check, "extract_lab_metrics", lambda *_: None)
+        report = {"audits": {
+            "largest-contentful-paint": {"numericValue": 1234.5},
+            "cumulative-layout-shift": {"numericValue": 0.04},
+        }}
+        self.assertEqual(extractor(report), {"lcp_ms": 1234.5, "cls": 0.04, "inp_ms": None})
+        formatter = getattr(lighthouse_check, "format_lab_metrics", lambda *_: None)
+        self.assertIn("INP: indisponível", formatter(extractor(report)))
+
+    def test_missing_lab_audits_remain_unavailable(self):
+        extractor = getattr(lighthouse_check, "extract_lab_metrics", lambda *_: None)
+        self.assertEqual(extractor({"audits": {}}), {"lcp_ms": None, "cls": None, "inp_ms": None})
+
+    def test_route_validation_rejects_unknown_paths(self):
+        route_resolver = getattr(lighthouse_check, "validate_routes", lambda *_: None)
+        self.assertEqual(route_resolver(["/", "/contato"]), ["/", "/contato"])
+        with self.assertRaises(ValueError):
+            route_resolver(["/unknown"])
+
+    def test_lighthouse_binary_resolution_supports_windows_command_shim(self):
+        resolver = getattr(lighthouse_check, "lighthouse_binary_path", lambda *_args, **_kwargs: None)
+        root = Path("project")
+        self.assertEqual(resolver(root, windows=True), Path("project/node_modules/.bin/lighthouse.cmd"))
+        self.assertEqual(resolver(root, windows=False), Path("project/node_modules/.bin/lighthouse"))
+
+    def test_legacy_no_argument_report_filename_is_preserved(self):
+        name_builder = getattr(lighthouse_check, "lighthouse_output_path", lambda *_args, **_kwargs: None)
+        self.assertEqual(
+            name_builder(Path("test-results"), "/", "mobile", legacy_default=True),
+            Path("test-results/lighthouse-home.json"),
+        )
 
 
 if __name__ == "__main__":

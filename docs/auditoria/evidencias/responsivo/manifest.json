@@ -1,0 +1,166 @@
+{
+  "routes": [
+    "/",
+    "/servicos",
+    "/contato"
+  ],
+  "widths": [
+    320,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "captures": [
+    {
+      "viewportWidth": 320,
+      "clientWidth": 320,
+      "documentScrollWidth": 320,
+      "bodyScrollWidth": 320,
+      "offenders": [],
+      "route": "/",
+      "width": 320,
+      "screenshot": "docs/auditoria/evidencias/responsivo/home-320.png"
+    },
+    {
+      "viewportWidth": 320,
+      "clientWidth": 320,
+      "documentScrollWidth": 320,
+      "bodyScrollWidth": 320,
+      "offenders": [],
+      "route": "/servicos",
+      "width": 320,
+      "screenshot": "docs/auditoria/evidencias/responsivo/servicos-320.png"
+    },
+    {
+      "viewportWidth": 320,
+      "clientWidth": 320,
+      "documentScrollWidth": 320,
+      "bodyScrollWidth": 320,
+      "offenders": [],
+      "route": "/contato",
+      "width": 320,
+      "screenshot": "docs/auditoria/evidencias/responsivo/contato-320.png"
+    },
+    {
+      "viewportWidth": 390,
+      "clientWidth": 390,
+      "documentScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "offenders": [],
+      "route": "/",
+      "width": 390,
+      "screenshot": "docs/auditoria/evidencias/responsivo/home-390.png"
+    },
+    {
+      "viewportWidth": 390,
+      "clientWidth": 390,
+      "documentScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "offenders": [],
+      "route": "/servicos",
+      "width": 390,
+      "screenshot": "docs/auditoria/evidencias/responsivo/servicos-390.png"
+    },
+    {
+      "viewportWidth": 390,
+      "clientWidth": 390,
+      "documentScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "offenders": [],
+      "route": "/contato",
+      "width": 390,
+      "screenshot": "docs/auditoria/evidencias/responsivo/contato-390.png"
+    },
+    {
+      "viewportWidth": 768,
+      "clientWidth": 768,
+      "documentScrollWidth": 768,
+      "bodyScrollWidth": 768,
+      "offenders": [],
+      "route": "/",
+      "width": 768,
+      "screenshot": "docs/auditoria/evidencias/responsivo/home-768.png"
+    },
+    {
+      "viewportWidth": 768,
+      "clientWidth": 768,
+      "documentScrollWidth": 768,
+      "bodyScrollWidth": 768,
+      "offenders": [],
+      "route": "/servicos",
+      "width": 768,
+      "screenshot": "docs/auditoria/evidencias/responsivo/servicos-768.png"
+    },
+    {
+      "viewportWidth": 768,
+      "clientWidth": 768,
+      "documentScrollWidth": 768,
+      "bodyScrollWidth": 768,
+      "offenders": [],
+      "route": "/contato",
+      "width": 768,
+      "screenshot": "docs/auditoria/evidencias/responsivo/contato-768.png"
+    },
+    {
+      "viewportWidth": 1024,
+      "clientWidth": 1024,
+      "documentScrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "offenders": [],
+      "route": "/",
+      "width": 1024,
+      "screenshot": "docs/auditoria/evidencias/responsivo/home-1024.png"
+    },
+    {
+      "viewportWidth": 1024,
+      "clientWidth": 1024,
+      "documentScrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "offenders": [],
+      "route": "/servicos",
+      "width": 1024,
+      "screenshot": "docs/auditoria/evidencias/responsivo/servicos-1024.png"
+    },
+    {
+      "viewportWidth": 1024,
+      "clientWidth": 1024,
+      "documentScrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "offenders": [],
+      "route": "/contato",
+      "width": 1024,
+      "screenshot": "docs/auditoria/evidencias/responsivo/contato-1024.png"
+    },
+    {
+      "viewportWidth": 1440,
+      "clientWidth": 1440,
+      "documentScrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "offenders": [],
+      "route": "/",
+      "width": 1440,
+      "screenshot": "docs/auditoria/evidencias/responsivo/home-1440.png"
+    },
+    {
+      "viewportWidth": 1440,
+      "clientWidth": 1440,
+      "documentScrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "offenders": [],
+      "route": "/servicos",
+      "width": 1440,
+      "screenshot": "docs/auditoria/evidencias/responsivo/servicos-1440.png"
+    },
+    {
+      "viewportWidth": 1440,
+      "clientWidth": 1440,
+      "documentScrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "offenders": [],
+      "route": "/contato",
+      "width": 1440,
+      "screenshot": "docs/auditoria/evidencias/responsivo/contato-1440.png"
+    }
+  ]
+}

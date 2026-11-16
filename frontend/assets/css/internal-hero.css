@@ -1,0 +1,44 @@
+/* Page-specific structure; the shared surface, art, pulses and controls live in hero-system.css. */
+.page-hero--circuits {
+    min-height: 0;
+    padding: clamp(112px, 9vw, 132px) 0 36px;
+}
+.page-hero--circuits > .container {
+    position: relative;
+    width: min(1200px, calc(100% - clamp(40px, 8vw, 128px)));
+}
+.page-hero--circuits:not(.project-detail-hero):not(.error-page) > .container > :not(.hero-actions) { max-width: 62%; }
+.page-hero--circuits .section-tag--dark { color: #f1c994; }
+.page-hero--circuits h1 {
+    margin: 20px 0 16px;
+    font-size: clamp(2.3rem, 4.1vw, 4.2rem);
+    line-height: 1.09;
+    letter-spacing: -.045em;
+    text-wrap: balance;
+}
+.page-hero--circuits p { color: #e8d8c6; line-height: 1.58; }
+.page-hero--circuits .article-meta { margin-top: 18px; font-size: .9rem; }
+.page-hero--circuits .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.page-hero--circuits .btn-primary { background: #92552d; color: #fff !important; }
+.page-hero--circuits .btn-primary:hover { background: var(--color-action-bronze-hover); }
+.page-hero--circuits .project-detail-hero-layout,
+.page-hero--circuits .error-page-layout { gap: clamp(24px, 4vw, 56px); }
+.page-hero--circuits .project-detail-terminal { min-width: 0; background: rgba(30, 19, 14, .88); border-color: rgba(241, 201, 148, .5); }
+.page-hero--circuits .project-detail-terminal p { color: #e8d8c6; overflow-wrap: anywhere; }
+.page-hero--circuits .error-page-panel { min-width: 0; }
+
+@media (max-width: 900px) {
+    .page-hero--circuits { padding-top: 104px; }
+    .page-hero--circuits:not(.project-detail-hero):not(.error-page) > .container > :not(.hero-actions) { max-width: 100%; }
+    .page-hero--circuits .project-detail-hero-layout,
+    .page-hero--circuits .error-page-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .page-hero--circuits { padding-top: 96px; padding-bottom: 24px; }
+    .page-hero--circuits h1 { font-size: clamp(2.12rem, 9vw, 3.6rem); overflow-wrap: normal; }
+    .page-hero--circuits .hero-actions { flex-direction: column; }
+    .page-hero--circuits .hero-actions .btn { width: 100%; min-width: 0; }
+    .page-hero--circuits .project-detail-terminal { padding: 20px; }
+    .page-hero--circuits .error-page-panel { min-height: 260px; padding: 28px; }
+}

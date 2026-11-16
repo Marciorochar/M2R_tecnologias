@@ -1,0 +1,15 @@
+{
+  "violations": [],
+  "heroViolations": [],
+  "breadcrumbViolations": [],
+  "outsideHeroViolations": [],
+  "axeVersion": "4.14.0",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "scope": "Full document A/AA report; changed Hero and breadcrumb presentation gate this task. Other findings retained without a conformance claim."
+}

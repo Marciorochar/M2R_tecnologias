@@ -23,7 +23,9 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Desenvolvimento web, automação e sistemas personalizados","provider":{"@type":"Organization","name":"M2R Tecnologias","url":"https://m2rtecnologias.vercel.app/"},"areaServed":"BR","url":"https://m2rtecnologias.vercel.app/servicos"}</script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://m2rtecnologias.vercel.app/"},{"@type":"ListItem","position":2,"name":"Serviços","item":"https://m2rtecnologias.vercel.app/servicos"}]}</script>
     <title>Serviços | M2R Tecnologias</title>
-    <link rel="stylesheet" href="../assets/css/style.css?v=1ae18e2658">
+    <link rel="stylesheet" href="../assets/css/style.css?v=e22cc70fde">
+    <link rel="stylesheet" href="/assets/css/hero-system.css?v=a70c77e805">
+    <link rel="stylesheet" href="/assets/css/internal-hero.css?v=c237b85f9c">
     <link rel="icon" href="../assets/img/logo.png" type="image/png">
 </head>
 <body>
@@ -41,55 +43,43 @@
     </nav>
 
     <main id="conteudo-principal">
-        <nav class="breadcrumbs" aria-label="Trilha de navegação"><ol><li><a href="/">Início</a></li><li aria-current="page">Serviços</li></ol></nav>
-        <section class="page-hero">
+        <section class="page-hero page-hero--circuits hero-system" data-hero-system>
+            <img class="hero-system__art" src="/assets/img/hero-circuits.svg" alt="" aria-hidden="true" width="1200" height="610" decoding="async">
             <div class="container">
                 <span class="section-tag section-tag--dark">Serviços e soluções</span>
                 <h1>Tecnologia aplicada ao seu contexto</h1>
                 <p>Da presença digital à integração de dados, a M2R desenvolve soluções que organizam processos e ampliam a capacidade de operação.</p>
-            </div>
+            <div class="hero-actions"><a class="btn btn-primary" href="/contato">Converse sobre seu projeto</a></div></div>
+
+            <div class="container hero-system__controls"><button class="hero-system__motion-control" type="button" data-hero-motion aria-label="Pausar movimento do destaque" aria-pressed="false" hidden>Pausar movimento</button></div>
         </section>
 
         <section class="section-block">
             <div class="container">
-                <div class="service-category-group">
-                    <div class="section-heading fade-in-section">
-                        <span class="section-tag">Presença digital</span>
-                        <h2>Presença digital</h2>
-                        <p>Sites e páginas estruturadas para apresentar a marca com clareza, rapidez e credibilidade.</p>
-                    </div>
+                <section class="service-group" aria-labelledby="servicos-presenca-heading">
+                    <div class="section-heading"><h2 id="servicos-presenca-heading">Presença digital</h2></div>
                     <div class="card-grid card-grid--three">
-                        <article id="servico-web" class="service-card fade-in-section" tabindex="-1"><span class="service-icon">01</span><h3>Desenvolvimento web</h3><p>Sites, portais e interfaces responsivas com foco em clareza, desempenho e manutenção.</p></article>
+                        <article class="service-card fade-in-section" id="servico-web" tabindex="-1"><span class="service-icon">01</span><h3>Desenvolvimento web</h3><p>Sites, portais e interfaces responsivas com foco em clareza, desempenho e manutenção.</p></article>
                         <article class="service-card fade-in-section"><span class="service-icon">02</span><h3>Sites institucionais</h3><p>Presença digital profissional para apresentar serviços, diferenciais e canais de contato.</p></article>
                         <article class="service-card fade-in-section"><span class="service-icon">03</span><h3>Landing pages</h3><p>Páginas direcionadas para campanhas, lançamentos e captação de oportunidades.</p></article>
                     </div>
-                </div>
-
-                <div class="service-category-group">
-                    <div class="section-heading fade-in-section">
-                        <span class="section-tag">Operação e informação</span>
-                        <h2>Operação e informação</h2>
-                        <p>Automações, painéis e ferramentas internas para reduzir trabalho manual e centralizar dados.</p>
-                    </div>
+                </section>
+                <section class="service-group" aria-labelledby="servicos-operacao-heading">
+                    <div class="section-heading"><h2 id="servicos-operacao-heading">Operação e informação</h2></div>
                     <div class="card-grid card-grid--three">
-                        <article id="servico-automacao" class="service-card fade-in-section" tabindex="-1"><span class="service-icon">04</span><h3>Automação de processos</h3><p>Rotinas digitais que reduzem trabalho manual e aumentam a previsibilidade operacional.</p></article>
-                        <article id="servico-dados" class="service-card fade-in-section" tabindex="-1"><span class="service-icon">05</span><h3>Dados e dashboards</h3><p>Indicadores, visualizações e análises para apoiar decisões com informações confiáveis.</p></article>
+                        <article class="service-card fade-in-section" id="servico-automacao" tabindex="-1"><span class="service-icon">04</span><h3>Automação de processos</h3><p>Rotinas digitais que reduzem trabalho manual e aumentam a previsibilidade operacional.</p></article>
+                        <article class="service-card fade-in-section" id="servico-dados" tabindex="-1"><span class="service-icon">05</span><h3>Dados e dashboards</h3><p>Indicadores, visualizações e análises para apoiar decisões com informações confiáveis.</p></article>
                         <article class="service-card fade-in-section"><span class="service-icon">06</span><h3>Sistemas personalizados</h3><p>Ferramentas sob medida para fluxos específicos, regras de negócio e equipes internas.</p></article>
                         <article class="service-card fade-in-section"><span class="service-icon">07</span><h3>Integrações backend</h3><p>APIs e conexões entre sistemas para centralizar dados e reduzir retrabalho.</p></article>
                     </div>
-                </div>
-
-                <div class="service-category-group">
-                    <div class="section-heading fade-in-section">
-                        <span class="section-tag">Soluções e orientação</span>
-                        <h2>Soluções e orientação</h2>
-                        <p>Apoio técnico para estruturar ambientes digitais e priorizar as entregas mais importantes.</p>
-                    </div>
+                </section>
+                <section class="service-group" aria-labelledby="servicos-solucoes-heading">
+                    <div class="section-heading"><h2 id="servicos-solucoes-heading">Soluções e orientação</h2></div>
                     <div class="card-grid card-grid--three">
                         <article class="service-card fade-in-section"><span class="service-icon">08</span><h3>Soluções digitais</h3><p>Estruturação de ambientes digitais que conectam informação, operação e atendimento.</p></article>
                         <article class="service-card fade-in-section"><span class="service-icon">09</span><h3>Consultoria tecnológica</h3><p>Diagnóstico e direcionamento para priorizar iniciativas que gerem valor real.</p></article>
                     </div>
-                </div>
+                </section>
             </div>
         </section>
 
@@ -113,5 +103,6 @@
     </footer>
     <a class="mobile-whatsapp-cta" href="https://wa.me/5522998270026?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20M2R%20Tecnologias%20e%20gostaria%20de%20conversar%20sobre%20uma%20solu%C3%A7%C3%A3o%20digital." target="_blank" rel="noopener" aria-label="Chamar a M2R Tecnologias no WhatsApp (abre em nova aba ou aplicativo)">WhatsApp</a>
     <script src="../assets/js/script.js?v=b5833ab847"></script>
+    <script src="/assets/js/hero-system.js?v=813f76aa46" defer></script>
 </body>
 </html>

@@ -44,33 +44,33 @@
 - Consumes: stash snapshot `0edd05481b3b0aabaf465a0b0cc6f857ddf39581`; original index stage-0 files listed above.
 - Produces: clean isolated feature branch with the circuit-enabled source, existing test/toolchain, and approved design doc. Original worktree and `refs/stash` remain byte-for-byte unchanged.
 
-- [ ] **Step 1: Record and verify the source snapshot and original state**
+- [x] **Step 1: Record and verify the source snapshot and original state**
 
 Run: `rtk git rev-parse refs/stash` and `rtk git status --short --branch` in the original repository.
 Expected: stash resolves to `0edd05481b3b0aabaf465a0b0cc6f857ddf39581`; the existing unmerged files and dirty state are recorded and left untouched.
 
-- [ ] **Step 2: Create an isolated worktree from the tracked stash snapshot**
+- [x] **Step 2: Create an isolated worktree from the tracked stash snapshot**
 
 Run: `rtk git worktree add -b codex/ux-cro-integrado-2026-11-13 C:\Users\marci\Desktop\M2R-UX-CRO 0edd05481b3b0aabaf465a0b0cc6f857ddf39581`.
 Expected: new branch points at the snapshot commit and target worktree has no unresolved index entries.
 
-- [ ] **Step 3: Copy only the staged circuit files and approved design into the isolated worktree**
+- [x] **Step 3: Copy only the staged circuit files and approved design into the isolated worktree**
 
 Copy the three listed source files from the original working directory and the approved spec. Do not copy the stash’s third parent or other untracked folders.
 
 Expected: the copied files’ `git hash-object` values match the source files; `frontend/index.html`, `frontend/pages/servicos.html`, `frontend/pages/contato.html`, and `frontend/assets/css/style.css` contain no conflict markers; original `refs/stash` and worktree remain unchanged.
 
-- [ ] **Step 4: Generate and check asset hashes**
+- [x] **Step 4: Generate and check asset hashes**
 
 Run: `rtk node tools/version-assets.js` then `rtk node tools/version-assets.js --check` in the isolated worktree.
 Expected: the second command prints `versoes dos assets atualizadas`; every loaded CSS/JS URL refers to the content hash of the restored files.
 
-- [ ] **Step 5: Run baseline static tests before product changes**
+- [x] **Step 5: Run baseline static tests before product changes**
 
 Run: `rtk .venv-audit\Scripts\python.exe tools\test_site_tools.py` and `rtk .venv-audit\Scripts\python.exe tools\test_hero_circuits.py`.
 Expected: both baseline suites pass before the new UX behavior is added.
 
-- [ ] **Step 6: Commit the isolated baseline**
+- [x] **Step 6: Commit the isolated baseline**
 
 Commit only the three copied circuit files, the design doc, and generated hash updates in the isolated branch.
 Expected: baseline commit exists on `codex/ux-cro-integrado-2026-11-13`; original worktree has no new changes.
@@ -210,17 +210,17 @@ For each route and requested width, run layout checks, record viewport/client/do
 
 Add CLI options `--routes` (validated against the known home/services/contact routes), `--device mobile|desktop`, and `--output-dir`; keep existing no-argument CI behavior (home only, `test-results/lighthouse-home.json`). Save JSON by route/device and summarize performance/accessibility/best-practices/SEO plus LCP/CLS if present. Print INP as unavailable when absent. Keep scores informational and lab-only.
 
-- [ ] **Step 5: Run unit tests and browser/axe checks**
+- [x] **Step 5: Run unit tests and browser/axe checks**
 
 Run: `rtk .venv-audit\Scripts\python.exe tools\test_browser_check.py`; `rtk .venv-audit\Scripts\python.exe tools\test_lighthouse_check.py`; `rtk .venv-audit\Scripts\python.exe tools\browser_check.py`.
 Expected: all unit/browser checks pass; screenshots and JSON manifest exist for the 15 route/width combinations; axe has no serious/critical findings.
 
-- [ ] **Step 6: Run and archive Lighthouse laboratory audits**
+- [x] **Step 6: Run and archive Lighthouse laboratory audits**
 
 Run: `rtk .venv-audit\Scripts\python.exe tools\lighthouse_check.py --routes / /servicos /contato --device mobile --output-dir docs\auditoria\evidencias\lighthouse` and the same command with `--routes / --device desktop`.
 Expected: four valid JSON reports and category summaries; LCP/CLS values are recorded when available, INP is explicitly unavailable unless returned. Do not report field CWV.
 
-- [ ] **Step 7: Review evidence sizes and commit test/evidence changes**
+- [x] **Step 7: Review evidence sizes and commit test/evidence changes**
 
 Run: `rtk git diff --check` and list the generated evidence files. Commit the tool changes and requested evidence artifacts; exclude `node_modules`, temporary logs and unrelated files.
 Expected: evidence is readable, linked to its route/device/width, no secret/contact data is present, and diff check passes.

@@ -8,6 +8,9 @@ const ASSETS = [
     ['style.css', path.join(ROOT, 'frontend', 'assets', 'css', 'style.css')],
     ['script.js', path.join(ROOT, 'frontend', 'assets', 'js', 'script.js')],
     ['hero-circuits.js', path.join(ROOT, 'frontend', 'assets', 'js', 'hero-circuits.js')],
+    ['hero-system.css', path.join(ROOT, 'frontend', 'assets', 'css', 'hero-system.css')],
+    ['hero-system.js', path.join(ROOT, 'frontend', 'assets', 'js', 'hero-system.js')],
+    ['internal-hero.css', path.join(ROOT, 'frontend', 'assets', 'css', 'internal-hero.css')],
 ];
 
 const walkHtml = (directory) => fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

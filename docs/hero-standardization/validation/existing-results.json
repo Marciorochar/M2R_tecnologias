@@ -1,0 +1,64 @@
+[
+  {
+    "name": "pytest",
+    "command": [
+      "C:\\Users\\marci\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "pytest",
+      "tools",
+      "backend",
+      "-q"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "unittest",
+    "command": [
+      "C:\\Users\\marci\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools",
+      "-p",
+      "test_*.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "assets",
+    "command": [
+      "node",
+      "tools/version-assets.js",
+      "--check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "links",
+    "command": [
+      "C:\\Users\\marci\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "tools/site_tools.py",
+      "check"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "security",
+    "command": [
+      "C:\\Users\\marci\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "tools/site_tools.py",
+      "security"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "browser-check",
+    "command": [
+      "C:\\Users\\marci\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+      "-u",
+      "tools/browser_check.py"
+    ],
+    "exitCode": 0
+  }
+]
