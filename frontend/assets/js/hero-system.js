@@ -3,6 +3,7 @@
     'use strict';
 
     const NS = 'http://www.w3.org/2000/svg';
+    const POINTER_HALO_RADIUS = 72;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const listen = (target, type, callback) => {
         if (typeof target.addEventListener === 'function') target.addEventListener(type, callback);
@@ -116,7 +117,7 @@
                 });
 
                 const halo = document.createElementNS(NS, 'circle');
-                halo.setAttribute('r', '110');
+                halo.setAttribute('r', String(POINTER_HALO_RADIUS));
                 halo.classList.add('hero-system__halo');
                 svg.append(halo);
                 liveSvg = svg;
@@ -125,7 +126,9 @@
                 const paths = [...svg.querySelectorAll('.hero-system__pulse')];
                 enhanced = true;
                 sync();
-                root.dispatchEvent(new CustomEvent('m2rhero:ready', { detail: { svg, paths } }));
+                root.dispatchEvent(new CustomEvent('m2rhero:ready', {
+                    detail: { svg, paths, haloRadius: POINTER_HALO_RADIUS },
+                }));
             })
             .catch(() => {
                 // The static image and readable page content remain available.
