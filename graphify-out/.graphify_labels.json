@@ -1,0 +1,14 @@
+{
+  "0": "Navegador, Lighthouse e Infra de Testes",
+  "1": "Auditoria de HTML e Plano UX/CRO",
+  "2": "Rotas, Segurança Flask e Auditorias",
+  "3": "Validação e Testes do Backend Flask",
+  "4": "Sitemap, Versionamento de Assets e Rotas Vercel",
+  "5": "Páginas do Site, Blog e Identidade Visual",
+  "6": "Quality Gates e Melhoria do Graphify",
+  "7": "Hero de Circuitos e Design UX/CRO",
+  "8": "Verificação de Acessibilidade (axe-core)",
+  "9": "Pipeline de CI (GitHub Actions)",
+  "10": "Automação de Dependências (Dependabot)",
+  "11": "Testes de Sitemap e Robots"
+}

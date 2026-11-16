@@ -1,0 +1,16 @@
+# Artefatos locais e de execucao
+.playwright-mcp/
+test-results/
+playwright-report/
+
+# Midia binaria e capturas de auditoria que poluem o grafo
+frontend/assets/video/
+docs/auditoria/*.png
+docs/auditoria/*.xlsx
+
+# Copia legada da pagina 404 na raiz (mantem apenas frontend/404.html)
+404.html
+
+# Documentos academicos externos nao pertencentes ao site M2R
+*.pdf
+

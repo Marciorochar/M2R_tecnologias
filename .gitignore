@@ -35,3 +35,14 @@ _backup/
 .pytest_cache/
 test-results/
 playwright-report/
+.playwright-mcp/
+
+# Graphify volatile caches and backups
+graphify-out/cache/
+graphify-out/20*/
+graphify-out/.graphify_*
+!graphify-out/.graphify_labels.json
+
+# External local documents
+*.pdf
+
