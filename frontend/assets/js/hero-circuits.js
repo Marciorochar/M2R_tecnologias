@@ -20,6 +20,7 @@
     let pulses;
     let ripples;
     let halo;
+    let pointerHaloRadius;
     let cursorNode;
     let pointer = null;
     let pendingPointer = null;
@@ -82,7 +83,9 @@
         const nodeMerge = draw('feMerge', {}, nodeGlow);
         draw('feMergeNode', { in: 'blur' }, nodeMerge);
         draw('feMergeNode', { in: 'SourceGraphic' }, nodeMerge);
-        halo = draw('circle', { id: 'm2r-cursor-halo', class: 'm2r-cursor-halo', r: 119, cx: 950, cy: 285 }, svg);
+        halo = draw('circle', {
+            id: 'm2r-cursor-halo', class: 'm2r-cursor-halo', r: pointerHaloRadius, cx: 950, cy: 285,
+        }, svg);
     }
 
     function buildHomeEffects() {
@@ -267,10 +270,11 @@
     function onHeroReady(event) {
         if ((event.target && event.target !== hero) || hero.dataset.homeEffectsReady) return;
         const detail = event.detail;
-        if (!detail || !detail.svg || !detail.paths?.length) return;
+        if (!detail || !detail.svg || !detail.paths?.length || !Number.isFinite(detail.haloRadius)) return;
         hero.dataset.homeEffectsReady = 'true';
         svg = detail.svg;
         sourcePaths = detail.paths;
+        pointerHaloRadius = detail.haloRadius;
         createLayers();
         buildHomeEffects();
         activate.hidden = false;
@@ -292,9 +296,14 @@
     hero.addEventListener('m2rhero:ready', onHeroReady);
     const readySvg = hero.querySelector('.hero-system__live');
     if (readySvg) {
+        const commonHaloRadius = Number(readySvg.querySelector('.hero-system__halo')?.getAttribute('r'));
         onHeroReady({
             target: hero,
-            detail: { svg: readySvg, paths: [...readySvg.querySelectorAll('.hero-system__pulse')] },
+            detail: {
+                svg: readySvg,
+                paths: [...readySvg.querySelectorAll('.hero-system__pulse')],
+                haloRadius: commonHaloRadius,
+            },
         });
     }
 })();

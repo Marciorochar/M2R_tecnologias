@@ -55,6 +55,31 @@ def test_home_motion_control_does_not_cover_brand_at_320_by_600(browser, site_ba
         page.close()
 
 
+def test_home_pointer_halos_use_the_shared_radius(browser, site_base):
+    page = browser.new_page(viewport={"width": 1440, "height": 900}, reduced_motion="no-preference")
+    try:
+        page.goto(site_base + "/")
+        page.wait_for_function("() => document.querySelector('#m2r-hero')?.dataset.homeEffectsReady === 'true'")
+        radii = page.locator("#m2r-hero .hero-system__halo, #m2r-hero .m2r-cursor-halo").evaluate_all(
+            "circles => circles.map(circle => circle.getAttribute('r'))"
+        )
+        assert radii == ["72", "72"]
+    finally:
+        page.close()
+
+
+def test_internal_pointer_halo_uses_the_shared_radius(browser, site_base):
+    page = browser.new_page(viewport={"width": 1440, "height": 900}, reduced_motion="no-preference")
+    try:
+        page.goto(site_base + "/servicos")
+        halo = page.locator("[data-hero-system] .hero-system__halo")
+        halo.wait_for(state="attached")
+        assert halo.get_attribute("r") == "72"
+        assert page.locator("[data-hero-system] .m2r-cursor-halo").count() == 0
+    finally:
+        page.close()
+
+
 def test_home_effects_initialize_if_home_script_loads_late(browser, site_base):
     context = browser.new_context(viewport={"width": 390, "height": 844}, reduced_motion="no-preference")
 
@@ -70,6 +95,10 @@ def test_home_effects_initialize_if_home_script_loads_late(browser, site_base):
         assert page.locator("#m2r-hero .home-hero-motion-video").evaluate("video => !video.paused")
         assert page.locator("#m2r-circuit-activate").is_visible()
         assert page.locator("#m2r-hero .m2r-trace-core").count() == 14
+        radii = page.locator("#m2r-hero .hero-system__halo, #m2r-hero .m2r-cursor-halo").evaluate_all(
+            "circles => circles.map(circle => circle.getAttribute('r'))"
+        )
+        assert radii == ["72", "72"]
     finally:
         context.close()
 
