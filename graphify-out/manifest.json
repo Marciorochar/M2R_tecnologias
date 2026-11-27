@@ -24,10 +24,10 @@
     "semantic_hash": "91e337bcf8045de755ae10a6ac50f222"
   },
   "frontend/assets/js/hero-circuits.js": {
-    "mtime": 1794508641.4602325,
-    "seen": 1794844468.1792252,
-    "ast_hash": "da09b163cd14f336014d28b201a0c83e",
-    "semantic_hash": "da09b163cd14f336014d28b201a0c83e"
+    "mtime": 1794849922.3522065,
+    "seen": 1795742015.5895147,
+    "ast_hash": "b831d75ce18ba37c3506a2670b999b24",
+    "semantic_hash": "b831d75ce18ba37c3506a2670b999b24"
   },
   "frontend/assets/js/script.js": {
     "mtime": 1794508632.124369,
@@ -42,10 +42,10 @@
     "semantic_hash": "d6b4c002742e4668e628940949a2e88c"
   },
   "tools/browser_check.py": {
-    "mtime": 1794353349.429961,
-    "seen": 1794844468.1792343,
-    "ast_hash": "52648e874f557e6070ffdae50c599f23",
-    "semantic_hash": "52648e874f557e6070ffdae50c599f23"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.589525,
+    "ast_hash": "4fd8abd4287fc71d6abd277812f263a0",
+    "semantic_hash": "4fd8abd4287fc71d6abd277812f263a0"
   },
   "tools/generate-sitemap.js": {
     "mtime": 1792276351.2829819,
@@ -54,10 +54,10 @@
     "semantic_hash": "4390eecabb34d407d0d553202dec5d89"
   },
   "tools/lighthouse_check.py": {
-    "mtime": 1794352982.7607143,
-    "seen": 1794844468.1792397,
-    "ast_hash": "9dd286984f4f137eec1c658f70f1cfd2",
-    "semantic_hash": "9dd286984f4f137eec1c658f70f1cfd2"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5895312,
+    "ast_hash": "b88242394c9fd6576520dff85100edb6",
+    "semantic_hash": "b88242394c9fd6576520dff85100edb6"
   },
   "tools/site_tools.py": {
     "mtime": 1789318781.8271706,
@@ -78,22 +78,22 @@
     "semantic_hash": "a5c02a9867c7d83ae96debf3573966f3"
   },
   "tools/test_hero_circuits.py": {
-    "mtime": 1794508641.5240786,
-    "seen": 1794844468.179255,
-    "ast_hash": "919d0f7f207eda3bd48fee3faabaffa8",
-    "semantic_hash": "919d0f7f207eda3bd48fee3faabaffa8"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5895429,
+    "ast_hash": "16dadf6f70ef40cb5dc0f1ea30ab3d36",
+    "semantic_hash": "16dadf6f70ef40cb5dc0f1ea30ab3d36"
   },
   "tools/test_lighthouse_check.py": {
-    "mtime": 1794352982.761726,
-    "seen": 1794844468.1792576,
-    "ast_hash": "fa5cd3438a3e9a33407bc4cdb64ffbc8",
-    "semantic_hash": "fa5cd3438a3e9a33407bc4cdb64ffbc8"
+    "mtime": 1794849922.3754227,
+    "seen": 1795742015.5895514,
+    "ast_hash": "f06fd4aa3463bd816b498a1786b7d6f5",
+    "semantic_hash": "f06fd4aa3463bd816b498a1786b7d6f5"
   },
   "tools/test_site_tools.py": {
-    "mtime": 1794353731.7277808,
-    "seen": 1794844468.1792595,
-    "ast_hash": "b4e56e65dbf1af6842cdc17e69d79a3a",
-    "semantic_hash": "b4e56e65dbf1af6842cdc17e69d79a3a"
+    "mtime": 1794849883.0250905,
+    "seen": 1795742015.5895529,
+    "ast_hash": "d9ca7ebd1a0ec11447ec9ba335ebcec2",
+    "semantic_hash": "d9ca7ebd1a0ec11447ec9ba335ebcec2"
   },
   "tools/test_sitemap.py": {
     "mtime": 1794098158.2181811,
@@ -102,10 +102,10 @@
     "semantic_hash": "7132afac53d02fda562f9a47203808b4"
   },
   "tools/version-assets.js": {
-    "mtime": 1794508641.5277283,
-    "seen": 1794844468.1792643,
-    "ast_hash": "c376e8e2d34cdb72a0871b7fbc260ce1",
-    "semantic_hash": "c376e8e2d34cdb72a0871b7fbc260ce1"
+    "mtime": 1794849883.0250905,
+    "seen": 1795742015.589559,
+    "ast_hash": "058253db3e30e56d43bee7c93e997292",
+    "semantic_hash": "058253db3e30e56d43bee7c93e997292"
   },
   "vercel.json": {
     "mtime": 1794347405.9063377,
@@ -126,10 +126,10 @@
     "semantic_hash": "8851a4dff6d8e147ad4e47c25efe40aa"
   },
   "backend/requirements.txt": {
-    "mtime": 1793838509.33994,
-    "seen": 1794844468.1792731,
-    "ast_hash": "ce6cb783571fa616b82620001ffbfef3",
-    "semantic_hash": "ce6cb783571fa616b82620001ffbfef3"
+    "mtime": 1794853689.4793823,
+    "seen": 1795742015.5895662,
+    "ast_hash": "b2b783e982d5253c97736005e3809bea",
+    "semantic_hash": "b2b783e982d5253c97736005e3809bea"
   },
   "docs/auditoria-2026-10-17.md": {
     "mtime": 1792276351.1666143,
@@ -162,10 +162,10 @@
     "semantic_hash": "911d04d95c5a928c7d80042bb4982a63"
   },
   "docs/superpowers/plans/2026-11-13-ux-cro-integrado.md": {
-    "mtime": 1794582544.254498,
-    "seen": 1794844468.1792862,
-    "ast_hash": "4abf3588fcdcbe204468d7524f06e0cb",
-    "semantic_hash": "4abf3588fcdcbe204468d7524f06e0cb"
+    "mtime": 1794849922.3482018,
+    "seen": 1795742015.5895777,
+    "ast_hash": "fe0a2078679114eb862834578c6e5aa7",
+    "semantic_hash": "fe0a2078679114eb862834578c6e5aa7"
   },
   "docs/superpowers/specs/2026-11-08-pr21-remediation-design.md": {
     "mtime": 1794347405.8711603,
@@ -186,70 +186,70 @@
     "semantic_hash": "da979da9d35859fbbc26cbfed483704d"
   },
   "frontend/index.html": {
-    "mtime": 1794508641.480467,
-    "seen": 1794844468.1792996,
-    "ast_hash": "4b09ca11fe852925f6f63fcdb3f54deb",
-    "semantic_hash": "4b09ca11fe852925f6f63fcdb3f54deb"
+    "mtime": 1794849922.3522065,
+    "seen": 1795742015.5895953,
+    "ast_hash": "bdb25942eeb2c1f0037ac7a0e015a048",
+    "semantic_hash": "bdb25942eeb2c1f0037ac7a0e015a048"
   },
   "frontend/pages/blog.html": {
-    "mtime": 1794508641.4878342,
-    "seen": 1794844468.1793013,
-    "ast_hash": "e806159626f6c3862b05c30fc42c6c11",
-    "semantic_hash": "e806159626f6c3862b05c30fc42c6c11"
+    "mtime": 1794849922.3522065,
+    "seen": 1795742015.5895967,
+    "ast_hash": "5715e494ac2f847ca0f82f0cb84e6433",
+    "semantic_hash": "5715e494ac2f847ca0f82f0cb84e6433"
   },
   "frontend/pages/blog/automacao-para-pequenos-negocios.html": {
-    "mtime": 1794508641.4878342,
-    "seen": 1794844468.1793034,
-    "ast_hash": "8c51e099fcbda8d0f7e8b4a74f7c960a",
-    "semantic_hash": "8c51e099fcbda8d0f7e8b4a74f7c960a"
+    "mtime": 1794849922.3522065,
+    "seen": 1795742015.5895982,
+    "ast_hash": "ef49968be648e911e35b3725a5c654c2",
+    "semantic_hash": "ef49968be648e911e35b3725a5c654c2"
   },
   "frontend/pages/blog/organizacao-de-processos-digitais.html": {
-    "mtime": 1794508641.4878342,
-    "seen": 1794844468.1793058,
-    "ast_hash": "855e69514dd80d68874e602f0cc9af64",
-    "semantic_hash": "855e69514dd80d68874e602f0cc9af64"
+    "mtime": 1794849922.3522065,
+    "seen": 1795742015.5895998,
+    "ast_hash": "811693f60cd8314dbf416a891534ea2f",
+    "semantic_hash": "811693f60cd8314dbf416a891534ea2f"
   },
   "frontend/pages/blog/site-profissional-fortalece-marca.html": {
-    "mtime": 1794508641.4988723,
-    "seen": 1794844468.1793077,
-    "ast_hash": "912c419cb9d28b4a7d8a4280316205e9",
-    "semantic_hash": "912c419cb9d28b4a7d8a4280316205e9"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.589601,
+    "ast_hash": "5fdc14ef03ced2e43ce33aa8c6c4b094",
+    "semantic_hash": "5fdc14ef03ced2e43ce33aa8c6c4b094"
   },
   "frontend/pages/contato.html": {
-    "mtime": 1794508641.4988723,
-    "seen": 1794844468.1793098,
-    "ast_hash": "9a79e12e46fe8149ed862de64db3b2da",
-    "semantic_hash": "9a79e12e46fe8149ed862de64db3b2da"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5896025,
+    "ast_hash": "a3de1cab603d3f32fb1cad8af6b64246",
+    "semantic_hash": "a3de1cab603d3f32fb1cad8af6b64246"
   },
   "frontend/pages/fundador.html": {
-    "mtime": 1794508641.5088668,
-    "seen": 1794844468.179312,
-    "ast_hash": "bc20bd86c19052498cd6ceba0fb86431",
-    "semantic_hash": "bc20bd86c19052498cd6ceba0fb86431"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5896041,
+    "ast_hash": "b14f70638d538a025ca9b998851fde21",
+    "semantic_hash": "b14f70638d538a025ca9b998851fde21"
   },
   "frontend/pages/projetos.html": {
-    "mtime": 1794508641.511627,
-    "seen": 1794844468.179314,
-    "ast_hash": "b9dac94e38c144455fb3e8678a14565a",
-    "semantic_hash": "b9dac94e38c144455fb3e8678a14565a"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5896056,
+    "ast_hash": "b46267332a12e02c58e86d72d7607051",
+    "semantic_hash": "b46267332a12e02c58e86d72d7607051"
   },
   "frontend/pages/projetos/m2r-server.html": {
-    "mtime": 1794508641.513621,
-    "seen": 1794844468.179316,
-    "ast_hash": "1919db63041057d20013430ef17c970d",
-    "semantic_hash": "1919db63041057d20013430ef17c970d"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5896072,
+    "ast_hash": "ad3d0d6c9149f0bdf9253da2a98a4d4e",
+    "semantic_hash": "ad3d0d6c9149f0bdf9253da2a98a4d4e"
   },
   "frontend/pages/servicos.html": {
-    "mtime": 1794508641.513621,
-    "seen": 1794844468.1793182,
-    "ast_hash": "c39c9884aae6431eb8a1e1b3df909cd4",
-    "semantic_hash": "c39c9884aae6431eb8a1e1b3df909cd4"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5896084,
+    "ast_hash": "d359b3267a4bf67fb2f107134ecd5d23",
+    "semantic_hash": "d359b3267a4bf67fb2f107134ecd5d23"
   },
   "frontend/pages/sobre.html": {
-    "mtime": 1794508641.513621,
-    "seen": 1794844468.1793203,
-    "ast_hash": "c2b98bc237d6f04f234a9c8b1ede15c9",
-    "semantic_hash": "c2b98bc237d6f04f234a9c8b1ede15c9"
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.58961,
+    "ast_hash": "2d177d62868783db8d67cdbd8b658834",
+    "semantic_hash": "2d177d62868783db8d67cdbd8b658834"
   },
   "frontend/robots.txt": {
     "mtime": 1787431088.4763815,
@@ -258,10 +258,10 @@
     "semantic_hash": "e7b1b616c2ee3b70477d961bffe1897a"
   },
   "requirements-dev.txt": {
-    "mtime": 1794094206.7044225,
-    "seen": 1794844468.1793249,
-    "ast_hash": "82d2cfd641b1de76c7e863ab089f8999",
-    "semantic_hash": "82d2cfd641b1de76c7e863ab089f8999"
+    "mtime": 1794853689.4850545,
+    "seen": 1795742015.5896132,
+    "ast_hash": "153bf41e191cd4694e6de1f4662a626c",
+    "semantic_hash": "153bf41e191cd4694e6de1f4662a626c"
   },
   "frontend/assets/img/Eu_fundador-400.webp": {
     "mtime": 1794094208.1263103,
@@ -306,15 +306,129 @@
     "semantic_hash": "3ba38c67655ef7d5669b65d2c0ab0b20"
   },
   "docs/superpowers/plans/2026-11-16-graphify-improvement.md": {
-    "mtime": 1794841092.7158732,
-    "seen": 1794844468.1792886,
-    "ast_hash": "82eaa0ee2680a5d2b64b2b35e9da78c9",
-    "semantic_hash": "82eaa0ee2680a5d2b64b2b35e9da78c9"
+    "mtime": 1794844590.0392175,
+    "seen": 1795742015.5895817,
+    "ast_hash": "6af1e38b2ee46a1b2843f2abb0225e0a",
+    "semantic_hash": "6af1e38b2ee46a1b2843f2abb0225e0a"
   },
   "docs/superpowers/specs/2026-11-16-graphify-improvement-design.md": {
     "mtime": 1794841090.0254526,
     "seen": 1794844468.1792972,
     "ast_hash": "9cc4a843126af139e22b91c5af49dd2f",
     "semantic_hash": "9cc4a843126af139e22b91c5af49dd2f"
+  },
+  "frontend/assets/js/hero-system.js": {
+    "mtime": 1794849882.9896924,
+    "seen": 1795742015.5895178,
+    "ast_hash": "b3876f7ce56e87be9c1c341b597cbf60",
+    "semantic_hash": "b3876f7ce56e87be9c1c341b597cbf60"
+  },
+  "tools/hero_check.py": {
+    "mtime": 1794849883.0069487,
+    "seen": 1795742015.5895288,
+    "ast_hash": "0a44b7ffce8d9ffc3015f1022aad1eee",
+    "semantic_hash": "0a44b7ffce8d9ffc3015f1022aad1eee"
+  },
+  "tools/test_browser_check.py": {
+    "mtime": 1794849922.3597608,
+    "seen": 1795742015.5895393,
+    "ast_hash": "8ed644afaa09e88a20c7d56620f52301",
+    "semantic_hash": "8ed644afaa09e88a20c7d56620f52301"
+  },
+  "tools/test_graphify_health.py": {
+    "mtime": 1794844538.3944733,
+    "seen": 1795742015.589541,
+    "ast_hash": "cdef87c5e220de9bc488dc28f50fdde4",
+    "semantic_hash": "cdef87c5e220de9bc488dc28f50fdde4"
+  },
+  "tools/test_hero_runtime.py": {
+    "mtime": 1794849883.01831,
+    "seen": 1795742015.5895445,
+    "ast_hash": "7210e55c536d0b0b85988e47a59bc466",
+    "semantic_hash": "7210e55c536d0b0b85988e47a59bc466"
+  },
+  "tools/test_internal_hero.py": {
+    "mtime": 1794849883.01831,
+    "seen": 1795742015.589546,
+    "ast_hash": "55dcee437c6535d6e9ca28cd6e984687",
+    "semantic_hash": "55dcee437c6535d6e9ca28cd6e984687"
+  },
+  "tools/test_ux_contact.py": {
+    "mtime": 1794849922.3754227,
+    "seen": 1795742015.5895562,
+    "ast_hash": "162d844e90cfdc9422c2451a6ed2e499",
+    "semantic_hash": "162d844e90cfdc9422c2451a6ed2e499"
+  },
+  "tools/test_ux_home_services.py": {
+    "mtime": 1794849922.3754227,
+    "seen": 1795742015.5895574,
+    "ast_hash": "b5743122140477b127f7bb4b87556992",
+    "semantic_hash": "b5743122140477b127f7bb4b87556992"
+  },
+  "docs/superpowers/plans/2026-11-13-hero-consistency.md": {
+    "mtime": 1794849882.9578185,
+    "seen": 1795742015.5895762,
+    "ast_hash": "781d0d7cc58745b755fba209df4926da",
+    "semantic_hash": "781d0d7cc58745b755fba209df4926da"
+  },
+  "docs/superpowers/plans/2026-11-15-shared-hero-system.md": {
+    "mtime": 1794849882.9657564,
+    "seen": 1795742015.589579,
+    "ast_hash": "54e544bcfc5ff7ce9fda283fd6dcabac",
+    "semantic_hash": "54e544bcfc5ff7ce9fda283fd6dcabac"
+  },
+  "docs/superpowers/plans/2026-11-15-standardize-hero-pointer-halo.md": {
+    "mtime": 1794849882.9657564,
+    "seen": 1795742015.5895803,
+    "ast_hash": "eb5e7512cf9ce045b993e8e1ed72e99d",
+    "semantic_hash": "eb5e7512cf9ce045b993e8e1ed72e99d"
+  },
+  "docs/superpowers/specs/2026-11-13-hero-consistency-design.md": {
+    "mtime": 1794849882.9657564,
+    "seen": 1795742015.5895865,
+    "ast_hash": "59a2cc481c288d66dbfd50626ba5a2cd",
+    "semantic_hash": "59a2cc481c288d66dbfd50626ba5a2cd"
+  },
+  "docs/superpowers/specs/2026-11-15-shared-hero-system-design.md": {
+    "mtime": 1794849882.9657564,
+    "seen": 1795742015.5895896,
+    "ast_hash": "670555c25d4b31bfd745cbff0928d9c5",
+    "semantic_hash": "670555c25d4b31bfd745cbff0928d9c5"
+  },
+  "docs/superpowers/specs/2026-11-15-standardize-hero-pointer-halo-design.md": {
+    "mtime": 1794849882.9657564,
+    "seen": 1795742015.5895908,
+    "ast_hash": "41667c587a8ec04c58bf3fd6841c55f3",
+    "semantic_hash": "41667c587a8ec04c58bf3fd6841c55f3"
+  },
+  "frontend/404.html": {
+    "mtime": 1794849922.3501167,
+    "seen": 1795742015.589594,
+    "ast_hash": "cb031d9eb35afb1367586451a392fa4c",
+    "semantic_hash": "cb031d9eb35afb1367586451a392fa4c"
+  },
+  "docs/screenshots/blog.png": {
+    "mtime": 1794848492.3285527,
+    "seen": 1795742015.5896146,
+    "ast_hash": "64b7ec227be557822f0cd4dcdb3e7c25",
+    "semantic_hash": "64b7ec227be557822f0cd4dcdb3e7c25"
+  },
+  "docs/screenshots/home.png": {
+    "mtime": 1794848492.1521318,
+    "seen": 1795742015.589616,
+    "ast_hash": "9f0abcee174a66147c7e737334a6635b",
+    "semantic_hash": "9f0abcee174a66147c7e737334a6635b"
+  },
+  "docs/screenshots/projetos.png": {
+    "mtime": 1794848492.235201,
+    "seen": 1795742015.5896175,
+    "ast_hash": "665eda5b938b9b46c2cecfb54bf48724",
+    "semantic_hash": "665eda5b938b9b46c2cecfb54bf48724"
+  },
+  "frontend/assets/img/hero-circuits.svg": {
+    "mtime": 1794849882.9740045,
+    "seen": 1795742015.5896263,
+    "ast_hash": "8915604c919266c1693267a8ceb911b7",
+    "semantic_hash": "8915604c919266c1693267a8ceb911b7"
   }
 }

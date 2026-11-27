@@ -3,8 +3,14 @@ from pathlib import Path
 import re
 import unittest
 
-from graphify.diagnostics import diagnose_extraction
-from graphify.rcfile import load_graphifyrc
+try:
+    from graphify.diagnostics import diagnose_extraction
+    from graphify.rcfile import load_graphifyrc
+except ModuleNotFoundError as error:
+    # O graphify é uma ferramenta local; o CI do site não a instala.
+    if (error.name or "").split(".")[0] != "graphify":
+        raise
+    raise unittest.SkipTest("graphify não instalado") from error
 
 
 ROOT = Path(__file__).resolve().parent.parent
