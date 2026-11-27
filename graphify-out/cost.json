@@ -5,6 +5,13 @@
       "input_tokens": 18500,
       "output_tokens": 6200,
       "files": 53
+    },
+    {
+      "date": "2026-11-27T01:13:35.632300+00:00",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "files": 41,
+      "note": "extracao semantica feita na sessao; tokens nao medidos"
     }
   ],
   "total_input_tokens": 18500,

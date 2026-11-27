@@ -7,9 +7,11 @@ playwright-report/
 frontend/assets/video/
 docs/auditoria/*.png
 docs/auditoria/*.xlsx
+docs/auditoria/evidencias/
+docs/hero-standardization/
 
 # Copia legada da pagina 404 na raiz (mantem apenas frontend/404.html)
-404.html
+/404.html
 
 # Documentos academicos externos nao pertencentes ao site M2R
 *.pdf
